@@ -18,7 +18,6 @@ namespace GarbageCollector
         CloudQueue garbageQueue;
         public override void Run()
         {
-            // This is a sample worker implementation. Replace with your logic.
             Trace.TraceInformation("GarbageCollector entry point called", "Information");
 
             while (true)
@@ -49,8 +48,9 @@ namespace GarbageCollector
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
             CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
             CloudQueueClient cqc = csa.CreateCloudQueueClient();
-            garbageQueue = cqc.GetQueueReference("garbageQueue");
+            garbageQueue = cqc.GetQueueReference("garbagequeue");
             garbageQueue.CreateIfNotExists();
+
             return base.OnStart();
         }
     }

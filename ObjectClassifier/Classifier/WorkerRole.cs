@@ -8,20 +8,36 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
     {
+        const int classifierFrequency = 100;
+        CloudQueue garbageQueue;
+        CloudQueue inputQueue;
+        CloudQueue outputQueue;
         public override void Run()
         {
-            // This is a sample worker implementation. Replace with your logic.
             Trace.TraceInformation("Classifier entry point called", "Information");
 
             while (true)
             {
-                Thread.Sleep(10000);
-                Trace.TraceInformation("Working", "Information");
+                Thread.Sleep(classifierFrequency);
+                Trace.TraceInformation("Classifier starts working", "Information");
+                CloudQueueMessage receivedMessage = inputQueue.GetMessage();
+                while (receivedMessage != null)
+                {
+                    //
+                    //Classification process
+                    //
+
+                    inputQueue.DeleteMessage(receivedMessage);
+                    Trace.TraceInformation("Classification completed", "Information");
+                    receivedMessage = inputQueue.GetMessage();
+                }
+                Trace.TraceInformation("Classifier stops working", "Information");
             }
         }
 
@@ -32,6 +48,14 @@ namespace Classifier
 
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
+            CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
+            CloudQueueClient cqc = csa.CreateCloudQueueClient();
+            garbageQueue = cqc.GetQueueReference("garbagequeue");
+            garbageQueue.CreateIfNotExists();
+            inputQueue = cqc.GetQueueReference("inputqueue");
+            inputQueue.CreateIfNotExists();
+            outputQueue = cqc.GetQueueReference("outputqueue");
+            outputQueue.CreateIfNotExists();
 
             return base.OnStart();
         }
