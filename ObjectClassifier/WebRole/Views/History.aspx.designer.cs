@@ -7,11 +7,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WebRole
+namespace WebRole.Views
 {
 
 
-    public partial class Contact
+    public partial class History
     {
     }
 }
