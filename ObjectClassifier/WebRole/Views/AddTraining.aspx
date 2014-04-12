@@ -1,4 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AddTraining.aspx.cs" Inherits="WebRole.Views.AddTraining" %>
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    Pusta strona
+<asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div runat="server" id="loggedOut">
+        <h3>This page is only for registered users.</h3>
+    </div>
+    <div runat="server" id="loggedIn" visible="false">
+        Empty page
+    </div>
 </asp:Content>

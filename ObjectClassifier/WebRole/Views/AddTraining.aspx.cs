@@ -11,7 +11,11 @@ namespace WebRole.Views
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedOut.Visible = false;
+                loggedIn.Visible = true;
+            }
         }
     }
 }
