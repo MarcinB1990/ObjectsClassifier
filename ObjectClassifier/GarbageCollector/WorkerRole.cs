@@ -8,11 +8,14 @@ using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Queue;
 
 namespace GarbageCollector
 {
     public class WorkerRole : RoleEntryPoint
     {
+        const int garbageFrequency = 300000;
+        CloudQueue garbageQueue;
         public override void Run()
         {
             // This is a sample worker implementation. Replace with your logic.
@@ -20,8 +23,20 @@ namespace GarbageCollector
 
             while (true)
             {
-                Thread.Sleep(10000);
-                Trace.TraceInformation("Working", "Information");
+                Thread.Sleep(garbageFrequency);
+                Trace.TraceInformation("GarbageCollector starts working", "Information");
+                CloudQueueMessage receivedMessage = garbageQueue.GetMessage();
+                while (receivedMessage != null)
+                {
+                    //
+                    //Removing blob
+                    //
+
+                    garbageQueue.DeleteMessage(receivedMessage);
+                    Trace.TraceInformation("GarbageCollector removed the entry", "Information");
+                    receivedMessage = garbageQueue.GetMessage();
+                }
+                Trace.TraceInformation("GarbageCollector stops working", "Information");
             }
         }
 
@@ -32,7 +47,10 @@ namespace GarbageCollector
 
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
-
+            CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
+            CloudQueueClient cqc = csa.CreateCloudQueueClient();
+            garbageQueue = cqc.GetQueueReference("garbageQueue");
+            garbageQueue.CreateIfNotExists();
             return base.OnStart();
         }
     }
