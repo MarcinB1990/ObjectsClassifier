@@ -68,7 +68,11 @@ namespace WebRole
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Context.User.Identity.IsAuthenticated)
+            {
+                addTrainingSet.Visible = true;
+                myHistory.Visible = true;
+            }
         }
 
         protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

@@ -13,6 +13,24 @@ namespace WebRole {
     public partial class SiteMaster {
         
         /// <summary>
+        /// addTrainingSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor addTrainingSet;
+        
+        /// <summary>
+        /// myHistory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor myHistory;
+        
+        /// <summary>
         /// MainContent control.
         /// </summary>
         /// <remarks>
