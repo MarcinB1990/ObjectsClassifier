@@ -15,7 +15,7 @@
                 </asp:TableCell>
                 <asp:TableCell>
                         <asp:RequiredFieldValidator id="requiredFieldValidatorName" runat="server" ControlToValidate="name" ErrorMessage="Name is a required field." ForeColor="Red" Display="Dynamic" />
-                        <asp:RegularExpressionValidator ID="regExpValidatorName" runat="server" ControlToValidate="name" ErrorMessage="Name has a wrong format." ForeColor="Red" Display="Dynamic" ValidationExpression="^\s{1,40}$" />
+                        <asp:RegularExpressionValidator ID="regExpValidatorName" runat="server" ControlToValidate="name" ErrorMessage="Name has a wrong format." ForeColor="Red" Display="Dynamic" ValidationExpression="^\w{1,40}$" />
                 </asp:TableCell>
             </asp:TableRow>
             <asp:TableRow>
@@ -65,6 +65,10 @@
         </asp:Table>
         <br />
         Fields with * are required
-        <asp:Button Text="Upload" runat="server" Style="margin-left: 50px"/>
+        <asp:Button Text="Upload" runat="server" Style="margin-left: 50px" OnClick="UploadTrainingSet" />
+        <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
+    </div>
+    <div id="uploaded" runat="server" visible="false">
+        <h3>File uploaded! Click <a href="AddTraining.aspx">here</a> to upload the another training set.</h3>
     </div>
 </asp:Content>
