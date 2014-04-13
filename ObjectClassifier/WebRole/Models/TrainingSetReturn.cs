@@ -7,6 +7,7 @@ namespace WebRole.Models
 {
     public class TrainingSetReturn
     {
+        public string TrainingSetId { get; set; }
         public string Name { get; set; }
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
@@ -15,8 +16,9 @@ namespace WebRole.Models
         public int NumberOfUses { get; set; }
         public string TrainingSetFileSource { get; set; }
 
-        public TrainingSetReturn(string name, int numberOfClasses, int numberOfAttributes, string comment, DateTime dateOfEntry, int numberOfUses,string trainingSetFileSource)
+        public TrainingSetReturn(string trainingSetId,string name, int numberOfClasses, int numberOfAttributes, string comment, DateTime dateOfEntry, int numberOfUses,string trainingSetFileSource)
         {
+            TrainingSetId = trainingSetId;
             Name = name;
             NumberOfClasses = numberOfClasses;
             NumberOfAttributes = numberOfAttributes;

@@ -35,9 +35,10 @@ namespace WebRole.Controllers
             try
             {
                 string trainingSetId = Guid.NewGuid().ToString();
-                CloudBlockBlob blob = trainingSetsContainer.GetBlockBlobReference(trainingSetId + "/" + trainingSet.NameOfFile);
+                string referenceToBlob = trainingSetId + "/" + trainingSet.NameOfFile;
+                CloudBlockBlob blob = trainingSetsContainer.GetBlockBlobReference(referenceToBlob);
                 blob.UploadFromStream(trainingSet.FileStream);
-                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, DateTime.Now, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes, trainingSet.Comment, blob.Uri.AbsoluteUri, 0);
+                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, DateTime.Now, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, 0);
                 TableOperation insertOperation = TableOperation.Insert(tse);
                 trainingSets.Execute(insertOperation);
                 return true;
@@ -51,7 +52,29 @@ namespace WebRole.Controllers
         public IEnumerable<TrainingSetReturn> GetMyTrainingSets(string userId)
         {
             TableQuery<TrainingSetEntity> queryGetTrainingSetsByUserId = new TableQuery<TrainingSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.Name, o.NumberOfClasses, o.NumberOfAttributes, o.Comment, o.DateOfEntry, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.DateOfEntry);
+            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes, o.Comment, o.DateOfEntry, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.DateOfEntry);
+        }
+
+        public bool DeleteTrainingSet(string userId,string trainingSetId)
+        {
+            TableOperation rowToDelete=TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
+            TableResult tr=trainingSets.Execute(rowToDelete);
+            TrainingSetEntity trResult = (TrainingSetEntity)tr.Result;
+            if (tr != null)
+            {
+                TableOperation delete = TableOperation.Delete(trResult);
+                trainingSets.Execute(delete);
+                if (trResult.NumberOfUses == 0)
+                {
+                    CloudBlockBlob cbb=trainingSetsContainer.GetBlockBlobReference(trResult.TrainingSetReference);
+                    cbb.DeleteAsync();
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -12,12 +12,39 @@ namespace WebRole.Views
 {
     public partial class MyTrainingSets : System.Web.UI.Page
     {
+        TrainingSetController trainingSetController;
+        List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
-            TrainingSetController trainingSetController = new TrainingSetController();
-            IEnumerable<TrainingSetReturn> myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId());
-            myTrainingSetsView.DataSource = myTrainingSets;
-            myTrainingSetsView.DataBind();
+            if (User.Identity.IsAuthenticated)
+            {
+                loggedOut.Visible = false;
+                loggedIn.Visible = true;
+                trainingSetController = new TrainingSetController();
+                myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();
+                if (myTrainingSets.Count > 0)
+                {
+                    myTrainingSetsView.DataSource = myTrainingSets;
+                    myTrainingSetsView.DataBind();
+                    listNotEmpty.Visible = true;
+                    listEmpty.Visible = false;
+                }
+            }
+        }
+
+        protected void myTrainingSetsView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            if (trainingSetController.DeleteTrainingSet(User.Identity.GetUserId(), myTrainingSets.ElementAt(e.RowIndex).TrainingSetId))
+            {
+                myTrainingSets.RemoveAt(e.RowIndex);
+                if (myTrainingSets.Count == 0)
+                {
+                    myTrainingSetsView.DataSource = myTrainingSets;
+                    myTrainingSetsView.DataBind();
+                    listNotEmpty.Visible = false;
+                    listEmpty.Visible = true;
+                }
+            }
         }
     }
 }

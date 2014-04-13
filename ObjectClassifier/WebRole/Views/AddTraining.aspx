@@ -69,6 +69,6 @@
         <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
     </div>
     <div id="uploaded" runat="server" visible="false">
-        <h3>File uploaded! Click <a href="AddTraining.aspx">here</a> to upload the another training set.</h3>
+        <h3>File uploaded! Click <a href="AddTraining.aspx">here</a> to upload the another training set or back to <a href="MyTrainingSets.aspx">My Training Sets.</a></h3>
     </div>
 </asp:Content>
