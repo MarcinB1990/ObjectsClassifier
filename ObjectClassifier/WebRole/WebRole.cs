@@ -31,21 +31,21 @@ namespace WebRole
             CloudBlobClient cbc=csa.CreateCloudBlobClient();
             BlobContainerPermissions bcp = new BlobContainerPermissions();
             bcp.PublicAccess = BlobContainerPublicAccessType.Blob;
-            CloudBlobContainer trainingSetsContainer = cbc.GetContainerReference("trainingsets");
+            CloudBlobContainer trainingSetsContainer = cbc.GetContainerReference("trainingsetscontainer");
             trainingSetsContainer.CreateIfNotExists();
             trainingSetsContainer.SetPermissions(bcp);
-            CloudBlobContainer resultSetsContainer = cbc.GetContainerReference("resultgsets");
+            CloudBlobContainer resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
             resultSetsContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
-            CloudBlobContainer inputFilesContainer = cbc.GetContainerReference("inputfiles");
+            CloudBlobContainer inputFilesContainer = cbc.GetContainerReference("inputfilescontainer");
             inputFilesContainer.CreateIfNotExists();
             inputFilesContainer.SetPermissions(bcp);
 
             //tabele
             CloudTableClient ctc = csa.CreateCloudTableClient();
-            CloudTable trainingSets = ctc.GetTableReference("trainingsets");
+            CloudTable trainingSets = ctc.GetTableReference("trainingsetstable");
             trainingSets.CreateIfNotExists();
-            CloudTable resultSets = ctc.GetTableReference("resultsets");
+            CloudTable resultSets = ctc.GetTableReference("resultsetstable");
             resultSets.CreateIfNotExists();
             return base.OnStart();
         }
