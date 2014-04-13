@@ -10,14 +10,14 @@ namespace WebRole.Models
     //PartitionKey is UserId, RowKey is TrainingSetId
     public class TrainingSetEntity:TableEntity
     {
-        string UserName { get; set; }
-        string Name { get; set; }
-        DateTime DateOfEntry { get; set; }
-        int NumberOfClasses{get;set;}
-        int NumberOfAttributes{get; set;}
-        string Comment { get; set; }
-        string TrainingSetFileSource { get; set; }
-        int NumberOfUses{get;set;}
+        public string UserName { get; set; }
+        public string Name { get; set; }
+        public DateTime DateOfEntry { get; set; }
+        public int NumberOfClasses { get; set; }
+        public int NumberOfAttributes { get; set; }
+        public string Comment { get; set; }
+        public string TrainingSetFileSource { get; set; }
+        public int NumberOfUses { get; set; }
 
         public TrainingSetEntity()
             : base(string.Empty,string.Empty)

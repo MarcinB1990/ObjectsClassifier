@@ -238,6 +238,7 @@
     <Content Include="Views\AddTraining.aspx" />
     <Content Include="Views\Classify.aspx" />
     <Content Include="Views\History.aspx" />
+    <Content Include="Views\MyTrainingSets.aspx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <None Include="Project_Readme.html" />
@@ -290,6 +291,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Controllers\TrainingSetController.cs" />
     <Compile Include="Models\TrainingSet.cs" />
+    <Compile Include="Models\TrainingSetReturn.cs" />
     <Compile Include="Views\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -355,6 +357,13 @@
     </Compile>
     <Compile Include="Views\History.aspx.designer.cs">
       <DependentUpon>History.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyTrainingSets.aspx.cs">
+      <DependentUpon>MyTrainingSets.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\MyTrainingSets.aspx.designer.cs">
+      <DependentUpon>MyTrainingSets.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebRole.cs" />
   </ItemGroup>
