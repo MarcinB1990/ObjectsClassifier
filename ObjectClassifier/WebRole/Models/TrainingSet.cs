@@ -8,15 +8,19 @@ namespace WebRole.Models
 {
     public class TrainingSet
     {
-        string Name { get; set; }
-        int NumberOfClasses { get; set; }
-        int NumberOfAttributes { get; set; }
-        string Comment { get; set; }
-        Stream FileStream { get; set; }
-        string NameOfFile { get; set; }
+        public string UserId { get; set; }
+        public string UserName { get; set; }
+        public string Name { get; set; }
+        public int NumberOfClasses { get; set; }
+        public int NumberOfAttributes { get; set; }
+        public string Comment { get; set; }
+        public Stream FileStream { get; set; }
+        public string NameOfFile { get; set; }
 
-        public TrainingSet(string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile)
+        public TrainingSet(string userId,string userName,string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile)
         {
+            UserId = userId;
+            UserName = userName;
             Name = name;
             NumberOfClasses = numberOfClasses;
             NumberOfAttributes = numberOfAttributes;

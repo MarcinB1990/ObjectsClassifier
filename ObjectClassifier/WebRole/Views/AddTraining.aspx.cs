@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using WebRole.Controllers;
 using WebRole.Models;
+using Microsoft.AspNet.Identity;
 
 namespace WebRole.Views
 {
@@ -25,7 +26,7 @@ namespace WebRole.Views
 
         protected void UploadTrainingSet(object sender, EventArgs e)
         {
-            if(trainingSetController.Save(new TrainingSet(name.Text,Int32.Parse(numberOfClasses.Text),Int32.Parse(numberOfAttributes.Text),comment.Text,fileUploader.FileContent,fileUploader.FileName))){
+            if(trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(),User.Identity.GetUserName(),name.Text,Int32.Parse(numberOfClasses.Text),Int32.Parse(numberOfAttributes.Text),comment.Text,fileUploader.FileContent,fileUploader.FileName))){
                 loggedIn.Visible=false;
                 uploaded.Visible=true;
                 error.Visible = false;
