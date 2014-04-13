@@ -1,9 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AddTraining.aspx.cs" Inherits="WebRole.Views.AddTraining" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <div runat="server" id="loggedIn">
+    <div runat="server" id="loggedOut">
         <h3>This page is only for registered users.</h3>
     </div>
-    <div runat="server" id="loggedOut">
+    <div runat="server" id="loggedIn" visible="false">
         <h3>Complete the form to upload you own training set</h3>
         <asp:Table runat="server">
             <asp:TableRow>
@@ -59,6 +59,7 @@
                 </asp:TableCell>
                 <asp:TableCell>
                         <asp:RequiredFieldValidator id="requiredFieldValidatorFileUploaded" runat="server" ControlToValidate="fileUploader" ErrorMessage="Select a file." ForeColor="Red" Display="Dynamic"/>
+                        <asp:RegularExpressionValidator ID="regExpValidatorFileUpload" runat="server" ControlToValidate="fileUploader" ErrorMessage="Invalid extension. Choose .txt file" ForeColor="Red" Display="Dynamic" ValidationExpression="^.*\.txt$" />           
                 </asp:TableCell>
             </asp:TableRow>
         </asp:Table>
