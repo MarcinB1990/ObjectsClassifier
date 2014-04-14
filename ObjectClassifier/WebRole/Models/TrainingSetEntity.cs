@@ -12,9 +12,9 @@ namespace WebRole.Models
     {
         public string UserName { get; set; }
         public string Name { get; set; }
-        public DateTime DateOfEntry { get; set; }
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
+        public DateTime DateOfEntry { get; set; }
         public string Comment { get; set; }
         public string TrainingSetReference { get; set; }
         public string TrainingSetFileSource { get; set; }
@@ -25,14 +25,14 @@ namespace WebRole.Models
         {
         }
 
-        public TrainingSetEntity(string userId,string trainingSetId,string userName,DateTime dateOfEntry,string name, int numberOfClasses,int numberOfAttributes,string comment,string trainingSetReference,string trainingSetFileSource,int numberOfUses)
+        public TrainingSetEntity(string userId,string trainingSetId,string userName,string name, int numberOfClasses,int numberOfAttributes,DateTime dateOfEntry,string comment,string trainingSetReference,string trainingSetFileSource,int numberOfUses)
             : base(userId,trainingSetId)
         {
             this.UserName = userName;
             this.Name = name;
-            this.DateOfEntry = dateOfEntry;
             this.NumberOfClasses = numberOfClasses;
             this.NumberOfAttributes = numberOfAttributes;
+            this.DateOfEntry = dateOfEntry;
             this.Comment = comment;
             this.TrainingSetReference = trainingSetReference;
             this.TrainingSetFileSource = trainingSetFileSource;

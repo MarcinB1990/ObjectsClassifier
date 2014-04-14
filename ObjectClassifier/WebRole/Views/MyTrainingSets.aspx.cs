@@ -12,7 +12,7 @@ namespace WebRole.Views
 {
     public partial class MyTrainingSets : System.Web.UI.Page
     {
-        TrainingSetController trainingSetController;
+        TrainingSetsController trainingSetController;
         List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +20,7 @@ namespace WebRole.Views
             {
                 loggedOut.Visible = false;
                 loggedIn.Visible = true;
-                trainingSetController = new TrainingSetController();
+                trainingSetController = new TrainingSetsController();
                 myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();
                 if (myTrainingSets.Count > 0)
                 {

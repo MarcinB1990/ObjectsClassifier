@@ -11,12 +11,12 @@ namespace WebRole.Models
         public string Name { get; set; }
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
-        public string Comment { get; set; }
         public string DateOfEntry { get; set; }
+        public string Comment { get; set; }
         public int NumberOfUses { get; set; }
         public string TrainingSetFileSource { get; set; }
 
-        public TrainingSetReturn(string trainingSetId,string name, int numberOfClasses, int numberOfAttributes, string comment, DateTime dateOfEntry, int numberOfUses,string trainingSetFileSource)
+        public TrainingSetReturn(string trainingSetId,string name, int numberOfClasses, int numberOfAttributes,DateTime dateOfEntry, string comment, int numberOfUses,string trainingSetFileSource)
         {
             TrainingSetId = trainingSetId;
             Name = name;

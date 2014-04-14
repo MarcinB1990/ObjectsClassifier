@@ -9,20 +9,18 @@ using WebRole.Models;
 
 namespace WebRole.Controllers
 {
-    public class TrainingSetController
+    public class TrainingSetsController
     {
-        CloudStorageAccount csa;
-        CloudTableClient ctc;
         CloudTable trainingSets;
-        CloudBlobClient cbc;
         CloudBlobContainer trainingSetsContainer;
-        public TrainingSetController()
+
+        public TrainingSetsController()
         {
-            csa= CloudStorageAccount.DevelopmentStorageAccount;
-            ctc = csa.CreateCloudTableClient();
+            CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
+            CloudTableClient ctc = csa.CreateCloudTableClient();
             trainingSets = ctc.GetTableReference("trainingsetstable");
             trainingSets.CreateIfNotExists();
-            cbc = csa.CreateCloudBlobClient();
+            CloudBlobClient cbc = csa.CreateCloudBlobClient();
             BlobContainerPermissions bcp = new BlobContainerPermissions();
             bcp.PublicAccess = BlobContainerPublicAccessType.Blob;
             trainingSetsContainer = cbc.GetContainerReference("trainingsetscontainer");
