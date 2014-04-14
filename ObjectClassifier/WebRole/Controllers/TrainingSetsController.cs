@@ -36,7 +36,7 @@ namespace WebRole.Controllers
                 string referenceToBlob = trainingSetId + "/" + trainingSet.NameOfFile;
                 CloudBlockBlob blob = trainingSetsContainer.GetBlockBlobReference(referenceToBlob);
                 blob.UploadFromStream(trainingSet.FileStream);
-                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, DateTime.Now, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, 0);
+                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, 0);
                 TableOperation insertOperation = TableOperation.Insert(tse);
                 trainingSets.Execute(insertOperation);
                 return true;
@@ -50,7 +50,14 @@ namespace WebRole.Controllers
         public IEnumerable<TrainingSetReturn> GetMyTrainingSets(string userId)
         {
             TableQuery<TrainingSetEntity> queryGetTrainingSetsByUserId = new TableQuery<TrainingSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes, o.Comment, o.DateOfEntry, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.DateOfEntry);
+            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.DateOfEntry);
+        }
+
+        public string GetTrainingSetFileSourceById(string userId,string trainingSetId)
+        {
+            TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
+            TableResult tr = trainingSets.Execute(selectById);
+            return ((TrainingSetEntity)tr.Result).TrainingSetFileSource;
         }
 
         public bool DeleteTrainingSet(string userId,string trainingSetId)

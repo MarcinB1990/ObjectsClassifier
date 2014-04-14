@@ -13,6 +13,7 @@ namespace WebRole.Controllers
     {
         CloudTable resultSets;
         CloudBlobContainer resultSetsContainer;
+        CloudBlobContainer inputFilesContainer;
 
         public ResultSetsController()
         {
@@ -26,12 +27,35 @@ namespace WebRole.Controllers
             resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
             resultSetsContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
+            inputFilesContainer = cbc.GetContainerReference("inputfilescontainer");
+            inputFilesContainer.CreateIfNotExists();
+            inputFilesContainer.SetPermissions(bcp);
         }
 
         public IEnumerable<ResultSetReturn> GetMyResultSets(string userId)
         {
             TableQuery<ResultSetEntity> queryGetResultSetsByUserId = new TableQuery<ResultSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.Name,o.Comment,o.DateOfEntry,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.Progress)).OrderByDescending(o => o.DateOfEntry);
+            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.Progress)).OrderByDescending(o => o.DateOfEntry);
+        }
+
+        public bool SaveNew(ResultSet resultSet,TrainingSetsController tsc)
+        {
+            try
+            {
+                string resultSetId = Guid.NewGuid().ToString();
+                string referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
+                string referenceToResultBlob = resultSetId + "/" + resultSet.NameOfInputFile+"_result";
+                CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
+                inputBlob.UploadFromStream(resultSet.InputFileStream);
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceById(resultSet.UserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, "To do");
+                TableOperation insertOperation = TableOperation.Insert(rse);
+                resultSets.Execute(insertOperation);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
     }

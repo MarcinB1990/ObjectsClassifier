@@ -10,7 +10,6 @@ namespace WebRole.Models
     //PartitionKey is UserId, RowKey is ResultSetId
     public class ResultSetEntity:TableEntity
     {
-        public string Name { get; set; }
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
         public DateTime DateOfEntry { get; set; }
@@ -25,10 +24,9 @@ namespace WebRole.Models
         {
         }
 
-        public ResultSetEntity(string userId,string resultSetId,string name,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string progress)
+        public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string progress)
             : base(userId,resultSetId)
         {
-            this.Name = name;
             this.NumberOfClasses = numberOfClasses;
             this.NumberOfAttributes = numberOfAttributes;
             this.DateOfEntry = timeOfEntry;
