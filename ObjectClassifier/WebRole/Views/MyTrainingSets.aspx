@@ -8,6 +8,11 @@
             <h3>It's a list of all your training sets.</h3>
         <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnRowDeleting="myTrainingSetsView_RowDeleting">
             <Columns>
+                <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No." HeaderStyle-BackColor="Wheat"> 
+                    <ItemTemplate> 
+                        <%# Container.DataItemIndex + 1 %>. 
+                    </ItemTemplate> 
+                </asp:TemplateField> 
                 <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of classes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of attributes" HeaderStyle-BackColor="Wheat" />

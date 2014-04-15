@@ -17,7 +17,7 @@ namespace WebRole.Models
         public string NameOfInputFile { get; set; }
         public string TrainingSetId { get; set; }
         
-        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string nameOfFile,string trainingSetId)
+        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string trainingSetId)
         {
             UserId = userId;
             UserName = userName;
