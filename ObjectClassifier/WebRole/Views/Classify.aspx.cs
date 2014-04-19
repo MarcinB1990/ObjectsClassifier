@@ -11,14 +11,12 @@ namespace WebRole.Views
 {
     public partial class Classify : System.Web.UI.Page
     {
-        TrainingSetsController trainingSetController;
+        TrainingSetsController trainingSetController=new TrainingSetsController();
         List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
-            trainingSetController = new TrainingSetsController();
-            uploadNewTrainingSet.Visible = true;
-            useExistingTrainingSet.Visible = false;
             radioNewOrOldTrainingSet.Visible=User.Identity.IsAuthenticated;
+            checkboxToSaveTrainingSet.Visible = User.Identity.IsAuthenticated;
             if (User.Identity.IsAuthenticated)
             {
                 myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();
@@ -39,8 +37,72 @@ namespace WebRole.Views
 
         protected void radioNewOrOldTrainingSet_SelectedIndexChanged(object sender, EventArgs e)    
         {
-                uploadNewTrainingSet.Visible = (radioNewOrOldTrainingSet.SelectedIndex == 0);
-                useExistingTrainingSet.Visible = (radioNewOrOldTrainingSet.SelectedIndex == 1);
+            if (radioNewOrOldTrainingSet.SelectedIndex == 0)
+            {
+                noSelectedTraining.Visible = false;
+                uploadNewTrainingSet.Visible = true;
+                useExistingTrainingSet.Visible = false;
+                requiredFieldValidatorFileUploaded.Enabled = true;
+                requiredFieldValidatorName.Enabled = true;
+                requiredFieldValidatorNumberOfAttributes.Enabled = true;
+                requiredFieldValidatorNumberOfClasses.Enabled = true;
+                regExpValidatorFileUpload.Enabled = true;
+                regExpValidatorName.Enabled = true;
+                regExpValidatorNumberOfAttributes.Enabled = true;
+                regExpValidatorNumberOfClasses.Enabled = true;
+            }
+            else
+            {
+                uploadNewTrainingSet.Visible = false;
+                useExistingTrainingSet.Visible = true;
+                requiredFieldValidatorFileUploaded.Enabled = false;
+                requiredFieldValidatorName.Enabled = false;
+                requiredFieldValidatorNumberOfAttributes.Enabled = false;
+                requiredFieldValidatorNumberOfClasses.Enabled = false;
+                regExpValidatorFileUpload.Enabled = false;
+                regExpValidatorName.Enabled = false;
+                regExpValidatorNumberOfAttributes.Enabled = false;
+                regExpValidatorNumberOfClasses.Enabled = false;
+            }
+        }
+
+        protected void classifyButton_Click(object sender, EventArgs e)
+        {
+            if (radioNewOrOldTrainingSet.SelectedIndex == 0)
+            {
+                if (checkboxToSaveTrainingSet.Checked)
+                {
+                    if (trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(), User.Identity.GetUserName(), name.Text, Int32.Parse(numberOfClasses.Text), Int32.Parse(numberOfAttributes.Text), comment.Text, fileUploader.FileContent, fileUploader.FileName)))
+                    {
+                        error.Visible = false;
+                        firstStep.Visible = false;
+                        classification.Visible = true;
+                        progress.Text = "0%";
+                    }
+                    else
+                    {
+                        error.Visible = true;
+                    }
+                }
+            }
+            else
+            {
+                if (myTrainingSetsView.SelectedIndex == -1)
+                {
+                    noSelectedTraining.Visible = true;
+                }
+                else
+                {
+                    firstStep.Visible = false;
+                    classification.Visible = true;
+                    progress.Text = "0%";
+                }
+            }
+        }
+
+        protected void myTrainingSetsView_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+            noSelectedTraining.Visible = false;
         }
     }
 }

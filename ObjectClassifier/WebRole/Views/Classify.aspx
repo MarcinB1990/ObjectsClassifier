@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Classify.aspx.cs" Inherits="WebRole.Views.Classify" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
+    <div id="firstStep" runat="server">
     <h3>Complete the form to classify your set</h3>
     <div style="border:solid;border-width:1px;border-radius:10px 10px; padding:10px 10px 10px 10px">
         <fieldset>
@@ -8,6 +9,7 @@
                 <asp:ListItem Text="Use new training set" Value="NW" Selected="True" />
                 <asp:ListItem Text="Choose training set from MyTrainingSets" Value="CFM" />
             </asp:RadioButtonList>
+     
             <div id="uploadNewTrainingSet" runat="server">
                 <asp:Table runat="server">
                     <asp:TableRow>
@@ -70,16 +72,13 @@
                 <br />
                 Fields with * are required
                 <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
-                </div>
-            <div id="useExistingTrainingSet" runat="server">
-            <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false">
-            <Columns> 
-                <asp:TemplateField HeaderText="Select" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat">
-                    <ItemTemplate>
-                        <asp:RadioButton runat="server" id="radioButton" onclick="SelectOne(this, 'myTrainingSetsView')" VALUE="rdo" />
-                        <asp:HiddenField ID="HiddenField" runat="server" Value = '<%#Eval("TrainingSetId")%>' />
-                    </ItemTemplate> 
-                </asp:TemplateField> 
+                <br />
+                <asp:CheckBox ID="checkboxToSaveTrainingSet" runat="server" Text=" Save in MyTrainingSets in order to use this set in the future" />
+            </div>
+            <div id="useExistingTrainingSet" runat="server" visible="false">
+            <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnSelectedIndexChanging="myTrainingSetsView_SelectedIndexChanging">
+            <Columns>  
+                <asp:ButtonField CommandName="Select" Text="Select" HeaderText="Choose set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of classes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of attributes" HeaderStyle-BackColor="Wheat" />
@@ -88,9 +87,18 @@
                 <asp:BoundField DataField="NumberOfUses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of Uses" HeaderStyle-BackColor="Wheat"/>
                 <asp:HyperLinkField DataNavigateUrlFields="TrainingSetFileSource" Text="Download" HeaderText="Source" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
             </Columns>
+                <selectedrowstyle backcolor="LightCyan"
+         forecolor="DarkBlue"
+         font-bold="true"/> 
         </asp:GridView>
         <asp:Label ID="noTrainingSets" runat="server" Font-Bold="true" ForeColor="Red">You haven't got any training sets yet.</asp:Label>
         </div>
         </fieldset>
         </div>
+        <asp:Button ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/><br />
+        <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
+        </div>
+    <div id="classification" runat="server" visible="false">
+        <h3>Please wait. Your set is in the process of classification.<br /><br />Porgress: <asp:Label runat="server" ID="progress"></asp:Label></h3>
+    </div>
 </asp:Content>

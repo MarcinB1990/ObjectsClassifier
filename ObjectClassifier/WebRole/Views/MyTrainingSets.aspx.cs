@@ -12,7 +12,7 @@ namespace WebRole.Views
 {
     public partial class MyTrainingSets : System.Web.UI.Page
     {
-        TrainingSetsController trainingSetController;
+        TrainingSetsController trainingSetController=new TrainingSetsController();
         List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,7 +20,6 @@ namespace WebRole.Views
             {
                 loggedOut.Visible = false;
                 loggedIn.Visible = true;
-                trainingSetController = new TrainingSetsController();
                 myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();
                 if (myTrainingSets.Count > 0)
                 {
@@ -37,10 +36,10 @@ namespace WebRole.Views
             if (trainingSetController.DeleteTrainingSet(User.Identity.GetUserId(), myTrainingSets.ElementAt(e.RowIndex).TrainingSetId))
             {
                 myTrainingSets.RemoveAt(e.RowIndex);
+                myTrainingSetsView.DataSource = myTrainingSets;
+                myTrainingSetsView.DataBind();
                 if (myTrainingSets.Count == 0)
                 {
-                    myTrainingSetsView.DataSource = myTrainingSets;
-                    myTrainingSetsView.DataBind();
                     listNotEmpty.Visible = false;
                     listEmpty.Visible = true;
                 }

@@ -13,6 +13,15 @@ namespace WebRole.Views {
     public partial class Classify {
         
         /// <summary>
+        /// firstStep control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl firstStep;
+        
+        /// <summary>
         /// radioNewOrOldTrainingSet control.
         /// </summary>
         /// <remarks>
@@ -157,6 +166,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.Label error;
         
         /// <summary>
+        /// checkboxToSaveTrainingSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox checkboxToSaveTrainingSet;
+        
+        /// <summary>
         /// useExistingTrainingSet control.
         /// </summary>
         /// <remarks>
@@ -182,5 +200,41 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label noTrainingSets;
+        
+        /// <summary>
+        /// classifyButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button classifyButton;
+        
+        /// <summary>
+        /// noSelectedTraining control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label noSelectedTraining;
+        
+        /// <summary>
+        /// classification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl classification;
+        
+        /// <summary>
+        /// progress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label progress;
     }
 }

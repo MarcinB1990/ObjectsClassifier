@@ -12,15 +12,13 @@ namespace WebRole.Views
 {
     public partial class AddTraining : System.Web.UI.Page
     {
-        TrainingSetsController trainingSetController;
+        TrainingSetsController trainingSetController= new TrainingSetsController();
         protected void Page_Load(object sender, EventArgs e)
         {
-            trainingSetController = new TrainingSetsController();
             if (User.Identity.IsAuthenticated)
             {
                 loggedOut.Visible = false;
                 loggedIn.Visible = true;
-
             }
         }
 
