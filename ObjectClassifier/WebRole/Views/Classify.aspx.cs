@@ -16,17 +16,31 @@ namespace WebRole.Views
         protected void Page_Load(object sender, EventArgs e)
         {
             trainingSetController = new TrainingSetsController();
+            uploadNewTrainingSet.Visible = true;
+            useExistingTrainingSet.Visible = false;
+            radioNewOrOldTrainingSet.Visible=User.Identity.IsAuthenticated;
             if (User.Identity.IsAuthenticated)
             {
-                radioNewOrOldTrainingSet.Visible = true;
                 myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();
                 if (myTrainingSets.Count > 0)
                 {
                     myTrainingSetsView.DataSource = myTrainingSets;
                     myTrainingSetsView.DataBind();
-                   
+                    noTrainingSets.Visible = false;
+                    myTrainingSetsView.Visible = true;
+                }
+                else
+                {
+                    myTrainingSetsView.Visible = false;
+                    noTrainingSets.Visible = true;
                 }
             }
+        }
+
+        protected void radioNewOrOldTrainingSet_SelectedIndexChanged(object sender, EventArgs e)    
+        {
+                uploadNewTrainingSet.Visible = (radioNewOrOldTrainingSet.SelectedIndex == 0);
+                useExistingTrainingSet.Visible = (radioNewOrOldTrainingSet.SelectedIndex == 1);
         }
     }
 }

@@ -22,6 +22,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.RadioButtonList radioNewOrOldTrainingSet;
         
         /// <summary>
+        /// uploadNewTrainingSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl uploadNewTrainingSet;
+        
+        /// <summary>
         /// name control.
         /// </summary>
         /// <remarks>
@@ -146,6 +155,15 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label error;
+        
+        /// <summary>
+        /// useExistingTrainingSet control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl useExistingTrainingSet;
         
         /// <summary>
         /// myTrainingSetsView control.

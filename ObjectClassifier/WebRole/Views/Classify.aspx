@@ -4,10 +4,11 @@
     <div style="border:solid;border-width:1px;border-radius:10px 10px; padding:10px 10px 10px 10px">
         <fieldset>
         <legend>Choose the training set</legend>
-            <asp:RadioButtonList ID="radioNewOrOldTrainingSet" runat="server" Visible="false">
+            <asp:RadioButtonList ID="radioNewOrOldTrainingSet" runat="server" AutoPostBack="true" OnSelectedIndexChanged="radioNewOrOldTrainingSet_SelectedIndexChanged">
                 <asp:ListItem Text="Use new training set" Value="NW" Selected="True" />
                 <asp:ListItem Text="Choose training set from MyTrainingSets" Value="CFM" />
             </asp:RadioButtonList>
+            <div id="uploadNewTrainingSet" runat="server">
                 <asp:Table runat="server">
                     <asp:TableRow>
                         <asp:TableCell>
@@ -69,7 +70,9 @@
                 <br />
                 Fields with * are required
                 <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
-            <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" Visible="true">
+                </div>
+            <div id="useExistingTrainingSet" runat="server">
+            <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false">
             <Columns> 
                 <asp:TemplateField HeaderText="Select" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat">
                     <ItemTemplate>
@@ -86,7 +89,8 @@
                 <asp:HyperLinkField DataNavigateUrlFields="TrainingSetFileSource" Text="Download" HeaderText="Source" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
             </Columns>
         </asp:GridView>
-        <asp:Label ID="noTrainingSets" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You haven't got any training sets yet.</asp:Label>
+        <asp:Label ID="noTrainingSets" runat="server" Font-Bold="true" ForeColor="Red">You haven't got any training sets yet.</asp:Label>
+        </div>
         </fieldset>
         </div>
 </asp:Content>
