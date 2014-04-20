@@ -54,6 +54,7 @@ namespace WebRole.Views
             }
             else
             {
+                error.Visible = false;
                 uploadNewTrainingSet.Visible = false;
                 useExistingTrainingSet.Visible = true;
                 requiredFieldValidatorFileUploaded.Enabled = false;
@@ -69,37 +70,68 @@ namespace WebRole.Views
 
         protected void classifyButton_Click(object sender, EventArgs e)
         {
-            if (radioNewOrOldTrainingSet.SelectedIndex == 0)
+            string trainingSetId = null;
+            int numberOfClassesTemp = 0;
+            int numberOfAttributesTemp = 0;
+            string userId = string.Empty;
+            string userName = string.Empty;
+            bool removeTrainingAfterClassification = true;
+            if (User.Identity.IsAuthenticated)//pobieranie danych użytownika
             {
-                if (checkboxToSaveTrainingSet.Checked)
-                {
-                    string trainingSetId=trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(), User.Identity.GetUserName(), name.Text, Int32.Parse(numberOfClasses.Text), Int32.Parse(numberOfAttributes.Text), comment.Text, fileUploader.FileContent, fileUploader.FileName));
-                    if (trainingSetId!=null)
-                    {
-                        error.Visible = false;
-                        firstStep.Visible = false;
-                        classification.Visible = true;
-                        progress.Text = "0%";
-                    }
-                    else
-                    {
-                        error.Visible = true;
-                    }
-                }
+                userId = User.Identity.GetUserId();
+                userName = User.Identity.GetUserName();
             }
             else
             {
-                if (myTrainingSetsView.SelectedIndex == -1)
+                userId = Guid.NewGuid().ToString();
+                userName = "temporary";
+            }
+
+            if (radioNewOrOldTrainingSet.SelectedIndex == 0)//uzuskiwanie zbioru uczącego
+            {
+                if (checkboxToSaveTrainingSet.Checked)
                 {
-                    noSelectedTraining.Visible = true;
+                    removeTrainingAfterClassification = false;
+                }
+                numberOfClassesTemp=Int32.Parse(numberOfClasses.Text);
+                numberOfAttributesTemp=Int32.Parse(numberOfAttributes.Text);
+                trainingSetId = trainingSetController.SaveNew(new TrainingSet(userId, userName, name.Text, numberOfClassesTemp, numberOfAttributesTemp, comment.Text, fileUploader.FileContent, fileUploader.FileName));
+
+            }
+            else
+            {
+                removeTrainingAfterClassification = false;
+                if (myTrainingSetsView.SelectedIndex != -1)
+                {
+                    trainingSetId = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId;
+                    numberOfClassesTemp=myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses;
+                    numberOfAttributesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes;
+                }
+            }
+
+            if (trainingSetId == null)//wyswietlenie odpowiedniego komunikatu o bledzie jesli nie udalo sie uzyskac zbioru uczacego
+            {
+                if (myTrainingSetsView.SelectedIndex == 0)
+                {
+                    error.Visible = true;
                 }
                 else
                 {
-                    firstStep.Visible = false;
-                    classification.Visible = true;
-                    progress.Text = "0%";
-                    resultSetController.SaveNew(new ResultSet(User.Identity.GetUserId(), User.Identity.GetUserName(), inputFileUpload.FileName, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes, commentToClassification.Text, inputFileUpload.FileContent, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId),trainingSetController);
+                    noSelectedTraining.Visible = true;
                 }
+            }
+            else//proces klasyfikacji
+            {
+                firstStep.Visible = false;
+                classification.Visible = true;
+                progress.Text = "0%";
+                resultSetController.SaveNew(new ResultSet(userId, userName, inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId), trainingSetController);
+            }
+            
+            //pozniej zostanie zakodowane w messagu i role ta przejmie workerrole
+            if (removeTrainingAfterClassification)
+            {
+                trainingSetController.DeleteTrainingSet(userId, trainingSetId);
             }
         }
 
