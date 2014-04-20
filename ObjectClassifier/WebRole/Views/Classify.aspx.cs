@@ -12,6 +12,7 @@ namespace WebRole.Views
     public partial class Classify : System.Web.UI.Page
     {
         TrainingSetsController trainingSetController=new TrainingSetsController();
+        ResultSetsController resultSetController = new ResultSetsController();
         List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -72,7 +73,8 @@ namespace WebRole.Views
             {
                 if (checkboxToSaveTrainingSet.Checked)
                 {
-                    if (trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(), User.Identity.GetUserName(), name.Text, Int32.Parse(numberOfClasses.Text), Int32.Parse(numberOfAttributes.Text), comment.Text, fileUploader.FileContent, fileUploader.FileName)))
+                    string trainingSetId=trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(), User.Identity.GetUserName(), name.Text, Int32.Parse(numberOfClasses.Text), Int32.Parse(numberOfAttributes.Text), comment.Text, fileUploader.FileContent, fileUploader.FileName));
+                    if (trainingSetId!=null)
                     {
                         error.Visible = false;
                         firstStep.Visible = false;
@@ -96,6 +98,7 @@ namespace WebRole.Views
                     firstStep.Visible = false;
                     classification.Visible = true;
                     progress.Text = "0%";
+                    resultSetController.SaveNew(new ResultSet(User.Identity.GetUserId(), User.Identity.GetUserName(), inputFileUpload.FileName, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes, commentToClassification.Text, inputFileUpload.FileContent, myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId),trainingSetController);
                 }
             }
         }

@@ -9,11 +9,10 @@
                 <asp:ListItem Text="Use new training set" Value="NW" Selected="True" />
                 <asp:ListItem Text="Choose training set from MyTrainingSets" Value="CFM" />
             </asp:RadioButtonList>
-     
             <div id="uploadNewTrainingSet" runat="server">
                 <asp:Table runat="server">
                     <asp:TableRow>
-                        <asp:TableCell>
+                        <asp:TableCell Width="150">
                             <asp:Label runat="server">Name*:</asp:Label>
                         </asp:TableCell>
                         <asp:TableCell>
@@ -70,10 +69,10 @@
                     </asp:TableRow>
                 </asp:Table>
                 <br />
-                Fields with * are required
                 <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
-                <br />
                 <asp:CheckBox ID="checkboxToSaveTrainingSet" runat="server" Text=" Save in MyTrainingSets in order to use this set in the future" />
+                <br />
+                <br />
             </div>
             <div id="useExistingTrainingSet" runat="server" visible="false">
             <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnSelectedIndexChanging="myTrainingSetsView_SelectedIndexChanging">
@@ -94,10 +93,40 @@
         <asp:Label ID="noTrainingSets" runat="server" Font-Bold="true" ForeColor="Red">You haven't got any training sets yet.</asp:Label>
         </div>
         </fieldset>
-        </div>
-        <asp:Button ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/><br />
+                
+    <fieldset>
+        <legend>Insert a file with set to classification</legend>
+    <asp:Table runat="server">
+                    <asp:TableRow>
+                        <asp:TableCell Width="150">
+                            <asp:Label runat="server">Comment:</asp:Label>
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:TextBox ID="commentToClassification" runat="server"></asp:TextBox>
+                        </asp:TableCell>
+                    </asp:TableRow>
+                    <asp:TableRow>
+                        <asp:TableCell>
+                            <asp:Label runat="server">File*:</asp:Label>
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:FileUpload ID="inputFileUpload" runat="server"></asp:FileUpload>
+                        </asp:TableCell>
+                        <asp:TableCell>
+                            <asp:RequiredFieldValidator id="requiredFieldValidatorInputFile" runat="server" ControlToValidate="inputFileUpload" ErrorMessage="Select a file." ForeColor="Red" Display="Dynamic"/>
+                            <asp:RegularExpressionValidator ID="regExpValidatorInputFile" runat="server" ControlToValidate="inputFileUpload" ErrorMessage="Invalid extension. Choose .txt file" ForeColor="Red" Display="Dynamic" ValidationExpression="^.*\.txt$" />           
+                        </asp:TableCell>
+                    </asp:TableRow>
+                </asp:Table>
+                <br />
+                Fields with * are required
+        </fieldset>
+        <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/><br />
         <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
+
         </div>
+
+    </div>
     <div id="classification" runat="server" visible="false">
         <h3>Please wait. Your set is in the process of classification.<br /><br />Porgress: <asp:Label runat="server" ID="progress"></asp:Label></h3>
     </div>

@@ -202,6 +202,42 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.Label noTrainingSets;
         
         /// <summary>
+        /// commentToClassification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox commentToClassification;
+        
+        /// <summary>
+        /// inputFileUpload control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload inputFileUpload;
+        
+        /// <summary>
+        /// requiredFieldValidatorInputFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator requiredFieldValidatorInputFile;
+        
+        /// <summary>
+        /// regExpValidatorInputFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValidatorInputFile;
+        
+        /// <summary>
         /// classifyButton control.
         /// </summary>
         /// <remarks>

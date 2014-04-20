@@ -38,7 +38,7 @@ namespace WebRole.Controllers
             return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.Progress)).OrderByDescending(o => o.DateOfEntry);
         }
 
-        public bool SaveNew(ResultSet resultSet,TrainingSetsController tsc)
+        public string SaveNew(ResultSet resultSet,TrainingSetsController tsc)
         {
             try
             {
@@ -50,11 +50,12 @@ namespace WebRole.Controllers
                 ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceById(resultSet.UserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, "To do");
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
-                return true;
+                tsc.IncrementUses(resultSet.TrainingSetId);
+                return resultSetId;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
         }
 

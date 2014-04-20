@@ -28,7 +28,7 @@ namespace WebRole.Controllers
             trainingSetsContainer.SetPermissions(bcp);
         }
 
-        public bool SaveNew(TrainingSet trainingSet)
+        public string SaveNew(TrainingSet trainingSet)
         {
             try
             {
@@ -39,11 +39,11 @@ namespace WebRole.Controllers
                 TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, 0);
                 TableOperation insertOperation = TableOperation.Insert(tse);
                 trainingSets.Execute(insertOperation);
-                return true;
+                return trainingSetId;
             }
             catch (Exception)
             {
-                return false;
+                return null;
             }
         }
 
@@ -80,6 +80,11 @@ namespace WebRole.Controllers
             {
                 return false;
             }
+        }
+
+        internal void IncrementUses(string p)
+        {
+            throw new NotImplementedException();
         }
     }
 }
