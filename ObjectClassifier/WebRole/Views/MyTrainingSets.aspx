@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyTrainingSets.aspx.cs" Inherits="WebRole.Views.MyTrainingSets" %>
+﻿<%@ Page Title="My Training Sets" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="MyTrainingSets.aspx.cs" Inherits="WebRole.Views.MyTrainingSets" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div runat="server" id="loggedOut">
         <h3>This page is only for registered users.</h3>

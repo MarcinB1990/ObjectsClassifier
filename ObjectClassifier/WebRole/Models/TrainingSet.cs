@@ -16,8 +16,9 @@ namespace WebRole.Models
         public string Comment { get; set; }
         public Stream FileStream { get; set; }
         public string NameOfFile { get; set; }
+        public int NumberOfUses { get; set; }
 
-        public TrainingSet(string userId,string userName,string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile)
+        public TrainingSet(string userId,string userName,string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile,int numberOfUses)
         {
             UserId = userId;
             UserName = userName;
@@ -27,6 +28,7 @@ namespace WebRole.Models
             Comment = comment;
             FileStream = fileStream;
             NameOfFile = nameOfFile;
+            NumberOfUses = numberOfUses;
         }
     }
 }

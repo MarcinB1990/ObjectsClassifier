@@ -16,8 +16,9 @@ namespace WebRole.Models
         public Stream InputFileStream { get; set; }
         public string NameOfInputFile { get; set; }
         public string TrainingSetId { get; set; }
+        public string UsedUserId { get; set; }
         
-        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string trainingSetId)
+        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string trainingSetId, string usedUserId)
         {
             UserId = userId;
             UserName = userName;
@@ -27,6 +28,7 @@ namespace WebRole.Models
             Comment = comment;
             InputFileStream = inputFileStream;
             TrainingSetId = trainingSetId;
+            UsedUserId = usedUserId;
         }
     }
 }

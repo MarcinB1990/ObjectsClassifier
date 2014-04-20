@@ -24,7 +24,7 @@ namespace WebRole.Views
 
         protected void UploadTrainingSet(object sender, EventArgs e)
         {
-            if(trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(),User.Identity.GetUserName(),name.Text,Int32.Parse(numberOfClasses.Text),Int32.Parse(numberOfAttributes.Text),comment.Text,fileUploader.FileContent,fileUploader.FileName))!=null){
+            if(trainingSetController.SaveNew(new TrainingSet(User.Identity.GetUserId(),User.Identity.GetUserName(),name.Text,Int32.Parse(numberOfClasses.Text),Int32.Parse(numberOfAttributes.Text),comment.Text,fileUploader.FileContent,fileUploader.FileName,0))!=null){
                 loggedIn.Visible=false;
                 uploaded.Visible=true;
                 error.Visible = false;

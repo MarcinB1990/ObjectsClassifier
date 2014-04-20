@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Classify.aspx.cs" Inherits="WebRole.Views.Classify" %>
+﻿<%@ Page Title="Classify" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Classify.aspx.cs" Inherits="WebRole.Views.Classify" %>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div id="firstStep" runat="server">
     <h3>Complete the form to classify your set</h3>
@@ -121,13 +121,13 @@
                 <br />
                 Fields with * are required
         </fieldset>
-        <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/><br />
+        <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/>
         <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
 
         </div>
 
     </div>
     <div id="classification" runat="server" visible="false">
-        <h3>Please wait. Your set is in the process of classification.<br /><br />Porgress: <asp:Label runat="server" ID="progress"></asp:Label></h3>
+        <h3>Please wait. Your set is in the process of classification.<br /><br />Progress: <asp:Label runat="server" ID="progress"></asp:Label></h3>
     </div>
 </asp:Content>

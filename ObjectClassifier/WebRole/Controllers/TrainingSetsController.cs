@@ -36,7 +36,7 @@ namespace WebRole.Controllers
                 string referenceToBlob = trainingSetId + "/" + trainingSet.NameOfFile;
                 CloudBlockBlob blob = trainingSetsContainer.GetBlockBlobReference(referenceToBlob);
                 blob.UploadFromStream(trainingSet.FileStream);
-                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, 0);
+                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, trainingSet.NumberOfUses);
                 TableOperation insertOperation = TableOperation.Insert(tse);
                 trainingSets.Execute(insertOperation);
                 return trainingSetId;
@@ -82,7 +82,7 @@ namespace WebRole.Controllers
             }
         }
 
-        internal void IncrementUses(string p)
+        internal void IncrementUses(string userId, string trainingSetId)
         {
             throw new NotImplementedException();
         }
