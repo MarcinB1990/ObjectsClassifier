@@ -47,7 +47,7 @@ namespace WebRole.Controllers
                 string referenceToResultBlob = resultSetId + "/" + resultSet.NameOfInputFile+"_result";
                 CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
                 inputBlob.UploadFromStream(resultSet.InputFileStream);
-                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, "To do");
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, "To do");
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
                 return resultSetId;

@@ -53,7 +53,7 @@ namespace WebRole.Controllers
             return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource)).OrderBy(o=>o.Name);
         }
 
-        public string GetTrainingSetFileSourceById(string userId,string trainingSetId)
+        public string GetTrainingSetFileSourceSourceById(string userId,string trainingSetId)
         {
             TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
             TableResult tr = trainingSets.Execute(selectById);
@@ -82,9 +82,14 @@ namespace WebRole.Controllers
             }
         }
 
-        internal void IncrementUses(string userId, string trainingSetId)
+        public void IncrementUses(string userId, string trainingSetId)
         {
-            throw new NotImplementedException();
+            TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
+            TableResult tr = trainingSets.Execute(selectById);
+            TrainingSetEntity tse = ((TrainingSetEntity)tr.Result);
+            tse.NumberOfUses++;
+            TableOperation update = TableOperation.Replace(tse);
+            trainingSets.ExecuteAsync(update);
         }
     }
 }

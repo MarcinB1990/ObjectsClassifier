@@ -99,6 +99,7 @@ namespace WebRole.Views
                 {
                     trainingSetId = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId;
                     trainingSetController.IncrementUses(User.Identity.GetUserId(), trainingSetId);
+                    usedUserId = User.Identity.GetUserId();
                     numberOfClassesTemp=myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses;
                     numberOfAttributesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes;
                 }
