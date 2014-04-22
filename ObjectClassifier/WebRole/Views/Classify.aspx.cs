@@ -13,6 +13,7 @@ namespace WebRole.Views
     {
         TrainingSetsController trainingSetController=new TrainingSetsController();
         ResultSetsController resultSetController = new ResultSetsController();
+        MessageController messageController = new MessageController();
         List<TrainingSetReturn> myTrainingSets;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -71,10 +72,13 @@ namespace WebRole.Views
         protected void classifyButton_Click(object sender, EventArgs e)
         {
             string trainingSetId = null;
+            string resultSetId = null;
             int numberOfClassesTemp = -1;
             int numberOfAttributesTemp = -1;
-            string usedUserId = string.Empty;
+            string usedUserIdToTraining = string.Empty;
+            string usedUserIdToResult = string.Empty;
             bool removeTrainingAfterClassification = true;
+            bool removeResultAfterClassification = true;
 
             if (radioNewOrOldTrainingSet.SelectedIndex == 0)//uzyskiwanie zbioru uczącego
             {
@@ -83,13 +87,13 @@ namespace WebRole.Views
                 if (checkboxToSaveTrainingSet.Checked)
                 {
                     removeTrainingAfterClassification = false;
-                    usedUserId=User.Identity.GetUserId();
-                    trainingSetId = trainingSetController.SaveNew(new TrainingSet(usedUserId, User.Identity.GetUserName(), name.Text, numberOfClassesTemp, numberOfAttributesTemp, comment.Text, fileUploader.FileContent, fileUploader.FileName,1));
+                    usedUserIdToTraining=User.Identity.GetUserId();
+                    trainingSetId = trainingSetController.SaveNew(new TrainingSet(usedUserIdToTraining, User.Identity.GetUserName(), name.Text, numberOfClassesTemp, numberOfAttributesTemp, comment.Text, fileUploader.FileContent, fileUploader.FileName,1));
                 }
                 else
                 {
-                    usedUserId = Guid.NewGuid().ToString();
-                    trainingSetId = trainingSetController.SaveNew(new TrainingSet(usedUserId, "temporaryUser", name.Text, numberOfClassesTemp, numberOfAttributesTemp, comment.Text, fileUploader.FileContent, fileUploader.FileName, 1));
+                    usedUserIdToTraining = Guid.NewGuid().ToString();
+                    trainingSetId = trainingSetController.SaveNew(new TrainingSet(usedUserIdToTraining, "temporaryUser", name.Text, numberOfClassesTemp, numberOfAttributesTemp, comment.Text, fileUploader.FileContent, fileUploader.FileName, 1));
                 }
             }
             else
@@ -97,9 +101,9 @@ namespace WebRole.Views
                 removeTrainingAfterClassification = false;
                 if (myTrainingSetsView.SelectedIndex != -1)
                 {
+                    usedUserIdToTraining = User.Identity.GetUserId();
                     trainingSetId = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId;
-                    trainingSetController.IncrementUses(User.Identity.GetUserId(), trainingSetId);
-                    usedUserId = User.Identity.GetUserId();
+                    trainingSetController.IncrementUses(usedUserIdToTraining, trainingSetId);
                     numberOfClassesTemp=myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses;
                     numberOfAttributesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes;
                 }
@@ -120,15 +124,29 @@ namespace WebRole.Views
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                   resultSetController.SaveNew(new ResultSet(User.Identity.GetUserId(), User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId,usedUserId), trainingSetController);
+                   usedUserIdToResult = User.Identity.GetUserId();
+                   removeResultAfterClassification = false;
                 }
                 else
                 {
-                    resultSetController.SaveNew(new ResultSet(usedUserId, "temporaryUser", inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId,usedUserId), trainingSetController);
+                    usedUserIdToResult = usedUserIdToTraining;
                 }
+                resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId, usedUserIdToTraining), trainingSetController);
                 firstStep.Visible = false;
                 classification.Visible = true;
-                progress.Text = "0%";
+                progress.Text = "Waiting in queue...";
+                Guid operationGuid = Guid.NewGuid();
+                messageController.SendMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification);
+                bool finished = false;
+                while (!finished)
+                {
+                    string mess=messageController.ReceiveMessage();
+                    if (mess != null)
+                    {
+                        progress.Text = mess;
+                        finished = true;
+                    }
+                }
             }
         }
 

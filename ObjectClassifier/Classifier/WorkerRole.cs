@@ -29,9 +29,13 @@ namespace Classifier
                 CloudQueueMessage receivedMessage = inputQueue.GetMessage();
                 while (receivedMessage != null)
                 {
+                    CloudQueueMessage cqm = new CloudQueueMessage("dupa " + receivedMessage.AsString);
+                    outputQueue.AddMessage(cqm);
+                    
                     //
                     //Classification process
                     //
+                    Trace.TraceWarning("odebralem wiadomosc");
 
                     inputQueue.DeleteMessage(receivedMessage);
                     Trace.TraceInformation("Classification completed", "Information");

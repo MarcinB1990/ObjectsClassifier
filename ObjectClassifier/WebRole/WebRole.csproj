@@ -281,8 +281,12 @@
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\IMessageBuilder.cs" />
+    <Compile Include="Controllers\MessageBuilder.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ResultSetsController.cs" />
     <Compile Include="Controllers\TrainingSetsController.cs" />
+    <Compile Include="Models\Message.cs" />
     <Compile Include="Models\ResultSet.cs" />
     <Compile Include="Models\ResultSetReturn.cs" />
     <Compile Include="Models\TrainingSet.cs" />
