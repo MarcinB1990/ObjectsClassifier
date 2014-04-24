@@ -61,7 +61,11 @@ namespace Classifier
                     resultSetBlockBlob.UploadText(result);
                     resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
 
-                    outputQueue.AddMessage(receivedMessage);
+
+                    CloudQueueMessage cqm = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"1");
+                    outputQueue.AddMessage(cqm);
+
+
                     inputQueue.DeleteMessage(receivedMessage);
                     Trace.TraceInformation("Classification completed", "Information");
                     receivedMessage = inputQueue.GetMessage();

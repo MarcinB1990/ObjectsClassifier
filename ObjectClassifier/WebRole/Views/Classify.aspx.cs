@@ -141,7 +141,7 @@ namespace WebRole.Views
                 bool finished = false;
                 while (!finished)
                 {
-                    string mess=messageController.ReceiveMessage();
+                    string mess=messageController.ReceiveMessage(operationGuid.ToString());
                     if (mess != null)
                     {
                         progress.Text = mess;

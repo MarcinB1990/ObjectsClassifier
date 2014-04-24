@@ -34,14 +34,20 @@ namespace WebRole.Controllers
             CloudQueueMessage cqm = new CloudQueueMessage(mb.GetMessage());
             inputQueue.AddMessage(cqm);
         }
-        public string ReceiveMessage()
+        public string ReceiveMessage(string operationGuid)
         {
-            CloudQueueMessage cqm = outputQueue.GetMessage(new TimeSpan(0, 0, 0, 0, 500));
             string s = null;
-            if (cqm != null)
-            {
-                s = cqm.AsString;
-                outputQueue.DeleteMessage(cqm);
+            CloudQueueMessage cqm = outputQueue.GetMessage(new TimeSpan(0, 0, 0, 0, 500));
+            bool finished=false;
+            while(!finished){
+                if(cqm.AsString.StartsWith(operationGuid)){
+                    outputQueue.DeleteMessage(cqm);
+                    finished=true;
+                    s=cqm.AsString;
+                }
+                else{
+                    cqm=outputQueue.GetMessage(new TimeSpan(0, 0, 0, 0, 500));
+                }
             }
             return s;
         }
