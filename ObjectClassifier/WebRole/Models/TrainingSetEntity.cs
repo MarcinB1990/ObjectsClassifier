@@ -16,7 +16,7 @@ namespace WebRole.Models
         public int NumberOfAttributes { get; set; }
         public DateTime DateOfEntry { get; set; }
         public string Comment { get; set; }
-        public string TrainingSetReference { get; set; }
+        public string ReferenceToBlob { get; set; }
         public string TrainingSetFileSource { get; set; }
         public int NumberOfUses { get; set; }
 
@@ -25,7 +25,7 @@ namespace WebRole.Models
         {
         }
 
-        public TrainingSetEntity(string userId,string trainingSetId,string userName,string name, int numberOfClasses,int numberOfAttributes,DateTime dateOfEntry,string comment,string trainingSetReference,string trainingSetFileSource,int numberOfUses)
+        public TrainingSetEntity(string userId, string trainingSetId, string userName, string name, int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string referenceToBlob, string trainingSetFileSource, int numberOfUses)
             : base(userId,trainingSetId)
         {
             this.UserName = userName;
@@ -34,7 +34,7 @@ namespace WebRole.Models
             this.NumberOfAttributes = numberOfAttributes;
             this.DateOfEntry = dateOfEntry;
             this.Comment = comment;
-            this.TrainingSetReference = trainingSetReference;
+            this.ReferenceToBlob = referenceToBlob;
             this.TrainingSetFileSource = trainingSetFileSource;
             this.NumberOfUses = numberOfUses;
         }

@@ -9,7 +9,9 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
-
+using System.Collections;
+using Microsoft.WindowsAzure.Storage.Blob;
+using WebRole.Controllers;
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
@@ -18,6 +20,13 @@ namespace Classifier
         CloudQueue garbageQueue;
         CloudQueue inputQueue;
         CloudQueue outputQueue;
+        TrainingSetsController trainingSetsController;
+        ResultSetsController resultSetsController;
+        MessageController messageController;
+        CloudBlobContainer trainingSetsContainer;
+        CloudBlobContainer inputFilesContainer;
+        CloudBlobContainer resultSetsContainer;
+
         public override void Run()
         {
             Trace.TraceInformation("Classifier entry point called", "Information");
@@ -29,14 +38,30 @@ namespace Classifier
                 CloudQueueMessage receivedMessage = inputQueue.GetMessage();
                 while (receivedMessage != null)
                 {
-                    CloudQueueMessage cqm = new CloudQueueMessage("dupa " + receivedMessage.AsString);
-                    outputQueue.AddMessage(cqm);
-                    
+                    IDictionary receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
+                    CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
+                    string trainingSetContent = trainingSetBlockBlob.DownloadText();
+                    CloudBlockBlob inputFileBlockBlob = resultSetsContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                    string inputFileContent = inputFileBlockBlob.DownloadText();
+                    string result = string.Empty;
+
                     //
                     //Classification process
+                    result = trainingSetContent.ToUpper()+" | "+inputFileContent.ToUpper();
                     //
-                    Trace.TraceWarning("odebralem wiadomosc");
+                    //
 
+                    if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
+                    {
+                        trainingSetBlockBlob.DeleteAsync();
+                        trainingSetsController.DeleteTrainingSet(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
+                    }
+
+                    CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                    resultSetBlockBlob.UploadText(result);
+                    resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
+
+                    outputQueue.AddMessage(receivedMessage);
                     inputQueue.DeleteMessage(receivedMessage);
                     Trace.TraceInformation("Classification completed", "Information");
                     receivedMessage = inputQueue.GetMessage();
@@ -60,7 +85,21 @@ namespace Classifier
             inputQueue.CreateIfNotExists();
             outputQueue = cqc.GetQueueReference("outputqueue");
             outputQueue.CreateIfNotExists();
-
+            trainingSetsController = new TrainingSetsController();
+            messageController = new MessageController();
+            CloudBlobClient cbc = csa.CreateCloudBlobClient();
+            BlobContainerPermissions bcp = new BlobContainerPermissions();
+            bcp.PublicAccess = BlobContainerPublicAccessType.Blob;
+            trainingSetsContainer = cbc.GetContainerReference("trainingsetscontainer");
+            trainingSetsContainer.CreateIfNotExists();
+            trainingSetsContainer.SetPermissions(bcp);
+            resultSetsContainer = cbc.GetContainerReference("inputfilescontainer");
+            resultSetsContainer.CreateIfNotExists();
+            resultSetsContainer.SetPermissions(bcp);
+            inputFilesContainer = cbc.GetContainerReference("resultsetscontainer");
+            inputFilesContainer.CreateIfNotExists();
+            resultSetsContainer.SetPermissions(bcp);
+            resultSetsController = new ResultSetsController();
             return base.OnStart();
         }
     }

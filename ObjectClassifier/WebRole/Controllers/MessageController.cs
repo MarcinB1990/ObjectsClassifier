@@ -1,6 +1,7 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -21,7 +22,7 @@ namespace WebRole.Controllers
             outputQueue = cqc.GetQueueReference("outputqueue");
             outputQueue.CreateIfNotExists();
         }
-        public void SendMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification)
+        public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification)
         {
             mb.BuildGuid(operationGuid);
             mb.BuildResultSetId(resultSetId);
@@ -43,6 +44,20 @@ namespace WebRole.Controllers
                 outputQueue.DeleteMessage(cqm);
             }
             return s;
+        }
+
+        public IDictionary DecodeInputMessage(CloudQueueMessage receivedMessage)
+        {
+            string[] decodedMessage = receivedMessage.AsString.Split('|');
+            IDictionary decodedMessageDictionary = new Dictionary<string, string>();
+            decodedMessageDictionary.Add("operationGuid",decodedMessage[0]);
+            decodedMessageDictionary.Add("resultSetId", decodedMessage[1]);
+            decodedMessageDictionary.Add("usedUserIdToResult", decodedMessage[2]);
+            decodedMessageDictionary.Add("removeResultAfterClassification", decodedMessage[3]);
+            decodedMessageDictionary.Add("trainingSetId", decodedMessage[4]);
+            decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
+            decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
+            return decodedMessageDictionary;
         }
     }
 }

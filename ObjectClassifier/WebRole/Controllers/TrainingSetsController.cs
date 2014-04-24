@@ -60,6 +60,13 @@ namespace WebRole.Controllers
             return ((TrainingSetEntity)tr.Result).TrainingSetFileSource;
         }
 
+        public string GetTrainingSetReferenceToBlobById(string userId, string trainingSetId)
+        {
+            TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
+            TableResult tr = trainingSets.Execute(selectById);
+            return ((TrainingSetEntity)tr.Result).ReferenceToBlob;
+        }
+
         public bool DeleteTrainingSet(string userId,string trainingSetId)
         {
             TableOperation rowToDelete=TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
@@ -71,7 +78,7 @@ namespace WebRole.Controllers
                 trainingSets.Execute(delete);
                 if (trResult.NumberOfUses == 0)
                 {
-                    CloudBlockBlob cbb=trainingSetsContainer.GetBlockBlobReference(trResult.TrainingSetReference);
+                    CloudBlockBlob cbb=trainingSetsContainer.GetBlockBlobReference(trResult.ReferenceToBlob);
                     cbb.DeleteAsync();
                 }
                 return true;

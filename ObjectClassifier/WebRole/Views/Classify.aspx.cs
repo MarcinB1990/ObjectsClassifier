@@ -136,7 +136,7 @@ namespace WebRole.Views
                 classification.Visible = true;
                 progress.Text = "Waiting in queue...";
                 Guid operationGuid = Guid.NewGuid();
-                messageController.SendMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification);
+                messageController.SendInputMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification);
                 bool finished = false;
                 while (!finished)
                 {

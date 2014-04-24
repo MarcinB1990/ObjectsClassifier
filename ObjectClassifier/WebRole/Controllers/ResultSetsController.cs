@@ -12,7 +12,6 @@ namespace WebRole.Controllers
     public class ResultSetsController
     {
         CloudTable resultSets;
-        CloudBlobContainer resultSetsContainer;
         CloudBlobContainer inputFilesContainer;
 
         public ResultSetsController()
@@ -24,9 +23,6 @@ namespace WebRole.Controllers
             CloudBlobClient cbc = csa.CreateCloudBlobClient();
             BlobContainerPermissions bcp = new BlobContainerPermissions();
             bcp.PublicAccess = BlobContainerPublicAccessType.Blob;
-            resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
-            resultSetsContainer.CreateIfNotExists();
-            resultSetsContainer.SetPermissions(bcp);
             inputFilesContainer = cbc.GetContainerReference("inputfilescontainer");
             inputFilesContainer.CreateIfNotExists();
             inputFilesContainer.SetPermissions(bcp);
@@ -44,10 +40,9 @@ namespace WebRole.Controllers
             {
                 string resultSetId = Guid.NewGuid().ToString();
                 string referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
-                string referenceToResultBlob = resultSetId + "/" + resultSet.NameOfInputFile+"_result";
                 CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
                 inputBlob.UploadFromStream(resultSet.InputFileStream);
-                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, "To do");
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob, "To do");
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
                 return resultSetId;
@@ -58,5 +53,30 @@ namespace WebRole.Controllers
             }
         }
 
+
+        public string GetResultSetReferenceToBlobById(string userId, string resultSetId)
+        {
+            TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
+            TableResult tr = resultSets.Execute(selectById);
+            return ((ResultSetEntity)tr.Result).ReferenceToBlob;
+        }
+
+        public void UpadateUri(string userId, string resultSetId, string resultSetURI)
+        {
+            TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
+            TableResult tr = resultSets.Execute(selectById);
+            ResultSetEntity tse = ((ResultSetEntity)tr.Result);
+            tse.ResultSetFileSource = resultSetURI;
+            TableOperation update = TableOperation.Replace(tse);
+            resultSets.ExecuteAsync(update);
+        }
+
+        public string GetResultSetFileNameById(string userId, string resultSetId)
+        {
+            TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
+            TableResult tr = resultSets.Execute(selectById);
+            string[] ifs= ((ResultSetEntity)tr.Result).InputFileSource.Split('/');
+            return ifs.Last();
+        }
     }
 }
