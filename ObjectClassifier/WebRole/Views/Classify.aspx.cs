@@ -125,6 +125,7 @@ namespace WebRole.Views
                 if (User.Identity.IsAuthenticated)
                 {
                    usedUserIdToResult = User.Identity.GetUserId();
+                   removeTrainingAfterClassification = false;
                    removeResultAfterClassification = false;
                 }
                 else
