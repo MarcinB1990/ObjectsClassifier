@@ -35,7 +35,7 @@ namespace Classifier
             {
                 Thread.Sleep(classifierFrequency);
                 Trace.TraceInformation("Classifier starts working", "Information");
-                CloudQueueMessage receivedMessage = inputQueue.GetMessage();
+                CloudQueueMessage receivedMessage = inputQueue.GetMessage(new TimeSpan(0,0,0,0,500));
                 while (receivedMessage != null)
                 {
                     IDictionary receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
@@ -64,7 +64,6 @@ namespace Classifier
 
                     CloudQueueMessage cqm = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"1");
                     outputQueue.AddMessage(cqm);
-
 
                     inputQueue.DeleteMessage(receivedMessage);
                     Trace.TraceInformation("Classification completed", "Information");
