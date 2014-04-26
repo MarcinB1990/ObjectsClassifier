@@ -50,12 +50,12 @@ namespace Classifier
                     result = receivedMessageParts["methodOfClassification"].ToString()+trainingSetContent.ToUpper()+" | "+inputFileContent.ToUpper();
                     //
                     //
-                    for (int i = 0; i <= 10; i++)
-                    {
-                        CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"0"+"|"+string.Empty+"|"+(i * 10).ToString());
-                        outputQueue.AddMessage(progressMessage,new TimeSpan(0,0,0,1));
-                        Thread.Sleep(500);
-                    }
+                    //for (int i = 0; i <= 10; i++)
+                    //{
+                    //    CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"0"+"|"+string.Empty+"|"+(i * 10).ToString());
+                    //    outputQueue.AddMessage(progressMessage,new TimeSpan(0,0,0,1));
+                    //    Thread.Sleep(500);
+                    //}
 
 
                     CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));

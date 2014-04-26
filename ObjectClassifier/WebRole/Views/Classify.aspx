@@ -133,9 +133,11 @@
         <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/>
         <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
         </div>
-
     </div>
-    <div id="classification" runat="server" visible="false">
-        <h3>Please wait. Your set is in the process of classification.<br /><br />Progress: <asp:Label runat="server" ID="progress"></asp:Label></h3>
+    <div id="classificationResult" runat="server" visible="false">
+        <h3>Your download link will be valid for 1 hour.<br /><br /><asp:HyperLink runat="server" ID="result">Click here to download your result.</asp:HyperLink></h3>
+    </div>
+    <div id="classificationFault" runat="server" visible="false">
+        <h3>During the processing occured a problem. <a href="Classify.aspx">Try again</a></h3>
     </div>
 </asp:Content>

@@ -265,21 +265,30 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.Label noSelectedTraining;
         
         /// <summary>
-        /// classification control.
+        /// classificationResult control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl classification;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl classificationResult;
         
         /// <summary>
-        /// progress control.
+        /// result control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label progress;
+        protected global::System.Web.UI.WebControls.HyperLink result;
+        
+        /// <summary>
+        /// classificationFault control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl classificationFault;
     }
 }

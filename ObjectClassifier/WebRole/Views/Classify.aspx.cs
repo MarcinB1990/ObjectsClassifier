@@ -124,47 +124,46 @@ namespace WebRole.Views
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                   usedUserIdToResult = User.Identity.GetUserId();
-                   removeTrainingAfterClassification = false;
-                   removeResultAfterClassification = false;
+                    usedUserIdToResult = User.Identity.GetUserId();
+                    removeTrainingAfterClassification = false;
+                    removeResultAfterClassification = false;
                 }
                 else
                 {
                     usedUserIdToResult = usedUserIdToTraining;
                 }
                 resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId, usedUserIdToTraining), trainingSetController);
-                firstStep.Visible = false;
-                classification.Visible = true;
-                progress.Text = "Waiting in queue...";
                 Guid operationGuid = Guid.NewGuid();
-                messageController.SendInputMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex);
+                messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex);
                 bool finished = false;
-                int progressOfClassification = 0;
-                while (!finished)
-                {
-                    string mess=messageController.ReceiveMessage(operationGuid);
-                    if (mess != null)
+                //int progressOfClassification = 0;
+                //while (!finished)
+                //{
+                    string mess = messageController.ReceiveMessage(operationGuid);
+                    string[] receivedessageParts = mess.Split('|');
+                    firstStep.Visible = false;
+                    if (("1").Equals(receivedessageParts[1]))
                     {
-                        string[] receivedessageParts = mess.Split('|');
-                        if(!("1").Equals(receivedessageParts[1])){
-                            int newProgress;
-                            bool result=Int32.TryParse(receivedessageParts[3], out newProgress);
-                            if (result)
-                            {
-                                if (newProgress > progressOfClassification)
-                                {
-                                    progress.Text = progressOfClassification.ToString();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            progress.Text = receivedessageParts[2];
-                            finished = true;
-                        }
-                        
+                        //    int newProgress;
+                        //    bool result=Int32.TryParse(receivedessageParts[3], out newProgress);
+                        //    if (result)
+                        //    {
+                        //        if (newProgress > progressOfClassification)
+                        //        {
+                        //            progress.Text = progressOfClassification.ToString();
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        classificationResult.Visible=true;
+                        result.NavigateUrl = receivedessageParts[2];
+                    //    finished = true;
                     }
-                }
+                    else {
+                        classificationFault.Visible=true;
+                    }
+                //}
             }
         }
 
