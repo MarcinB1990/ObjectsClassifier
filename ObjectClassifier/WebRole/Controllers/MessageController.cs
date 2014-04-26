@@ -22,7 +22,7 @@ namespace WebRole.Controllers
             outputQueue = cqc.GetQueueReference("outputqueue");
             outputQueue.CreateIfNotExists();
         }
-        public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification)
+        public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification,int methodOfClassification)
         {
             mb.BuildGuid(operationGuid);
             mb.BuildResultSetId(resultSetId);
@@ -31,6 +31,7 @@ namespace WebRole.Controllers
             mb.BuildTrainingSetId(trainingSetId);
             mb.BuildUsedUserIdToTraining(usedUserIdToTraining);
             mb.BuildRemoveTrainingAfterClassification(removeTrainingAfterClassification);
+            mb.BuildMethodOfClassification(methodOfClassification);
             CloudQueueMessage cqm = new CloudQueueMessage(mb.GetMessage());
             inputQueue.AddMessage(cqm);
         }
@@ -44,7 +45,7 @@ namespace WebRole.Controllers
                 {
                     if (cqm.AsString.StartsWith(operationGuid.ToString()))
                     {
-                    s = cqm.AsString;
+                        s = cqm.AsString;
                         outputQueue.DeleteMessage(cqm);
                         finished = true;
                     }
@@ -64,6 +65,7 @@ namespace WebRole.Controllers
             decodedMessageDictionary.Add("trainingSetId", decodedMessage[4]);
             decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
             decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
+            decodedMessageDictionary.Add("methodOfClassification", decodedMessage[7]);
             return decodedMessageDictionary;
         }
     }

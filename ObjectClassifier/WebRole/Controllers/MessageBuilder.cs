@@ -70,6 +70,11 @@ namespace WebRole.Controllers
                 _message += "0";
             }
         }
+        public void BuildMethodOfClassification(int methodOfClassification)
+        {
+            AddSeparator();
+            _message += methodOfClassification.ToString();
+        }
 
         public string GetMessage()
         {

@@ -137,15 +137,32 @@ namespace WebRole.Views
                 classification.Visible = true;
                 progress.Text = "Waiting in queue...";
                 Guid operationGuid = Guid.NewGuid();
-                messageController.SendInputMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification);
+                messageController.SendInputMessage(new MessageBuilder(),operationGuid, resultSetId,usedUserIdToResult,removeResultAfterClassification,trainingSetId,usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex);
                 bool finished = false;
+                int progressOfClassification = 0;
                 while (!finished)
                 {
                     string mess=messageController.ReceiveMessage(operationGuid);
                     if (mess != null)
                     {
-                        progress.Text = mess;
-                        finished = true;
+                        string[] receivedessageParts = mess.Split('|');
+                        if(!("1").Equals(receivedessageParts[1])){
+                            int newProgress;
+                            bool result=Int32.TryParse(receivedessageParts[3], out newProgress);
+                            if (result)
+                            {
+                                if (newProgress > progressOfClassification)
+                                {
+                                    progress.Text = progressOfClassification.ToString();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            progress.Text = receivedessageParts[2];
+                            finished = true;
+                        }
+                        
                     }
                 }
             }

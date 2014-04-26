@@ -120,10 +120,18 @@
                 </asp:Table>
                 <br />
                 Fields with * are required
+            <br /><br />
+        </fieldset>
+        <fieldset>
+            <legend>Choose the method of classificaation:</legend>
+              <asp:RadioButtonList ID="methodOfClassification" runat="server">
+                <asp:ListItem Selected="True" Text="1"></asp:ListItem>
+                <asp:ListItem Text="2"></asp:ListItem>
+                <asp:ListItem Text="3"></asp:ListItem>
+            </asp:RadioButtonList>
         </fieldset>
         <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/>
         <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
-
         </div>
 
     </div>

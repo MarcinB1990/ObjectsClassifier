@@ -47,25 +47,37 @@ namespace Classifier
 
                     //
                     //Classification process
-                    result = trainingSetContent.ToUpper()+" | "+inputFileContent.ToUpper();
+                    result = receivedMessageParts["methodOfClassification"].ToString()+trainingSetContent.ToUpper()+" | "+inputFileContent.ToUpper();
                     //
                     //
-
-                    if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
+                    for (int i = 0; i <= 10; i++)
                     {
-                        trainingSetBlockBlob.DeleteAsync();
-                        trainingSetsController.DeleteTrainingSet(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
+                        CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"0"+"|"+string.Empty+"|"+(i * 10).ToString());
+                        outputQueue.AddMessage(progressMessage,new TimeSpan(0,0,0,1));
+                        Thread.Sleep(500);
                     }
+
 
                     CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
                     resultSetBlockBlob.UploadText(result);
                     resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
 
+                    CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "1"+"|"+resultSetBlockBlob.Uri.AbsoluteUri+"|"+"100");
+                    outputQueue.AddMessage(completeMessage,new TimeSpan(1,0,0));
 
-                    CloudQueueMessage cqm = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"1");
-                    outputQueue.AddMessage(cqm);
 
                     inputQueue.DeleteMessage(receivedMessage);
+
+
+                    if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
+                    {
+                        trainingSetsController.DeleteTrainingSet(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
+                    }
+                    if (("1").Equals(receivedMessageParts["removeResultAfterClassification"].ToString()))
+                    {
+
+                    }
+
                     Trace.TraceInformation("Classification completed", "Information");
                     receivedMessage = inputQueue.GetMessage();
                 }

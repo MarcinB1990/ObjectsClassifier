@@ -15,6 +15,7 @@ namespace WebRole.Controllers
         void BuildTrainingSetId(string trainingSetId);
         void BuildUsedUserIdToTraining(string usedUserIdToTraining);
         void BuildRemoveTrainingAfterClassification(bool removeTrainingAfterClassification);
+        void BuildMethodOfClassification(int methodOfClassification);
         string GetMessage();
     }
 }
