@@ -35,51 +35,58 @@ namespace Classifier
             {
                 Thread.Sleep(classifierFrequency);
                 Trace.TraceInformation("Classifier starts working", "Information");
+                IDictionary receivedMessageParts = null; ;
                 CloudQueueMessage receivedMessage = inputQueue.GetMessage(new TimeSpan(0,0,0,0,500));
                 while (receivedMessage != null)
                 {
-                    IDictionary receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
-                    CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
-                    string trainingSetContent = trainingSetBlockBlob.DownloadText();
-                    CloudBlockBlob inputFileBlockBlob = resultSetsContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
-                    string inputFileContent = inputFileBlockBlob.DownloadText();
-                    string result = string.Empty;
 
-                    //
-                    //Classification process
-                    result = receivedMessageParts["methodOfClassification"].ToString()+trainingSetContent.ToUpper()+" | "+inputFileContent.ToUpper();
-                    //
-                    //
-                    //for (int i = 0; i <= 10; i++)
-                    //{
-                    //    CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"]+"|"+"0"+"|"+string.Empty+"|"+(i * 10).ToString());
-                    //    outputQueue.AddMessage(progressMessage,new TimeSpan(0,0,0,1));
-                    //    Thread.Sleep(500);
-                    //}
-
-
-                    CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
-                    resultSetBlockBlob.UploadText(result);
-                    resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
-
-                    CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "1"+"|"+resultSetBlockBlob.Uri.AbsoluteUri+"|"+"100");
-                    outputQueue.AddMessage(completeMessage,new TimeSpan(1,0,0));
-
-
-                    inputQueue.DeleteMessage(receivedMessage);
-
-
-                    if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
+                    try
                     {
-                        trainingSetsController.DeleteTrainingSet(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
-                    }
-                    if (("1").Equals(receivedMessageParts["removeResultAfterClassification"].ToString()))
-                    {
+                        receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
+                        inputQueue.DeleteMessage(receivedMessage);
+                        CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
+                        string trainingSetContent = trainingSetBlockBlob.DownloadText();
+                        CloudBlockBlob inputFileBlockBlob = resultSetsContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                        string inputFileContent = inputFileBlockBlob.DownloadText();
+                        string result = string.Empty;
 
-                    }
+                        //
+                        //Classification process
+                        result = receivedMessageParts["methodOfClassification"].ToString() + trainingSetContent.ToUpper() + " | " + inputFileContent.ToUpper();
+                        //
+                        //
+                        for (int i = 0; i <= 10; i++)
+                        {
+                            CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "0" + "|" + string.Empty + "|" + (i * 10).ToString());
+                            outputQueue.AddMessage(progressMessage, new TimeSpan(0, 0, 0, 1));
+                            Thread.Sleep(3000);
+                        }
 
-                    Trace.TraceInformation("Classification completed", "Information");
-                    receivedMessage = inputQueue.GetMessage();
+
+                        CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                        resultSetBlockBlob.UploadText(result);
+                        resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
+
+                        if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
+                        {
+                            trainingSetsController.DeleteTrainingSet(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
+                        }
+                        if (("1").Equals(receivedMessageParts["removeResultAfterClassification"].ToString()))
+                        {
+
+                        }
+                        
+                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "1" + "|" + resultSetBlockBlob.Uri.AbsoluteUri + "|" + "100");
+                        outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
+
+                        Trace.TraceInformation("Classification completed", "Information");
+
+                    }catch(Exception){
+                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
+                        outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
+                    }finally{
+                        receivedMessage = inputQueue.GetMessage();
+                    }
                 }
                 Trace.TraceInformation("Classifier stops working", "Information");
             }

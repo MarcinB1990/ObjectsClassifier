@@ -130,6 +130,8 @@
                 <asp:ListItem Text="3"></asp:ListItem>
             </asp:RadioButtonList>
         </fieldset>
+        If you are logged in, you don't have to wait for the ond of the classification process. just look later to MyHistory.<br />
+        Otherwise be patient :)<br />
         <asp:Button style="margin:10px 10px 5px 5px" ID="classifyButton" Text="Classify" runat="server" OnClick="classifyButton_Click"/>
         <asp:Label ID="noSelectedTraining" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">You have to choose training set.</asp:Label>
         </div>

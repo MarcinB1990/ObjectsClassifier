@@ -24,6 +24,7 @@ namespace WebRole.Views
                 myResultSets = resultSetsController.GetMyResultSets(Context.User.Identity.GetUserId()).ToList();
                 if (myResultSets.Count > 0)
                 {
+                    myResultSetsView.PageSize = 25;
                     myResultSetsView.DataSource = myResultSets;
                     myResultSetsView.DataBind();
                     listNotEmpty.Visible = true;
@@ -31,5 +32,12 @@ namespace WebRole.Views
                 }
             }
         }
+
+        protected void myResultSetsView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            myResultSetsView.PageIndex = e.NewPageIndex;
+            myResultSetsView.DataBind();
+        }
+
     }
 }
