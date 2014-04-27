@@ -19,6 +19,9 @@ namespace WebRole.Views
         {
             radioNewOrOldTrainingSet.Visible=User.Identity.IsAuthenticated;
             checkboxToSaveTrainingSet.Visible = User.Identity.IsAuthenticated;
+            validFor.Visible = User.Identity.IsAuthenticated;
+            commentRowTraining.Visible = User.Identity.IsAuthenticated;
+            commentRowResult.Visible = User.Identity.IsAuthenticated;
             if (User.Identity.IsAuthenticated)
             {
                 myTrainingSets = trainingSetController.GetMyTrainingSets(Context.User.Identity.GetUserId()).ToList();

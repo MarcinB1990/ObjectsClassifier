@@ -9,12 +9,14 @@ using Microsoft.WindowsAzure.Diagnostics;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Queue;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace GarbageCollector
 {
     public class WorkerRole : RoleEntryPoint
     {
-        const int garbageFrequency = 300000;
+        CloudBlobContainer resultSetsContainer;
+        const int garbageFrequency = 1800;
         CloudQueue garbageQueue;
         public override void Run()
         {
@@ -30,6 +32,8 @@ namespace GarbageCollector
                     //
                     //Removing blob
                     //
+                    CloudBlockBlob cbb = resultSetsContainer.GetBlockBlobReference(receivedMessage.AsString);
+                    cbb.DeleteIfExistsAsync();
 
                     garbageQueue.DeleteMessage(receivedMessage);
                     Trace.TraceInformation("GarbageCollector removed the entry", "Information");
@@ -50,7 +54,9 @@ namespace GarbageCollector
             CloudQueueClient cqc = csa.CreateCloudQueueClient();
             garbageQueue = cqc.GetQueueReference("garbagequeue");
             garbageQueue.CreateIfNotExists();
-
+            CloudBlobClient cbc = csa.CreateCloudBlobClient();
+            resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
+            resultSetsContainer.CreateIfNotExists();
             return base.OnStart();
         }
     }

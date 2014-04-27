@@ -121,6 +121,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValidatorNumberOfAttributes;
         
         /// <summary>
+        /// commentRowTraining control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableRow commentRowTraining;
+        
+        /// <summary>
         /// comment control.
         /// </summary>
         /// <remarks>
@@ -202,6 +211,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.Label noTrainingSets;
         
         /// <summary>
+        /// commentRowResult control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TableRow commentRowResult;
+        
+        /// <summary>
         /// commentToClassification control.
         /// </summary>
         /// <remarks>
@@ -272,6 +290,15 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl classificationResult;
+        
+        /// <summary>
+        /// validFor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl validFor;
         
         /// <summary>
         /// result control.

@@ -72,7 +72,7 @@ namespace WebRole.Controllers
             TableOperation rowToDelete=TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
             TableResult tr=trainingSets.Execute(rowToDelete);
             TrainingSetEntity trResult = (TrainingSetEntity)tr.Result;
-            if (tr != null)
+            if (trResult != null)
             {
                 TableOperation delete = TableOperation.Delete(trResult);
                 trainingSets.Execute(delete);
@@ -94,9 +94,12 @@ namespace WebRole.Controllers
             TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
             TableResult tr = trainingSets.Execute(selectById);
             TrainingSetEntity tse = ((TrainingSetEntity)tr.Result);
-            tse.NumberOfUses++;
-            TableOperation update = TableOperation.Replace(tse);
-            trainingSets.ExecuteAsync(update);
+            if (tse != null)
+            {
+                tse.NumberOfUses++;
+                TableOperation update = TableOperation.Replace(tse);
+                trainingSets.ExecuteAsync(update);
+            }
         }
     }
 }

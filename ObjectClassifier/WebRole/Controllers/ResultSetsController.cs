@@ -42,7 +42,7 @@ namespace WebRole.Controllers
                 string referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
                 CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
                 inputBlob.UploadFromStream(resultSet.InputFileStream);
-                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob, "To do");
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob, "in queue");
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
                 return resultSetId;
@@ -66,17 +66,44 @@ namespace WebRole.Controllers
             TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
             TableResult tr = resultSets.Execute(selectById);
             ResultSetEntity tse = ((ResultSetEntity)tr.Result);
-            tse.ResultSetFileSource = resultSetURI;
-            TableOperation update = TableOperation.Replace(tse);
-            resultSets.ExecuteAsync(update);
+            if (tse != null)
+            {
+                tse.ResultSetFileSource = resultSetURI;
+                TableOperation update = TableOperation.Replace(tse);
+                resultSets.Execute(update);
+            }
         }
-
         public string GetResultSetFileNameById(string userId, string resultSetId)
         {
             TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
             TableResult tr = resultSets.Execute(selectById);
             string[] ifs= ((ResultSetEntity)tr.Result).InputFileSource.Split('/');
             return ifs.Last();
+        }
+
+        public void UpdateProgress(string userId, string resultSetId, string progress)
+        {
+            TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
+            TableResult tr = resultSets.Execute(selectById);
+            ResultSetEntity tse = ((ResultSetEntity)tr.Result);
+            if (tse != null)
+            {
+                tse.Progress = progress;
+                TableOperation update = TableOperation.Replace(tse);
+                resultSets.Execute(update);
+            }
+        }
+
+        public void DeleteResultSet(string userId, string resultSetId)
+        {
+            TableOperation rowToDelete=TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
+            TableResult tr=resultSets.Execute(rowToDelete);
+            ResultSetEntity trResult = (ResultSetEntity)tr.Result;
+            if (trResult != null)
+            {
+                TableOperation delete = TableOperation.Delete(trResult);
+                resultSets.ExecuteAsync(delete);
+            }
         }
     }
 }

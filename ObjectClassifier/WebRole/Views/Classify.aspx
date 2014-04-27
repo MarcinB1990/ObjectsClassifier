@@ -47,7 +47,7 @@
                             <asp:RegularExpressionValidator ID="regExpValidatorNumberOfAttributes" runat="server" ControlToValidate="numberOfAttributes" ErrorMessage="Nummer of attributes should be in the range 1-999." ForeColor="Red" Display="Dynamic" ValidationExpression="^[1-9]\d{0,2}$" />           
                         </asp:TableCell>
                     </asp:TableRow>
-                    <asp:TableRow>
+                    <asp:TableRow ID="commentRowTraining">
                         <asp:TableCell>
                             <asp:Label runat="server">Comment:</asp:Label>
                         </asp:TableCell>
@@ -97,7 +97,7 @@
     <fieldset>
         <legend>Insert a file with set to classification</legend>
     <asp:Table runat="server">
-                    <asp:TableRow>
+                    <asp:TableRow ID="commentRowResult">
                         <asp:TableCell Width="150">
                             <asp:Label runat="server">Comment:</asp:Label>
                         </asp:TableCell>
@@ -137,7 +137,7 @@
         </div>
     </div>
     <div id="classificationResult" runat="server" visible="false">
-        <h3>Your download link will be valid for 1 hour.<br /><br /><asp:HyperLink runat="server" ID="result">Click here to download your result.</asp:HyperLink></h3>
+        <h3><div id="validFor" runat="server">Your download link will be valid for 1 hour.<br /><br /></div><asp:HyperLink runat="server" ID="result">Click here to download your result.</asp:HyperLink></h3>
     </div>
     <div id="classificationFault" runat="server" visible="false">
         <h3>During the processing occured a problem. <a href="Classify.aspx">Try again</a></h3>
