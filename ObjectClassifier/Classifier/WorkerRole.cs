@@ -47,7 +47,7 @@ namespace Classifier
                         inputQueue.DeleteMessage(receivedMessage);
                         CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
                         string trainingSetContent = trainingSetBlockBlob.DownloadText();
-                        CloudBlockBlob inputFileBlockBlob = resultSetsContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                        CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
                         string inputFileContent = inputFileBlockBlob.DownloadText();
                         string result = string.Empty;
 
@@ -93,7 +93,7 @@ namespace Classifier
                             {
                                 resultSetsController.DeleteResultSet(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
                                 CloudQueueMessage messageForGarbage = new CloudQueueMessage(resultBlockReference);
-                                garbageQueue.AddMessage(messageForGarbage, null, new TimeSpan(1, 0, 0));
+                                garbageQueue.AddMessage(messageForGarbage, null, new TimeSpan(0, 0, 1));
                             }
                         }
                         receivedMessage = inputQueue.GetMessage();
@@ -126,10 +126,10 @@ namespace Classifier
             trainingSetsContainer = cbc.GetContainerReference("trainingsetscontainer");
             trainingSetsContainer.CreateIfNotExists();
             trainingSetsContainer.SetPermissions(bcp);
-            resultSetsContainer = cbc.GetContainerReference("inputfilescontainer");
+            resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
             resultSetsContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
-            inputFilesContainer = cbc.GetContainerReference("resultsetscontainer");
+            inputFilesContainer = cbc.GetContainerReference("inputfilescontainer");
             inputFilesContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
             resultSetsController = new ResultSetsController();

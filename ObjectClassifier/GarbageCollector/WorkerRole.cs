@@ -16,7 +16,7 @@ namespace GarbageCollector
     public class WorkerRole : RoleEntryPoint
     {
         CloudBlobContainer resultSetsContainer;
-        const int garbageFrequency = 1800;
+        const int garbageFrequency = 1800*1000;
         CloudQueue garbageQueue;
         public override void Run()
         {
@@ -32,12 +32,17 @@ namespace GarbageCollector
                     //
                     //Removing blob
                     //
-                    CloudBlockBlob cbb = resultSetsContainer.GetBlockBlobReference(receivedMessage.AsString);
-                    cbb.DeleteIfExistsAsync();
-
-                    garbageQueue.DeleteMessage(receivedMessage);
-                    Trace.TraceInformation("GarbageCollector removed the entry", "Information");
-                    receivedMessage = garbageQueue.GetMessage();
+                    try
+                    {
+                        CloudBlockBlob cbb = resultSetsContainer.GetBlockBlobReference(receivedMessage.AsString);
+                        cbb.DeleteIfExistsAsync();
+                    }
+                    finally
+                    {
+                        garbageQueue.DeleteMessage(receivedMessage);
+                        Trace.TraceInformation("GarbageCollector removed the entry", "Information");
+                        receivedMessage = garbageQueue.GetMessage();
+                    }
                 }
                 Trace.TraceInformation("GarbageCollector stops working", "Information");
             }
