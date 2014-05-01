@@ -125,9 +125,9 @@
         <fieldset>
             <legend>Choose the method of classificaation:</legend>
               <asp:RadioButtonList ID="methodOfClassification" runat="server">
-                <asp:ListItem Selected="True" Text="1"></asp:ListItem>
-                <asp:ListItem Text="2"></asp:ListItem>
-                <asp:ListItem Text="3"></asp:ListItem>
+                <asp:ListItem Selected="True" Text="5NN Classifier"></asp:ListItem>
+                <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
+                <asp:ListItem Text="Areas Of Classes Classifier"></asp:ListItem>
             </asp:RadioButtonList>
         </fieldset>
         If you are logged in, you don't have to wait for the ond of the classification process. just look later to MyHistory.<br />
@@ -137,7 +137,7 @@
         </div>
     </div>
     <div id="classificationResult" runat="server" visible="false">
-        <h3><div id="validFor" runat="server">Your download link will be valid for 1 hour.<br /><br /></div><asp:HyperLink runat="server" ID="result">Click here to download your result.</asp:HyperLink></h3>
+        <div id="validFor" runat="server"><h3>Your download link will be valid for 1 hour.<br /><br /></h3></div><h3><asp:HyperLink runat="server" ID="result">Click here to download your result.</asp:HyperLink></h3>
     </div>
     <div id="classificationFault" runat="server" visible="false">
         <h3>During the processing occured a problem. <a href="Classify.aspx">Try again</a></h3>

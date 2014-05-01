@@ -101,5 +101,16 @@ namespace WebRole.Controllers
                 trainingSets.ExecuteAsync(update);
             }
         }
+
+        public int[] GetParameters(string userId, string trainingSetId)
+        {
+            int[] parameters=new int[2];
+            TableOperation selectById = TableOperation.Retrieve<TrainingSetEntity>(userId, trainingSetId);
+            TableResult tr = trainingSets.Execute(selectById);
+            TrainingSetEntity tse = ((TrainingSetEntity)tr.Result);
+            parameters[0]=tse.NumberOfClasses;
+            parameters[1]=tse.NumberOfAttributes;
+            return parameters;
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace WebRole.Models
     {
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
-        public string DateOfEntry { get; set; }
+        public DateTime DateOfEntry { get; set; }
         public string Comment { get; set; }
         public string TrainingSetFileSource { get; set; }
         public string InputFileSource { get; set; }
@@ -21,7 +21,7 @@ namespace WebRole.Models
         {
             this.NumberOfClasses = numberOfClasses;
             this.NumberOfAttributes = numberOfAttributes;
-            this.DateOfEntry = dateOfEntry.GetDateTimeFormats('g').ElementAt(0);
+            this.DateOfEntry = dateOfEntry;
             this.Comment = comment;
             this.TrainingSetFileSource = trainingSetFileSource;
             this.InputFileSource = inputFileSource;

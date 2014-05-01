@@ -12,6 +12,7 @@ using Microsoft.WindowsAzure.Storage.Queue;
 using System.Collections;
 using Microsoft.WindowsAzure.Storage.Blob;
 using WebRole.Controllers;
+using Classifier.Classifiers.Common;
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
@@ -45,25 +46,64 @@ namespace Classifier
                         resultBlockReference = string.Empty;
                         receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
                         inputQueue.DeleteMessage(receivedMessage);
+                        int[] parameters = trainingSetsController.GetParameters(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
                         CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
                         string trainingSetContent = trainingSetBlockBlob.DownloadText();
                         CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
                         string inputFileContent = inputFileBlockBlob.DownloadText();
-                        string result = string.Empty;
 
-                        //
-                        //Classification process
-                        result = receivedMessageParts["methodOfClassification"].ToString() + trainingSetContent.ToUpper() + " | " + inputFileContent.ToUpper();
-                        //
-                        //
-                        for (int i = 0; i <= 10; i++)
+                        TrainingSample[] trainingSamplesSet;
+                        ResultSample[] resultSampleSet;
+                        IResultSetBuilder resultSetBuilder = new ResultSetBuilderImpl();
+                        resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Preparing");
+                        string[] trainingElements = trainingSetContent.Split('\n');
+                        int trainingElementsLength;
+                        if ("".Equals(trainingElements[trainingElements.Length - 1]))
                         {
-                            /////////////////CloudQueueMessage progressMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "0" + "|" + string.Empty + "|" + (i * 10).ToString());
-                            /////////////////outputQueue.AddMessage(progressMessage, new TimeSpan(0, 0, 0, 1));
-                            Thread.Sleep(500);
-                            resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(),(i*10).ToString()+"%");
+                            trainingElementsLength = trainingElements.Length - 1;
                         }
+                        else
+                        {
+                            trainingElementsLength = trainingElements.Length;
+                        }
+                        trainingSamplesSet = new TrainingSample[trainingElementsLength];
+                        for (int i = 0; i < trainingElementsLength; i++)
+                        {
+                            trainingSamplesSet[i] = new TrainingSample(trainingElements[i].Split('\t'));
+                        }
+                        string[] inputElements = inputFileContent.Split('\n');
+                        int inputElementsLength;
+                        if ("".Equals(inputElements[inputElements.Length - 1]))
+                        {
+                            inputElementsLength = inputElements.Length - 1;
+                        }
+                        else
+                        {
+                            inputElementsLength = inputElements.Length;
+                        }
+                        resultSampleSet = new ResultSample[inputElementsLength];
+                        for (int i = 0; i < inputElementsLength; i++)
+                        {
+                            resultSampleSet[i] = new ResultSample(inputElements[i].Split('\t'));
+                        }
+                        
+                        IClassifyStrategy classifyStrategy = null;
+                        switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))
+                        {
+                            case 0:
+                                classifyStrategy = new _5NNClassifier();
+                                break;
+                            case 1:
+                                classifyStrategy = new _5NNChaudhuriClassifier();
+                                break;
+                            case 2:
+                                classifyStrategy = new AreasOfClassessClassifier();
+                                break;
+                        }
+                        string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
+                        
 
+                        
                         resultBlockReference=receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
                         CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(resultBlockReference);
                         resultSetBlockBlob.UploadText(result);

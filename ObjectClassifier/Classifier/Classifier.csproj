@@ -63,6 +63,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classifiers\5NNChaudhuriClassifier.cs" />
+    <Compile Include="Classifiers\5NNClassifier.cs" />
+    <Compile Include="Classifiers\AreasOfClassessClassifier.cs" />
+    <Compile Include="Classifiers\ClassifyStrategyAbstract.cs" />
+    <Compile Include="Classifiers\Common\IResultSetBuilder.cs" />
+    <Compile Include="Classifiers\Common\ResultSample.cs" />
+    <Compile Include="Classifiers\Common\ResultSetBuilderImpl.cs" />
+    <Compile Include="Classifiers\Common\TrainingSample.cs" />
+    <Compile Include="Classifiers\IClassifyStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkerRole.cs" />
   </ItemGroup>
