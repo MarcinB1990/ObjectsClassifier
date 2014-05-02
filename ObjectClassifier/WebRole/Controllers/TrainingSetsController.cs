@@ -50,7 +50,7 @@ namespace WebRole.Controllers
         public IEnumerable<TrainingSetReturn> GetMyTrainingSets(string userId)
         {
             TableQuery<TrainingSetEntity> queryGetTrainingSetsByUserId = new TableQuery<TrainingSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource)).OrderBy(o=>o.Name);
+            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.NumberOfUses).ThenByDescending(o=>o.DateOfEntry);
         }
 
         public string GetTrainingSetFileSourceSourceById(string userId,string trainingSetId)

@@ -11,7 +11,7 @@ namespace WebRole.Models
         public string Name { get; set; }
         public int NumberOfClasses { get; set; }
         public int NumberOfAttributes { get; set; }
-        public string DateOfEntry { get; set; }
+        public DateTime DateOfEntry { get; set; }
         public string Comment { get; set; }
         public int NumberOfUses { get; set; }
         public string TrainingSetFileSource { get; set; }
@@ -23,7 +23,7 @@ namespace WebRole.Models
             NumberOfClasses = numberOfClasses;
             NumberOfAttributes = numberOfAttributes;
             Comment = comment;
-            DateOfEntry = dateOfEntry.GetDateTimeFormats('g').ElementAt(0);
+            DateOfEntry = dateOfEntry;
             NumberOfUses = numberOfUses;
             TrainingSetFileSource = trainingSetFileSource;
         }
