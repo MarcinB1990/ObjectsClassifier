@@ -14,10 +14,11 @@ namespace WebRole.Models
         public string TrainingSetFileSource { get; set; }
         public string InputFileSource { get; set; }
         public string ResultSetFileSource { get; set; }
+        public string MethodOfClassification { get; set; }
         public string Progress { get; set; }
 
 
-        public ResultSetReturn(int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string trainingSetFileSource, string inputFileSource, string resultSetFileSource, string progress)
+        public ResultSetReturn(int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string trainingSetFileSource, string inputFileSource, string resultSetFileSource, string methodOfClassification, string progress)
         {
             this.NumberOfClasses = numberOfClasses;
             this.NumberOfAttributes = numberOfAttributes;
@@ -26,6 +27,7 @@ namespace WebRole.Models
             this.TrainingSetFileSource = trainingSetFileSource;
             this.InputFileSource = inputFileSource;
             this.ResultSetFileSource = resultSetFileSource;
+            this.MethodOfClassification = methodOfClassification;
             this.Progress = progress;
         }
     }

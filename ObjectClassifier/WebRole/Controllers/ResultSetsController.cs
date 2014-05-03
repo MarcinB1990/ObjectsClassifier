@@ -31,7 +31,7 @@ namespace WebRole.Controllers
         public IEnumerable<ResultSetReturn> GetMyResultSets(string userId)
         {
             TableQuery<ResultSetEntity> queryGetResultSetsByUserId = new TableQuery<ResultSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.Progress)).OrderByDescending(o => o.DateOfEntry);
+            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.MethodOfClassification,o.Progress)).OrderByDescending(o => o.DateOfEntry);
         }
 
         public string SaveNew(ResultSet resultSet,TrainingSetsController tsc)
@@ -42,7 +42,20 @@ namespace WebRole.Controllers
                 string referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
                 CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
                 inputBlob.UploadFromStream(resultSet.InputFileStream);
-                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob, "in queue");
+                string methodOfClassification = string.Empty;
+                switch (resultSet.MethodOfClassification)
+                {
+                    case 0:
+                        methodOfClassification = "5NN";
+                        break;
+                    case 1:
+                        methodOfClassification = "5NN Chaudhuri's";
+                        break;
+                    case 2:
+                        methodOfClassification="5NN Keller's";
+                        break;
+                }
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob,methodOfClassification, "in queue");
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
                 return resultSetId;

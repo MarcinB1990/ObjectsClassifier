@@ -17,6 +17,7 @@ namespace WebRole.Models
         public string TrainingSetFileSource { get; set; }
         public string InputFileSource { get; set; }
         public string ResultSetFileSource { get; set; }
+        public string MethodOfClassification { get; set; }
         public string ReferenceToBlob { get; set; }
         public string Progress { get; set; }
 
@@ -25,7 +26,7 @@ namespace WebRole.Models
         {
         }
 
-        public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string referenceToBlob,string progress)
+        public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string referenceToBlob,string methodOfClassification,string progress)
             : base(userId,resultSetId)
         {
             this.NumberOfClasses = numberOfClasses;
@@ -35,6 +36,7 @@ namespace WebRole.Models
             this.TrainingSetFileSource = trainingSetFileSource;
             this.InputFileSource = inputFileSource;
             this.ResultSetFileSource = resultSetFileSource;
+            this.MethodOfClassification = methodOfClassification;
             this.ReferenceToBlob=referenceToBlob;
             this.Progress = progress;
         }

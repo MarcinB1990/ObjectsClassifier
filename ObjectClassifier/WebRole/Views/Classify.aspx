@@ -125,9 +125,9 @@
         <fieldset>
             <legend>Choose the method of classificaation:</legend>
               <asp:RadioButtonList ID="methodOfClassification" runat="server">
-                <asp:ListItem Selected="True" Text="5NN Classifier (quickest)"></asp:ListItem>
+                <asp:ListItem Selected="True" Text="5NN Classifier"></asp:ListItem>
                 <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
-                <asp:ListItem Text="5NN Keller's Classifier (best)"></asp:ListItem>
+                <asp:ListItem Text="5NN Keller's Classifier"></asp:ListItem>
             </asp:RadioButtonList>
         </fieldset>
         If you are logged in, you don't have to wait for the ond of the classification process. just look later to MyHistory.<br />

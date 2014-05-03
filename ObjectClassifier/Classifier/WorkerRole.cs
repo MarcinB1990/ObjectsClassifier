@@ -93,13 +93,13 @@ namespace Classifier
                         switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))
                         {
                             case 0:
-                                classifyStrategy = new _5NNClassifierTest();
+                                classifyStrategy = new _5NNClassifier();
                                 break;
                             case 1:
-                                classifyStrategy = new _5NNChaudhuriClassifierTest();
+                                classifyStrategy = new _5NNChaudhuriClassifier();
                                 break;
                             case 2:
-                                classifyStrategy = new _5NNKelleraTest();
+                                classifyStrategy = new _5NNKellera();
                                 break;
                         }
                         string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());

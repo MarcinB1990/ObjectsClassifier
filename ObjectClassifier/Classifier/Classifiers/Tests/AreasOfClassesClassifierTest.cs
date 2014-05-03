@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Tests
 {
-    public class AreasOfClassessClassifierTest : ClassifyStrategyAbstract
+    public class AreasOfClassesClassifierTest : ClassifyStrategyAbstract
     {
 
         public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet2, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)

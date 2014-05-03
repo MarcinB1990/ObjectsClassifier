@@ -135,7 +135,7 @@ namespace WebRole.Views
                 {
                     usedUserIdToResult = usedUserIdToTraining;
                 }
-                resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId, usedUserIdToTraining), trainingSetController);
+                resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId,methodOfClassification.SelectedIndex, usedUserIdToTraining), trainingSetController);
                 Guid operationGuid = Guid.NewGuid();
                 messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex);
                 //bool finished = false;
