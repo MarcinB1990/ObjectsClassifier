@@ -13,6 +13,7 @@ using System.Collections;
 using Microsoft.WindowsAzure.Storage.Blob;
 using WebRole.Controllers;
 using Classifier.Classifiers.Common;
+using Classifier.Classifiers;
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
@@ -97,7 +98,7 @@ namespace Classifier
                                 classifyStrategy = new _5NNChaudhuriClassifier();
                                 break;
                             case 2:
-                                classifyStrategy = new AreasOfClassessClassifier();
+                                classifyStrategy = new _5NNKellera();
                                 break;
                         }
                         string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());

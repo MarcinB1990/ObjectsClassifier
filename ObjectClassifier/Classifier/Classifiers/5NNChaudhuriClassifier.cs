@@ -40,7 +40,7 @@ namespace Classifier
                 resultSampleSet[i].ClassOfSample=nearestPointsUsingCenterOfGravity.GroupBy(o=>o.ClassOfSample).OrderByDescending(o=>o.Count()).ThenByDescending(o=>o.Key).First().Key;
                 nearestPointsUsingCenterOfGravity.Clear();
                 resultSetBuilder.BuildResultSample(resultSampleSet[i]);
-                resultSetsController.UpdateProgress(userId, resultSetId, (i / resultSampleSet.Length).ToString() + "%");
+                resultSetsController.UpdateProgress(userId, resultSetId, (i*100 / resultSampleSet.Length).ToString() + "%");
             }
             return resultSetBuilder.GetResultSet();
         }
