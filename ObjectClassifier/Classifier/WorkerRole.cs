@@ -14,6 +14,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using WebRole.Controllers;
 using Classifier.Classifiers.Common;
 using Classifier.Classifiers;
+using Classifier.Classifiers.Tests;
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
@@ -92,13 +93,13 @@ namespace Classifier
                         switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))
                         {
                             case 0:
-                                classifyStrategy = new _5NNClassifier();
+                                classifyStrategy = new _5NNClassifierTest();
                                 break;
                             case 1:
-                                classifyStrategy = new _5NNChaudhuriClassifier();
+                                classifyStrategy = new _5NNChaudhuriClassifierTest();
                                 break;
                             case 2:
-                                classifyStrategy = new _5NNKellera();
+                                classifyStrategy = new _5NNKelleraTest();
                                 break;
                         }
                         string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());

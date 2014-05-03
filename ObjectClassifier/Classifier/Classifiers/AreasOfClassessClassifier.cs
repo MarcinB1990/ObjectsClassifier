@@ -14,6 +14,7 @@ namespace Classifier
 
         public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
         {
+            resultSetsController.UpdateProgress(userId, resultSetId, "0%");
             IDictionary<int,double> areasOfClasses = new Dictionary<int,double>();
             IList<int> classes=trainingSampleSet.GroupBy(o => o.ClassOfSample).Select(o => o.Key).ToList();
             for (int i = 0; i < classes.Count; i++)

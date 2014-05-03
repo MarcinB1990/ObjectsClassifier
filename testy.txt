@@ -1,0 +1,52 @@
+1:	5nn classifier, poprawnosc:1   czas:00:00:01.2248173
+	5nn chaudhuri classifier, poprawnosc:1   czas:00:00:08.4860174
+	5nn kellera, poprawnosc:1   czas:00:00:06.5903498
+	5nn kellera, poprawnosc:1   czas:00:00:01.0995173
+2:	5nn classifier, poprawnosc:0,735   czas:00:00:01.1508857
+	5nn chaudhuri classifier, poprawnosc:0,698333333333333   czas:00:00:08.3074639
+	5nn kellera, poprawnosc:0,736666666666667   czas:00:00:06.5436360
+	5nn kellera, poprawnosc:0,735   czas:00:00:01.9331206
+
+1:	5nn classifier, poprawnosc:0,998333333333333   czas:00:00:01.1918090
+	5nn chaudhuri classifier, poprawnosc:1   czas:00:00:07.7755209
+	5nn kellera, poprawnosc:0,998333333333333   czas:00:00:06.1845054
+	5nn kellera, poprawnosc:1   czas:00:00:01.0467832
+2:	5nn classifier, poprawnosc:0,74   czas:00:00:01.2360666
+	5nn chaudhuri classifier, poprawnosc:0,71   czas:00:00:07.8243284
+	5nn kellera, poprawnosc:0,74   czas:00:00:06.4357201
+	5nn kellera, poprawnosc:0,74   czas:00:00:01.8398333
+
+
+5nn classifier, liczba k:1 poprawnosc:1   czas:00:00:01.2909833
+5nn classifier, liczba k:2 poprawnosc:1   czas:00:00:01.2302002
+5nn classifier, liczba k:3 poprawnosc:0,998333333333333   czas:00:00:01.3275907
+5nn classifier, liczba k:4 poprawnosc:0,998333333333333   czas:00:00:01.2311521
+5nn classifier, liczba k:5 poprawnosc:0,998333333333333   czas:00:00:01.2449433
+5nn classifier, liczba k:6 poprawnosc:0,998333333333333   czas:00:00:01.1596019
+5nn classifier, liczba k:7 poprawnosc:0,998333333333333   czas:00:00:01.2626009
+5nn classifier, liczba k:8 poprawnosc:0,998333333333333   czas:00:00:01.2663732
+5nn classifier, liczba k:9 poprawnosc:0,998333333333333   czas:00:00:01.2153820
+5nn classifier, liczba k:10 poprawnosc:0,998333333333333   czas:00:00:01.2414463
+
+5nn classifier, liczba k:1 poprawnosc:0,691666666666667   czas:00:00:01.2105932
+5nn classifier, liczba k:2 poprawnosc:0,696666666666667   czas:00:00:01.2962745
+5nn classifier, liczba k:3 poprawnosc:0,731666666666667   czas:00:00:01.2857786
+5nn classifier, liczba k:4 poprawnosc:0,735   czas:00:00:01.2086559
+5nn classifier, liczba k:5 poprawnosc:0,74   czas:00:00:01.1319184
+5nn classifier, liczba k:6 poprawnosc:0,735   czas:00:00:01.2752285
+5nn classifier, liczba k:7 poprawnosc:0,745   czas:00:00:01.2841404
+5nn classifier, liczba k:8 poprawnosc:0,738333333333333   czas:00:00:01.1781007
+5nn classifier, liczba k:9 poprawnosc:0,733333333333333   czas:00:00:01.2118615
+5nn classifier, liczba k:10 poprawnosc:0,743333333333333   czas:00:00:01.1302225
+
+5nn classifier, liczba k:1 poprawnosc:0,744186046511628   czas:00:00:00.0061799
+5nn classifier, liczba k:2 poprawnosc:0,767441860465116   czas:00:00:00.0052693
+5nn classifier, liczba k:3 poprawnosc:0,720930232558139   czas:00:00:00.0053651
+5nn classifier, liczba k:4 poprawnosc:0,720930232558139   czas:00:00:00.0053991
+5nn classifier, liczba k:5 poprawnosc:0,720930232558139   czas:00:00:00.0052956
+5nn classifier, liczba k:6 poprawnosc:0,651162790697674   czas:00:00:00.0064847
+5nn classifier, liczba k:7 poprawnosc:0,674418604651163   czas:00:00:00.0052895
+5nn classifier, liczba k:8 poprawnosc:0,651162790697674   czas:00:00:00.0055850
+5nn classifier, liczba k:9 poprawnosc:0,651162790697674   czas:00:00:00.0052645
+5nn classifier, liczba k:10 poprawnosc:0,627906976744186   czas:00:00:00.0054399
+
