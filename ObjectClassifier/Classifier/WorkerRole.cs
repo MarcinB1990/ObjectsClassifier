@@ -147,8 +147,6 @@ namespace Classifier
 
         public override bool OnStart()
         {
-            // Set the maximum number of concurrent connections 
-            ServicePointManager.DefaultConnectionLimit = 12;
 
             // For information on handling configuration changes
             // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
@@ -175,6 +173,10 @@ namespace Classifier
             inputFilesContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
             resultSetsController = new ResultSetsController();
+
+            // Set the maximum number of concurrent connections 
+            ServicePointManager.DefaultConnectionLimit = 12;
+
             return base.OnStart();
         }
     }
