@@ -13,18 +13,18 @@ namespace Classifier.Classifiers.Common
     public class ResultSample
     {
         /// <summary>
-        /// Klasa elementu
+        /// Klasa elementu wynikowego
         /// </summary>
         public int ClassOfSample { get; set; }
         /// <summary>
-        /// Tablica cech elementu
+        /// Tablica cech elementu wynikowego
         /// </summary>
         public double[] Attributes { get; set; }
 
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="data">Tablica cech elementu</param>
+        /// <param name="data">Tablica cech elementu wynikowego</param>
         public ResultSample(string[] data)
         {
             this.ClassOfSample = -1;

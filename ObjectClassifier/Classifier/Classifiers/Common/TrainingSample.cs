@@ -13,11 +13,11 @@ namespace Classifier.Classifiers.Common
     public class TrainingSample
     {
         /// <summary>
-        /// Klasa elementu
+        /// Klasa elementu uczącego
         /// </summary>
         public int ClassOfSample { get; set; }
         /// <summary>
-        /// Tablica cech elementu
+        /// Tablica cech elementu uczącego
         /// </summary>
         public double[] Attributes { get; set; }
 
@@ -38,7 +38,7 @@ namespace Classifier.Classifiers.Common
         /// <summary>
         /// Konstruktor
         /// </summary>
-        /// <param name="data">Tablica zawierająca na pierwszym miejscu klasę elementu a na kolejnych cechy elementu</param>
+        /// <param name="data">Tablica zawierająca na pierwszym miejscu klasę elementu uczącego a na kolejnych cechy elementu uczącego</param>
         public TrainingSample(string[] data)
         {
             this.ClassOfSample = Int32.Parse(data[0]);
