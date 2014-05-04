@@ -14,19 +14,19 @@ namespace WebRole.Controllers
     public interface IMessageBuilder
     {
         /// <summary>
-        /// Definicja metody dodającej guid wiadomości
+        /// Definicja metody dodającej do wiadomości guid wiadomości
         /// </summary>
         /// <param name="guid">Guid wiadomości</param>
         void BuildGuid(Guid guid);
 
         /// <summary>
-        /// Definicja metody dodającej id zbioru wynikowego
+        /// Definicja metody dodającej do wiadomości id zbioru wynikowego
         /// </summary>
         /// <param name="resultSetId">Id zbioru wynikowego</param>
         void BuildResultSetId(string resultSetId);
 
         /// <summary>
-        /// Definicja metody dodającej id użytkownika dokonującego klasyfikacji
+        /// Definicja metody dodającej do wiadomości id użytkownika dokonującego klasyfikacji
         /// </summary>
         /// <param name="usedUserIdToResult">Id użytkownika dokonującego klasyfikacji</param>
         void BuildUsedUserIdToResult(string usedUserIdToResult);
@@ -38,13 +38,13 @@ namespace WebRole.Controllers
         void BuildRemoveResultAfterClassification(bool removeResultAfterClassification);
 
         /// <summary>
-        /// Definicja metody dodającej id zbioru uczącego
+        /// Definicja metody dodającej do wiadomości id zbioru uczącego
         /// </summary>
         /// <param name="trainingSetId">Id zbioru uczącego</param>
         void BuildTrainingSetId(string trainingSetId);
 
         /// <summary>
-        /// Definicja metody dodającej Id użytkownika, który wprowadził zbiór uczący
+        /// Definicja metody dodającej do wiadomości Id użytkownika, który wprowadził zbiór uczący
         /// </summary>
         /// <param name="usedUserIdToTraining">Id użytkownika, który wprowadził zbiór uczący</param>
         void BuildUsedUserIdToTraining(string usedUserIdToTraining);
@@ -56,10 +56,16 @@ namespace WebRole.Controllers
         void BuildRemoveTrainingAfterClassification(bool removeTrainingAfterClassification);
 
         /// <summary>
-        /// Definicja metody dodającej wybór sposobu klasyfikacji
+        /// Definicja metody dodającej wybrany sposobu klasyfikacji
         /// </summary>
         /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN, 1-5NN Chaudhuriego, 2-5NNKellera)</param>
         void BuildMethodOfClassification(int methodOfClassification);
+
+        /// <summary>
+        /// Definicja metody dodającej do wiadomości wybrany format pliku wyjściowego
+        /// </summary>
+        /// <param name="extensionOfOutputFile">Wybrany format pliku wyjściowego (0-txt, 1-csv)</param>
+        void BuildExtensionOfOutputFile(int extensionOfOutputFile);
 
         /// <summary>
         /// Definicja metody pobierającej gotową treść wiadomości

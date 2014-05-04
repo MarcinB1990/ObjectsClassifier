@@ -129,6 +129,15 @@
                 <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
                 <asp:ListItem Text="5NN Keller's Classifier"></asp:ListItem>
             </asp:RadioButtonList>
+            <br />
+        </fieldset>
+        <fieldset>
+            <legend>Choose extension of the output file:</legend>
+            <asp:RadioButtonList ID="extensionOfOutputFile" runat="server">
+                <asp:ListItem Selected="True" Text="txt"></asp:ListItem>
+                <asp:ListItem Text="csv"></asp:ListItem>
+            </asp:RadioButtonList>
+            <br />
         </fieldset>
         If you are logged in, you don't have to wait for the ond of the classification process. just look later to MyHistory.<br />
         Otherwise be patient :)<br />

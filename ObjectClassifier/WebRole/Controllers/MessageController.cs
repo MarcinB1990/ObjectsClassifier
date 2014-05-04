@@ -39,7 +39,7 @@ namespace WebRole.Controllers
         /// <param name="usedUserIdToTraining">Id użytkownika, który wprowadził zbiór uczący</param>
         /// <param name="removeTrainingAfterClassification"></param>
         /// <param name="methodOfClassification">True dla konieczności usunięcia zbioru uczącego z pamięci po zakończeniu klasyfikacji</param>
-        public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification,int methodOfClassification)
+        public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification,int methodOfClassification,int extensionOfOutputFile)
         {
             mb.BuildGuid(operationGuid);
             mb.BuildResultSetId(resultSetId);
@@ -49,6 +49,7 @@ namespace WebRole.Controllers
             mb.BuildUsedUserIdToTraining(usedUserIdToTraining);
             mb.BuildRemoveTrainingAfterClassification(removeTrainingAfterClassification);
             mb.BuildMethodOfClassification(methodOfClassification);
+            mb.BuildExtensionOfOutputFile(extensionOfOutputFile);
             CloudQueueMessage cqm = new CloudQueueMessage(mb.GetMessage());
             inputQueue.AddMessage(cqm);
         }

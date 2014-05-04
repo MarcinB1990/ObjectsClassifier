@@ -265,6 +265,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.RadioButtonList methodOfClassification;
         
         /// <summary>
+        /// extensionOfOutputFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList extensionOfOutputFile;
+        
+        /// <summary>
         /// classifyButton control.
         /// </summary>
         /// <remarks>

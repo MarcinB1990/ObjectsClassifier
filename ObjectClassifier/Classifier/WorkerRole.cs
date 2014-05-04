@@ -55,7 +55,23 @@ namespace Classifier
 
                         TrainingSample[] trainingSamplesSet;
                         ResultSample[] resultSampleSet;
-                        IResultSetBuilder resultSetBuilder = new ResultSetBuilderImpl();
+                        IResultSetBuilder resultSetBuilder;
+                        string extension;
+                        switch (int.Parse(receivedMessageParts["extensionOfOutputFile"].ToString()))
+                        {
+                            case 0:
+                                resultSetBuilder = new ResultSetBuilderTxtImpl();
+                                extension = ".txt";
+                                break;
+                            case 1:
+                                resultSetBuilder = new ResultSetBuilderCsvImpl();
+                                extension = ".csv";
+                                break;
+                            default:
+                                resultSetBuilder = new ResultSetBuilderTxtImpl();
+                                extension = ".txt";
+                                break;
+                        }
                         resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Preparing");
                         string[] trainingElements = trainingSetContent.Split('\n');
                         int trainingElementsLength;
@@ -102,10 +118,10 @@ namespace Classifier
                                 break;
                         }
                         string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
-                        
 
-                        
-                        resultBlockReference=receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
+
+
+                        resultBlockReference = receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()) + extension;
                         CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(resultBlockReference);
                         resultSetBlockBlob.UploadText(result);
                         resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);

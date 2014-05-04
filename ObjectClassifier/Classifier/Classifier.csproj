@@ -70,7 +70,8 @@
     <Compile Include="Classifiers\ClassifyStrategyAbstract.cs" />
     <Compile Include="Classifiers\Common\IResultSetBuilder.cs" />
     <Compile Include="Classifiers\Common\ResultSample.cs" />
-    <Compile Include="Classifiers\Common\ResultSetBuilderImpl.cs" />
+    <Compile Include="Classifiers\Common\ResultSetBuilderCsvImpl.cs" />
+    <Compile Include="Classifiers\Common\ResultSetBuilderTxtImpl.cs" />
     <Compile Include="Classifiers\Common\TrainingSample.cs" />
     <Compile Include="Classifiers\IClassifyStrategy.cs" />
     <Compile Include="Classifiers\Tests\5NNChaudhuriTest.cs" />

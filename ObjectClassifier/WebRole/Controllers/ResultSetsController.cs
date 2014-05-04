@@ -123,7 +123,8 @@ namespace WebRole.Controllers
             TableOperation selectById = TableOperation.Retrieve<ResultSetEntity>(userId, resultSetId);
             TableResult tr = resultSets.Execute(selectById);
             string[] ifs= ((ResultSetEntity)tr.Result).InputFileSource.Split('/');
-            return ifs.Last();
+            int indexOfStartOfExtension = ifs.Last().LastIndexOf(".");
+            return ifs.Last().Substring(0,indexOfStartOfExtension);
         }
 
         /// <summary>

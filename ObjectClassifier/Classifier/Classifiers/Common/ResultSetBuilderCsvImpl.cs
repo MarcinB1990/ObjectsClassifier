@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 namespace Classifier.Classifiers.Common
 {
     /// <summary>
-    /// Implementacja wzorca projektowego builder budującego zbiór wynikowy
+    /// Implementacja wzorca projektowego builder budującego zbiór wynikowy w formacie csv
     /// </summary>
-    public class ResultSetBuilderImpl:IResultSetBuilder
-
+    public class ResultSetBuilderCsvImpl : IResultSetBuilder
     {
         private string _resultSet;
 
-        public ResultSetBuilderImpl()
+        public ResultSetBuilderCsvImpl()
         {
             _resultSet = string.Empty;
+            _resultSet += "Class;Attributes\n";
         }
 
         /// <summary>
@@ -26,11 +26,11 @@ namespace Classifier.Classifiers.Common
         public void BuildResultSample(ResultSample resultSample)
         {
             _resultSet += resultSample.ClassOfSample.ToString();
-            _resultSet += '\t';
+            _resultSet += ';';
             for (int i = 0; i < resultSample.Attributes.Length; i++)
             {
                 _resultSet += resultSample.Attributes[i].ToString();
-                _resultSet += '\t';
+                _resultSet += ';';
             }
             _resultSet += '\n';
         }

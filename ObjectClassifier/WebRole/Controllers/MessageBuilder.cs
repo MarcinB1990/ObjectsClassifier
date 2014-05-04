@@ -19,7 +19,7 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metoda dodająca guid wiadomości
+        /// Metoda dodająca do wiadomości guid wiadomości
         /// </summary>
         /// <param name="guid">Guid wiadomości</param>
         public void BuildGuid(Guid guid)
@@ -32,7 +32,7 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metoda dodająca id zbioru wynikowego
+        /// Metoda dodająca do wiadomości id zbioru wynikowego
         /// </summary>
         /// <param name="resultSetId">Id zbioru wynikowego</param>
         public void BuildResultSetId(string resultSetId)
@@ -42,7 +42,7 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metoda dodająca id użytkownika dokonującego klasyfikacji
+        /// Metoda dodająca do wiadomości id użytkownika dokonującego klasyfikacji
         /// </summary>
         /// <param name="usedUserIdToResult">Id użytkownika dokonującego klasyfikacji</param>
         public void BuildUsedUserIdToResult(string usedUserIdToResult)
@@ -69,7 +69,7 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metoda dodająca id zbioru uczącego
+        /// Metoda dodająca do wiadomości id zbioru uczącego
         /// </summary>
         /// <param name="trainingSetId">Id zbioru uczącego</param>
         public void BuildTrainingSetId(string trainingSetId)
@@ -79,7 +79,7 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metoda dodająca Id użytkownika, który wprowadził zbiór uczący
+        /// Metoda dodająca do wiadomości Id użytkownika, który wprowadził zbiór uczący
         /// </summary>
         /// <param name="usedUserIdToTraining">Id użytkownika, który wprowadził zbiór uczący</param>
         public void BuildUsedUserIdToTraining(string usedUserIdToTraining)
@@ -106,13 +106,23 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
-        /// Metody dodająca wybór sposobu klasyfikacji
+        /// Metody dodająca do wiadomości wybrany sposobu klasyfikacji
         /// </summary>
         /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN, 1-5NN Chaudhuriego, 2-5NNKellera)</param>
         public void BuildMethodOfClassification(int methodOfClassification)
         {
             AddSeparator();
             _message += methodOfClassification.ToString();
+        }
+
+        /// <summary>
+        /// Metoda dodająca do wiadomości wybrany format pliku wyjściowego
+        /// </summary>
+        /// <param name="extensionOfOutputFile">Wybrany format pliku wyjściowego (0-txt, 1-csv)</param>
+        public void BuildExtensionOfOutputFile(int extensionOfOutputFile)
+        {
+            AddSeparator();
+            _message += extensionOfOutputFile.ToString();
         }
 
         /// <summary>
@@ -141,6 +151,7 @@ namespace WebRole.Controllers
             decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
             decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
             decodedMessageDictionary.Add("methodOfClassification", decodedMessage[7]);
+            decodedMessageDictionary.Add("extensionOfOutputFile", decodedMessage[8]);
             return decodedMessageDictionary;
         }
     }

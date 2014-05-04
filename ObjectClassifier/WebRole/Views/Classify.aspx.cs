@@ -137,7 +137,7 @@ namespace WebRole.Views
                 }
                 resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId,methodOfClassification.SelectedIndex, usedUserIdToTraining), trainingSetController);
                 Guid operationGuid = Guid.NewGuid();
-                messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex);
+                messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex,extensionOfOutputFile.SelectedIndex);
                 //bool finished = false;
                 //int progressOfClassification = 0;
                 //while (!finished)
