@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Tests
 {
+    /// <summary>
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą 5NN Chaudhuriego
+    /// </summary>
     public class _5NNChaudhuriClassifierTest : ClassifyStrategyAbstract
     {
         private double[] GetCenterOfGravity(IList<TrainingSample> points, double[] testedPoint)

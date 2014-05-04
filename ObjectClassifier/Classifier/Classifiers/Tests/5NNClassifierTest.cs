@@ -12,6 +12,9 @@ using WebRole.Controllers;
 
 namespace Classifier.Classifiers.Tests
 {
+    /// <summary>
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą 5NN
+    /// </summary>
     public class _5NNClassifierTest : ClassifyStrategyAbstract
     {
         public override string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet2, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId)

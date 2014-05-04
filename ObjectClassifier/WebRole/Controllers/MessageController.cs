@@ -9,10 +9,14 @@ using WebRole.Models;
 
 namespace WebRole.Controllers
 {
+    /// <summary>
+    /// Kontroler obsługujący kolejkę wejściową i wyjściową
+    /// </summary>
     public class MessageController
     {
-        CloudQueue inputQueue;
-        CloudQueue outputQueue;
+        private CloudQueue inputQueue;
+        private CloudQueue outputQueue;
+
         public MessageController()
         {
             CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
@@ -22,6 +26,19 @@ namespace WebRole.Controllers
             outputQueue = cqc.GetQueueReference("outputqueue");
             outputQueue.CreateIfNotExists();
         }
+
+        /// <summary>
+        /// Metoda wstawiająca wiadomości do kolejki wejściowej
+        /// </summary>
+        /// <param name="mb">Implementacja interfejsu IMessageBuilder określająca sposób budowania wiadomości</param>
+        /// <param name="operationGuid">Guid wiadomości</param>
+        /// <param name="resultSetId">Id zbioru wynikowego</param>
+        /// <param name="usedUserIdToResult">Id użytkownika dokonującego klasyfikacji</param>
+        /// <param name="removeResultAfterClassification">True dla konieczności usunięcia zbioru wynikowego z pamięci po zakończeniu klasyfikacji</param>
+        /// <param name="trainingSetId">Id zbioru uczącego</param>
+        /// <param name="usedUserIdToTraining">Id użytkownika, który wprowadził zbiór uczący</param>
+        /// <param name="removeTrainingAfterClassification"></param>
+        /// <param name="methodOfClassification">True dla konieczności usunięcia zbioru uczącego z pamięci po zakończeniu klasyfikacji</param>
         public void SendInputMessage(IMessageBuilder mb,Guid operationGuid,string resultSetId,string usedUserIdToResult,bool removeResultAfterClassification,string trainingSetId,string usedUserIdToTraining, bool removeTrainingAfterClassification,int methodOfClassification)
         {
             mb.BuildGuid(operationGuid);
@@ -35,6 +52,12 @@ namespace WebRole.Controllers
             CloudQueueMessage cqm = new CloudQueueMessage(mb.GetMessage());
             inputQueue.AddMessage(cqm);
         }
+
+        /// <summary>
+        /// Metoda pobierająca wiadomość o określonym guid z kolejki wyjściowej
+        /// </summary>
+        /// <param name="operationGuid">Guid oczekiwanej wiadomości</param>
+        /// <returns></returns>
         public string ReceiveMessage(Guid operationGuid)
         {
             string s = null;
@@ -52,21 +75,6 @@ namespace WebRole.Controllers
                 }
             }
             return s;
-        }
-
-        public IDictionary DecodeInputMessage(CloudQueueMessage receivedMessage)
-        {
-            string[] decodedMessage = receivedMessage.AsString.Split('|');
-            IDictionary decodedMessageDictionary = new Dictionary<string, string>();
-            decodedMessageDictionary.Add("operationGuid",decodedMessage[0]);
-            decodedMessageDictionary.Add("resultSetId", decodedMessage[1]);
-            decodedMessageDictionary.Add("usedUserIdToResult", decodedMessage[2]);
-            decodedMessageDictionary.Add("removeResultAfterClassification", decodedMessage[3]);
-            decodedMessageDictionary.Add("trainingSetId", decodedMessage[4]);
-            decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
-            decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
-            decodedMessageDictionary.Add("methodOfClassification", decodedMessage[7]);
-            return decodedMessageDictionary;
         }
     }
 }

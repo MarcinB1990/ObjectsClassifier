@@ -25,7 +25,7 @@ namespace Classifier
         CloudQueue outputQueue;
         TrainingSetsController trainingSetsController;
         ResultSetsController resultSetsController;
-        MessageController messageController;
+        IMessageBuilder messageBuilder;
         CloudBlobContainer trainingSetsContainer;
         CloudBlobContainer inputFilesContainer;
         CloudBlobContainer resultSetsContainer;
@@ -42,13 +42,12 @@ namespace Classifier
                 CloudQueueMessage receivedMessage = inputQueue.GetMessage(new TimeSpan(0,0,0,0,500));
                 while (receivedMessage != null)
                 {
-                    //try
-                    //{     
+                    try
+                    {     
                         receivedMessageParts = null;
                         resultBlockReference = string.Empty;
-                        receivedMessageParts = messageController.DecodeInputMessage(receivedMessage);
+                        receivedMessageParts = messageBuilder.DecodeInputMessage(receivedMessage);
                         inputQueue.DeleteMessage(receivedMessage);
-                        int[] parameters = trainingSetsController.GetParameters(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString());
                         CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
                         string trainingSetContent = trainingSetBlockBlob.DownloadText();
                         CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
@@ -117,14 +116,14 @@ namespace Classifier
 
                         Trace.TraceInformation("Classification completed", "Information");
 
-                    //}catch(Exception){
-                    //    if (receivedMessageParts != null)
-                    //    {
-                    //    CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
-                    //    outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
-                    //    resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Problem");
-                    //        }
-                    //}finally{
+                    }catch(Exception){
+                        if (receivedMessageParts != null)
+                        {
+                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
+                        outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
+                        resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Problem");
+                            }
+                    }finally{
                         if (receivedMessageParts != null)
                         {
                             if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))
@@ -139,7 +138,7 @@ namespace Classifier
                             }
                         }
                         receivedMessage = inputQueue.GetMessage();
-                    //}
+                    }
                 }
                 Trace.TraceInformation("Classifier stops working", "Information");
             }
@@ -159,7 +158,7 @@ namespace Classifier
             outputQueue = cqc.GetQueueReference("outputqueue");
             outputQueue.CreateIfNotExists();
             trainingSetsController = new TrainingSetsController();
-            messageController = new MessageController();
+            messageBuilder = new MessageBuilder();
             CloudBlobClient cbc = csa.CreateCloudBlobClient();
             BlobContainerPermissions bcp = new BlobContainerPermissions();
             bcp.PublicAccess = BlobContainerPublicAccessType.Blob;

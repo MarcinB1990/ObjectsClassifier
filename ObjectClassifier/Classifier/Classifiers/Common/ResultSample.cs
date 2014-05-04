@@ -7,11 +7,24 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Common
 {
+    /// <summary>
+    /// Element wynikowy
+    /// </summary>
     public class ResultSample
     {
+        /// <summary>
+        /// Klasa elementu
+        /// </summary>
         public int ClassOfSample { get; set; }
+        /// <summary>
+        /// Tablica cech elementu
+        /// </summary>
         public double[] Attributes { get; set; }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="data">Tablica cech elementu</param>
         public ResultSample(string[] data)
         {
             this.ClassOfSample = -1;

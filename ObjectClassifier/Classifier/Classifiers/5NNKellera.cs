@@ -7,8 +7,17 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers
 {
+    /// <summary>
+    /// Implementacja interfejsu IClassifyStrategy dla klasyfikacji metodą 5NN Kellera
+    /// </summary>
     public class _5NNKellera:ClassifyStrategyAbstract
     {
+        /// <summary>
+        /// Metoda pomocnicza zamieniająca metrykę euklidesową na minimalną możliwą wartość dodatnią w przypadku, gdy równa się ona 0
+        /// </summary>
+        /// <param name="attributes1">Cechy pierwszego elemenetu</param>
+        /// <param name="attributes2">Cechy drugiego elementu</param>
+        /// <returns>Zwraca metrykę euklidesową lub Double.Epsilon, gdy jest ona równa 0.</returns>
         private double NonZeroEuclideanMetric(double[] attributes1, double[] attributes2)
         {
             double euclideanMetric = EuclideanMetric(attributes1, attributes2);
@@ -22,6 +31,16 @@ namespace Classifier.Classifiers
             }
         }
 
+        /// <summary>
+        /// Metoda dokonująca klasyfikacji wzorca z wykorzystaniem klasyfikatora 5NN Kellera
+        /// </summary>
+        /// <param name="trainingSampleSet">Tablica elementów uczących</param>
+        /// <param name="resultSampleSet">Tablica elementów do zaklasyfikowania</param>
+        /// <param name="resultSetBuilder">Builder zbioru wynikowego</param>
+        /// <param name="resultSetsController">Kontroler obsługujący bazę zbiorów wynikowych</param>
+        /// <param name="userId">Identyfikator użytkownika dokonującego klasyfikacji</param>
+        /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
+        /// <returns>Zbiór wynikowy</returns>
         public override string Classify(Common.TrainingSample[] trainingSampleSet, Common.ResultSample[] resultSampleSet, Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
         {
             resultSetsController.UpdateProgress(userId, resultSetId, "0%");

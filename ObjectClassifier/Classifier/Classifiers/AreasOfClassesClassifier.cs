@@ -9,9 +9,21 @@ using System.Threading.Tasks;
 
 namespace Classifier
 {
+    /// <summary>
+    /// Implementacja interfejsu IClassifyStrategy dla klasyfikacji metodą obszarów klas
+    /// </summary>
     public class AreasOfClassesClassifier:ClassifyStrategyAbstract
     {
-
+        /// <summary>
+        /// Metoda dokonująca klasyfikacji wzorca z wykorzystaniem klasyfikatora wykorzystującego obszary klas
+        /// </summary>
+        /// <param name="trainingSampleSet">Tablica elementów uczących</param>
+        /// <param name="resultSampleSet">Tablica elementów do zaklasyfikowania</param>
+        /// <param name="resultSetBuilder">Builder zbioru wynikowego</param>
+        /// <param name="resultSetsController">Kontroler obsługujący bazę zbiorów wynikowych</param>
+        /// <param name="userId">Identyfikator użytkownika dokonującego klasyfikacji</param>
+        /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
+        /// <returns>Zbiór wynikowy</returns>
         public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
         {
             resultSetsController.UpdateProgress(userId, resultSetId, "0%");

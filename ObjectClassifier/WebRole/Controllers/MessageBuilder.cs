@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Microsoft.WindowsAzure.Storage.Queue;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
 namespace WebRole.Controllers
 {
+    /// <summary>
+    /// Implementacja wzorca projektowego builder budującego wiadomość dla kolejki inputqueue
+    /// </summary>
     public class MessageBuilder:IMessageBuilder
     {
         private string _message=string.Empty;
@@ -12,6 +17,11 @@ namespace WebRole.Controllers
         {
             _message += "|";
         }
+
+        /// <summary>
+        /// Metoda dodająca guid wiadomości
+        /// </summary>
+        /// <param name="guid">Guid wiadomości</param>
         public void BuildGuid(Guid guid)
         {
             if (_message != String.Empty)
@@ -21,18 +31,30 @@ namespace WebRole.Controllers
             _message += guid.ToString();
         }
 
+        /// <summary>
+        /// Metoda dodająca id zbioru wynikowego
+        /// </summary>
+        /// <param name="resultSetId">Id zbioru wynikowego</param>
         public void BuildResultSetId(string resultSetId)
         {
             AddSeparator();
             _message += resultSetId;
         }
 
+        /// <summary>
+        /// Metoda dodająca id użytkownika dokonującego klasyfikacji
+        /// </summary>
+        /// <param name="usedUserIdToResult">Id użytkownika dokonującego klasyfikacji</param>
         public void BuildUsedUserIdToResult(string usedUserIdToResult)
         {
             AddSeparator();
             _message += usedUserIdToResult;
         }
 
+        /// <summary>
+        /// Metoda określająca konieczność usunięcia zbioru wynikowego z pamięci po zakończeniu klasyfikacji
+        /// </summary>
+        /// <param name="removeResultAfterClassification">True dla konieczności usunięcia zbioru wynikowego z pamięci po zakończeniu klasyfikacji</param>
         public void BuildRemoveResultAfterClassification(bool removeResultAfterClassification)
         {
             AddSeparator();
@@ -46,18 +68,30 @@ namespace WebRole.Controllers
             }
         }
 
+        /// <summary>
+        /// Metoda dodająca id zbioru uczącego
+        /// </summary>
+        /// <param name="trainingSetId">Id zbioru uczącego</param>
         public void BuildTrainingSetId(string trainingSetId)
         {
             AddSeparator();
             _message += trainingSetId;
         }
 
+        /// <summary>
+        /// Metoda dodająca Id użytkownika, który wprowadził zbiór uczący
+        /// </summary>
+        /// <param name="usedUserIdToTraining">Id użytkownika, który wprowadził zbiór uczący</param>
         public void BuildUsedUserIdToTraining(string usedUserIdToTraining)
         {
             AddSeparator();
             _message += usedUserIdToTraining;
         }
 
+        /// <summary>
+        /// Metoda określająca konieczność usunięcia zbioru uczącego z pamięci po zakońćzeniu klasyfikacji
+        /// </summary>
+        /// <param name="removeTrainingAfterClassification">True dla konieczności usunięcia zbioru uczącego z pamięci po zakończeniu klasyfikacji</param>
         public void BuildRemoveTrainingAfterClassification(bool removeTrainingAfterClassification)
         {
             AddSeparator();
@@ -70,15 +104,44 @@ namespace WebRole.Controllers
                 _message += "0";
             }
         }
+
+        /// <summary>
+        /// Metody dodająca wybór sposobu klasyfikacji
+        /// </summary>
+        /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN, 1-5NN Chaudhuriego, 2-5NNKellera)</param>
         public void BuildMethodOfClassification(int methodOfClassification)
         {
             AddSeparator();
             _message += methodOfClassification.ToString();
         }
 
+        /// <summary>
+        /// Metoda pobierająca gotową treść wiadomości
+        /// </summary>
+        /// <returns>Treść wiadomości</returns>
         public string GetMessage()
         {
             return _message;
+        }
+
+        /// <summary>
+        /// Metody odkodowująca otrzymaną wiadomość
+        /// </summary>
+        /// <param name="receivedMessage">Wiadomość</param>
+        /// <returns>Słownik zawierający poszczególne elementy otrzymanej wiadomości</returns>
+        public IDictionary DecodeInputMessage(CloudQueueMessage receivedMessage)
+        {
+            string[] decodedMessage = receivedMessage.AsString.Split('|');
+            IDictionary decodedMessageDictionary = new Dictionary<string, string>();
+            decodedMessageDictionary.Add("operationGuid", decodedMessage[0]);
+            decodedMessageDictionary.Add("resultSetId", decodedMessage[1]);
+            decodedMessageDictionary.Add("usedUserIdToResult", decodedMessage[2]);
+            decodedMessageDictionary.Add("removeResultAfterClassification", decodedMessage[3]);
+            decodedMessageDictionary.Add("trainingSetId", decodedMessage[4]);
+            decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
+            decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
+            decodedMessageDictionary.Add("methodOfClassification", decodedMessage[7]);
+            return decodedMessageDictionary;
         }
     }
 }

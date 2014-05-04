@@ -6,15 +6,23 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Common
 {
+    /// <summary>
+    /// Implementacja wzorca projektowego builder budującego zbiór wynikowy
+    /// </summary>
     public class ResultSetBuilderImpl:IResultSetBuilder
 
     {
         private string _resultSet;
+
         public ResultSetBuilderImpl()
         {
             _resultSet = string.Empty;
         }
 
+        /// <summary>
+        /// Metoda dodająca nowy wiersz do zbioru wynikowego
+        /// </summary>
+        /// <param name="resultSample">Elelement wynikowy do umieszczenia w zbiorze wynikowym</param>
         public void BuildResultSample(ResultSample resultSample)
         {
             _resultSet += resultSample.ClassOfSample.ToString();
@@ -26,7 +34,10 @@ namespace Classifier.Classifiers.Common
             }
             _resultSet += '\n';
         }
-
+        /// <summary>
+        /// Metoda pobierająca rezultat budowy zbioru wynikowego
+        /// </summary>
+        /// <returns>Zbiór wynikowy</returns>
         public string GetResultSet()
         {
             if (_resultSet.Length > 0)

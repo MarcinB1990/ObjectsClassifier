@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Tests
 {
+    /// <summary>
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą 5NN Kellera
+    /// </summary>
     public class _5NNKelleraTest : ClassifyStrategyAbstract
     {
         private double NonZeroEuclideanMetric(double[] attributes1, double[] attributes2)

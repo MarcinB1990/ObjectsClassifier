@@ -7,11 +7,24 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Common
 {
+    /// <summary>
+    /// Element uczący
+    /// </summary>
     public class TrainingSample
     {
+        /// <summary>
+        /// Klasa elementu
+        /// </summary>
         public int ClassOfSample { get; set; }
+        /// <summary>
+        /// Tablica cech elementu
+        /// </summary>
         public double[] Attributes { get; set; }
 
+        /// <summary>
+        /// Konstruktor kopiujący
+        /// </summary>
+        /// <param name="s">Element uczący do skopiowania</param>
         public TrainingSample(TrainingSample s)
         {
             this.ClassOfSample = s.ClassOfSample;
@@ -22,6 +35,10 @@ namespace Classifier.Classifiers.Common
             }
         }
 
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="data">Tablica zawierająca na pierwszym miejscu klasę elementu a na kolejnych cechy elementu</param>
         public TrainingSample(string[] data)
         {
             this.ClassOfSample = Int32.Parse(data[0]);

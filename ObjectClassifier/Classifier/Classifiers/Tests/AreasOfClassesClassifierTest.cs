@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Classifier.Classifiers.Tests
 {
+    /// <summary>
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą obszarów klas
+    /// </summary>
     public class AreasOfClassesClassifierTest : ClassifyStrategyAbstract
     {
 
