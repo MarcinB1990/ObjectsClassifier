@@ -44,20 +44,39 @@ namespace Classifier
                 while (receivedMessage != null)
                 {
                     try
-                    {     
+                    {
+                        TrainingSample[] trainingSamplesSet;
+                        ResultSample[] resultSampleSet = null;
+                        IResultSetBuilder resultSetBuilder;
+                        string extension;
+
                         receivedMessageParts = null;
                         resultBlockReference = string.Empty;
                         receivedMessageParts = messageBuilder.DecodeInputMessage(receivedMessage);
                         inputQueue.DeleteMessage(receivedMessage);
                         CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
                         string trainingSetContent = trainingSetBlockBlob.DownloadText();
-                        CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
-                        string inputFileContent = inputFileBlockBlob.DownloadText();
-
-                        TrainingSample[] trainingSamplesSet;
-                        ResultSample[] resultSampleSet;
-                        IResultSetBuilder resultSetBuilder;
-                        string extension;
+                        if (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()) != (int)EnumClassificationMethod.Tests)
+                        {
+                            CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
+                            string inputFileContent = inputFileBlockBlob.DownloadText();
+                            string[] inputElements = inputFileContent.Split('\n');
+                            int inputElementsLength;
+                            if ("".Equals(inputElements[inputElements.Length - 1]))
+                            {
+                                inputElementsLength = inputElements.Length - 1;
+                            }
+                            else
+                            {
+                                inputElementsLength = inputElements.Length;
+                            }
+                            resultSampleSet = new ResultSample[inputElementsLength];
+                            for (int i = 0; i < inputElementsLength; i++)
+                            {
+                                resultSampleSet[i] = new ResultSample(inputElements[i].Split('\t'));
+                            }
+                        }
+                        
                         switch (int.Parse(receivedMessageParts["extensionOfOutputFile"].ToString()))
                         {
                             case 0:
@@ -89,21 +108,7 @@ namespace Classifier
                         {
                             trainingSamplesSet[i] = new TrainingSample(trainingElements[i].Split('\t'));
                         }
-                        string[] inputElements = inputFileContent.Split('\n');
-                        int inputElementsLength;
-                        if ("".Equals(inputElements[inputElements.Length - 1]))
-                        {
-                            inputElementsLength = inputElements.Length - 1;
-                        }
-                        else
-                        {
-                            inputElementsLength = inputElements.Length;
-                        }
-                        resultSampleSet = new ResultSample[inputElementsLength];
-                        for (int i = 0; i < inputElementsLength; i++)
-                        {
-                            resultSampleSet[i] = new ResultSample(inputElements[i].Split('\t'));
-                        }
+                        
                         
                         IClassifyStrategy classifyStrategy = null;
                         switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))

@@ -54,11 +54,16 @@ namespace WebRole.Controllers
             try
             {
                 string resultSetId = Guid.NewGuid().ToString();
-                string referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
-                CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
-                inputBlob.UploadFromStream(resultSet.InputFileStream);
+                string Uri=string.Empty;
+                string referenceToInputBlob = string.Empty;
+                if (resultSet.MethodOfClassification != (int)EnumClassificationMethod.Tests)
+                {
+                    referenceToInputBlob = resultSetId + "/" + resultSet.NameOfInputFile;
+                    CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
+                    inputBlob.UploadFromStream(resultSet.InputFileStream);
+                    Uri = inputBlob.Uri.AbsoluteUri;
+                }
                 string methodOfClassification = string.Empty;
-                string Uri = inputBlob.Uri.AbsoluteUri;
                 switch (resultSet.MethodOfClassification)
                 {
                     case (int)EnumClassificationMethod._5NNClassifier:
