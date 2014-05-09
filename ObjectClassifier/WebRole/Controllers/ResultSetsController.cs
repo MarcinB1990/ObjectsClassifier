@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using WebRole.Models;
+using WebRole.Shared;
 
 namespace WebRole.Controllers
 {
@@ -39,7 +40,7 @@ namespace WebRole.Controllers
         public IEnumerable<ResultSetReturn> GetMyResultSets(string userId)
         {
             TableQuery<ResultSetEntity> queryGetResultSetsByUserId = new TableQuery<ResultSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.MethodOfClassification,o.Progress)).OrderByDescending(o => o.DateOfEntry);
+            return resultSets.ExecuteQuery(queryGetResultSetsByUserId).Select(o => new ResultSetReturn(o.NumberOfClasses,o.NumberOfAttributes,o.DateOfEntry,o.Comment,o.TrainingSetFileSource,o.InputFileSource,o.ResultSetFileSource,o.MethodOfClassification,o.Progress,o.FileExtension)).OrderByDescending(o => o.DateOfEntry);
         }
 
         /// <summary>
@@ -57,19 +58,34 @@ namespace WebRole.Controllers
                 CloudBlockBlob inputBlob = inputFilesContainer.GetBlockBlobReference(referenceToInputBlob);
                 inputBlob.UploadFromStream(resultSet.InputFileStream);
                 string methodOfClassification = string.Empty;
+                string Uri = inputBlob.Uri.AbsoluteUri;
                 switch (resultSet.MethodOfClassification)
                 {
-                    case 0:
+                    case (int)EnumClassificationMethod._5NNClassifier:
                         methodOfClassification = "5NN";
                         break;
-                    case 1:
+                    case (int)EnumClassificationMethod._5NNChaudhuriClassifier:
                         methodOfClassification = "5NN Chaudhuri's";
                         break;
-                    case 2:
+                    case (int)EnumClassificationMethod._5NNKellerClassifier:
                         methodOfClassification="5NN Keller's";
                         break;
+                    case (int)EnumClassificationMethod.Tests:
+                        methodOfClassification = "Tests";
+                        Uri = string.Empty;
+                        break;
                 }
-                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), inputBlob.Uri.AbsoluteUri, string.Empty, referenceToInputBlob,methodOfClassification, "in queue");
+                string fileExtension = string.Empty;
+                switch (resultSet.FileExtension)
+                {
+                    case 0:
+                        fileExtension = "txt";
+                        break;
+                    case 1:
+                        fileExtension = "csv";
+                        break;
+                }
+                ResultSetEntity rse = new ResultSetEntity(resultSet.UserId, resultSetId, resultSet.NumberOfClasses, resultSet.NumberOfAttributes, DateTime.Now, resultSet.Comment, tsc.GetTrainingSetFileSourceSourceById(resultSet.UsedUserId, resultSet.TrainingSetId), Uri, string.Empty, referenceToInputBlob,methodOfClassification, "in queue",fileExtension);
                 TableOperation insertOperation = TableOperation.Insert(rse);
                 resultSets.Execute(insertOperation);
                 return resultSetId;
@@ -124,7 +140,13 @@ namespace WebRole.Controllers
             TableResult tr = resultSets.Execute(selectById);
             string[] ifs= ((ResultSetEntity)tr.Result).InputFileSource.Split('/');
             int indexOfStartOfExtension = ifs.Last().LastIndexOf(".");
-            return ifs.Last().Substring(0,indexOfStartOfExtension);
+            if(indexOfStartOfExtension!=-1){
+                return "result_"+ifs.Last().Substring(0, indexOfStartOfExtension);
+            }
+            else
+            {
+                return "result";
+            }
         }
 
         /// <summary>

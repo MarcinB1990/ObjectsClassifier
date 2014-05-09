@@ -290,6 +290,7 @@
     <Compile Include="Models\ResultSetReturn.cs" />
     <Compile Include="Models\TrainingSet.cs" />
     <Compile Include="Models\TrainingSetReturn.cs" />
+    <Compile Include="Shared\EnumClassificationMethod.cs" />
     <Compile Include="Views\About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

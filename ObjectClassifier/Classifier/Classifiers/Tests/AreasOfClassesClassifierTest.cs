@@ -81,7 +81,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "areas of classes, poprawnosc:" + (good * 1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
+            return "Areas of classes - poprawnosc:" + (good * 1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
 
         }
     }

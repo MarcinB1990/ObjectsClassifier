@@ -7,7 +7,7 @@
         <legend>Choose the training set</legend>
             <asp:RadioButtonList ID="radioNewOrOldTrainingSet" runat="server" AutoPostBack="true" OnSelectedIndexChanged="radioNewOrOldTrainingSet_SelectedIndexChanged">
                 <asp:ListItem Text="Use new training set" Value="NW" Selected="True" />
-                <asp:ListItem Text="Choose training set from MyTrainingSets" Value="CFM" />
+                <asp:ListItem Text="Choose training set from MyTrainingSets or public sets" Value="CFM" />
             </asp:RadioButtonList>
             <div id="uploadNewTrainingSet" runat="server">
                 <asp:Table runat="server">
@@ -70,8 +70,14 @@
                 </asp:Table>
                 <br />
                 <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>
-                <asp:CheckBox ID="checkboxToSaveTrainingSet" runat="server" Text=" Save in MyTrainingSets in order to use this set in the future" />
-                <br />
+                <asp:CheckBox AutoPostBack="true" ID="checkboxToSaveTrainingSet" runat="server" Text="Save in MyTrainingSets in order to use this set in the future" OnCheckedChanged="checkboxToSaveTrainingSet_CheckedChanged"/>
+                <fieldset id="accessRights" runat="server">
+                    <legend>Select access rights to the file:</legend>
+                    <asp:RadioButtonList ID="accessRightsList" runat="server">
+                        <asp:ListItem Selected="True">Public</asp:ListItem>
+                        <asp:ListItem>Private</asp:ListItem>
+                    </asp:RadioButtonList>
+                </fieldset>
                 <br />
             </div>
             <div id="useExistingTrainingSet" runat="server" visible="false">
@@ -79,6 +85,7 @@
             <Columns>  
                 <asp:ButtonField CommandName="Select" Text="Select" HeaderText="Choose set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
+                <asp:BoundField DataField="UserName" HeaderText="Owner" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of classes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of attributes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="DateOfEntry" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Date of entry" HeaderStyle-BackColor="Wheat"/>
@@ -94,7 +101,7 @@
         </div>
         </fieldset>
                 
-    <fieldset>
+    <fieldset id="sectionWithInputFile" runat="server">
         <legend>Insert a file with set to classification</legend>
     <asp:Table runat="server">
                     <asp:TableRow ID="commentRowResult">
@@ -124,14 +131,15 @@
         </fieldset>
         <fieldset>
             <legend>Choose the method of classificaation:</legend>
-              <asp:RadioButtonList ID="methodOfClassification" runat="server">
+              <asp:RadioButtonList AutoPostBack="true" OnSelectedIndexChanged="methodOfClassification_SelectedIndexChanged" ID="methodOfClassification" runat="server">
                 <asp:ListItem Selected="True" Text="5NN Classifier"></asp:ListItem>
                 <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
                 <asp:ListItem Text="5NN Keller's Classifier"></asp:ListItem>
+                <asp:ListItem Text="Test Classifiers"></asp:ListItem>
             </asp:RadioButtonList>
             <br />
         </fieldset>
-        <fieldset>
+        <fieldset id="sectionExtensionSelect" runat="server">
             <legend>Choose extension of the output file:</legend>
             <asp:RadioButtonList ID="extensionOfOutputFile" runat="server">
                 <asp:ListItem Selected="True" Text="txt"></asp:ListItem>

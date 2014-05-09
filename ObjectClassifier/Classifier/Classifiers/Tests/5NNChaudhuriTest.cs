@@ -77,7 +77,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "5nn chaudhuri classifier, poprawnosc:" +(good*1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
+            return "5nn chaudhuri classifier - poprawnosc:" +(good*1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
 
         }
 

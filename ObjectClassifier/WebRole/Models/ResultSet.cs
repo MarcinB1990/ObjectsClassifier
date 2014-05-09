@@ -51,6 +51,10 @@ namespace WebRole.Models
         /// Id użytkownika, który wprowadził zbiór uczący
         /// </summary>
         public string UsedUserId { get; set; }
+        /// <summary>
+        /// Format pliku(0-txt,1-csv)
+        /// </summary>
+        public int FileExtension { get; set; }
         
         /// <summary>
         /// Konstruktor
@@ -65,7 +69,8 @@ namespace WebRole.Models
         /// <param name="trainingSetId">Id zbioru uczącego</param>
         /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN,1-5NN Chaudhuriego, 2-5NN Kellera)</param>
         /// <param name="usedUserId">Id użytkownika, który wprowadził zbiór uczący</param>
-        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string trainingSetId,int methodOfClassification, string usedUserId)
+        /// <param name="fileExtension">Format pliku(0-txt,1-csv)</param>
+        public ResultSet(string userId,string userName,string nameOfInputFile, int numberOfClasses, int numberOfAttributes, string comment, Stream inputFileStream, string trainingSetId,int methodOfClassification, string usedUserId,int fileExtension)
         {
             UserId = userId;
             UserName = userName;
@@ -75,8 +80,9 @@ namespace WebRole.Models
             Comment = comment;
             InputFileStream = inputFileStream;
             TrainingSetId = trainingSetId;
-            this.MethodOfClassification = methodOfClassification;
+            MethodOfClassification = methodOfClassification;
             UsedUserId = usedUserId;
+            FileExtension = fileExtension;
         }
     }
 }

@@ -148,6 +148,24 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.RegularExpressionValidator regExpValidatorFileUpload;
         
         /// <summary>
+        /// accessRights control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl accessRights;
+        
+        /// <summary>
+        /// accessRightsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList accessRightsList;
+        
+        /// <summary>
         /// error control.
         /// </summary>
         /// <remarks>

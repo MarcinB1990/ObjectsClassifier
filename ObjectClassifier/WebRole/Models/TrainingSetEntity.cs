@@ -49,6 +49,10 @@ namespace WebRole.Models
         /// Liczba użyć
         /// </summary>
         public int NumberOfUses { get; set; }
+        /// <summary>
+        /// Prawa dostępu
+        /// </summary>
+        public string AccessRights { get; set; }
 
         public TrainingSetEntity()
             : base(string.Empty,string.Empty)
@@ -69,18 +73,20 @@ namespace WebRole.Models
         /// <param name="referenceToBlob">Referencja do Bloba zawierającego zawartość zbioru uczącego</param>
         /// <param name="trainingSetFileSource">Adres pliku ze zbiorem uczącym</param>
         /// <param name="numberOfUses">Liczba użyć</param>
-        public TrainingSetEntity(string userId, string trainingSetId, string userName, string name, int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string referenceToBlob, string trainingSetFileSource, int numberOfUses)
+        /// <param name="accessRights">Prawa dostępu</param>
+        public TrainingSetEntity(string userId, string trainingSetId, string userName, string name, int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string referenceToBlob, string trainingSetFileSource, int numberOfUses,string accessRights)
             : base(userId,trainingSetId)
         {
-            this.UserName = userName;
-            this.Name = name;
-            this.NumberOfClasses = numberOfClasses;
-            this.NumberOfAttributes = numberOfAttributes;
-            this.DateOfEntry = dateOfEntry;
-            this.Comment = comment;
-            this.ReferenceToBlob = referenceToBlob;
-            this.TrainingSetFileSource = trainingSetFileSource;
-            this.NumberOfUses = numberOfUses;
+            UserName = userName;
+            Name = name;
+            NumberOfClasses = numberOfClasses;
+            NumberOfAttributes = numberOfAttributes;
+            DateOfEntry = dateOfEntry;
+            Comment = comment;
+            ReferenceToBlob = referenceToBlob;
+            TrainingSetFileSource = trainingSetFileSource;
+            NumberOfUses = numberOfUses;
+            AccessRights = accessRights;
         }
     }
 }

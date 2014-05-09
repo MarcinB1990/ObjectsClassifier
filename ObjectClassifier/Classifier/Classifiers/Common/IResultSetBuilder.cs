@@ -17,6 +17,7 @@ namespace Classifier.Classifiers.Common
         /// <param name="resultSample">Elelement wynikowy do umieszczenia w zbiorze wynikowym</param>
         void BuildResultSample(ResultSample resultSample);
 
+
         /// <summary>
         /// Definicja metody pobierającej rezultat budowy zbioru wynikowego
         /// </summary>

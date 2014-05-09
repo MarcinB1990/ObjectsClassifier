@@ -52,6 +52,10 @@ namespace WebRole.Models
         /// Postęp klasyfikacji
         /// </summary>
         public string Progress { get; set; }
+        /// <summary>
+        /// Format pliku
+        /// </summary>
+        public string FileExtension { get; set; }
 
         public ResultSetEntity()
             : base(string.Empty,string.Empty)
@@ -73,19 +77,21 @@ namespace WebRole.Models
         /// <param name="referenceToBlob">Referencja do Bloba zawierającego zawartość zbioru wynikowego</param>
         /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN,1-5NN Chaudhuriego, 2-5NN Kellera)</param>
         /// <param name="progress">Postęp klasyfikacji</param>
-        public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string referenceToBlob,string methodOfClassification,string progress)
+        /// <param name="fileExtension">Format pliku</param>
+        public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string referenceToBlob,string methodOfClassification,string progress,string fileExtension)
             : base(userId,resultSetId)
         {
-            this.NumberOfClasses = numberOfClasses;
-            this.NumberOfAttributes = numberOfAttributes;
-            this.DateOfEntry = timeOfEntry;
-            this.Comment = comment;
-            this.TrainingSetFileSource = trainingSetFileSource;
-            this.InputFileSource = inputFileSource;
-            this.ResultSetFileSource = resultSetFileSource;
-            this.MethodOfClassification = methodOfClassification;
-            this.ReferenceToBlob=referenceToBlob;
-            this.Progress = progress;
+            NumberOfClasses = numberOfClasses;
+            NumberOfAttributes = numberOfAttributes;
+            DateOfEntry = timeOfEntry;
+            Comment = comment;
+            TrainingSetFileSource = trainingSetFileSource;
+            InputFileSource = inputFileSource;
+            ResultSetFileSource = resultSetFileSource;
+            MethodOfClassification = methodOfClassification;
+            ReferenceToBlob=referenceToBlob;
+            Progress = progress;
+            FileExtension = fileExtension;
         }
     }
 }

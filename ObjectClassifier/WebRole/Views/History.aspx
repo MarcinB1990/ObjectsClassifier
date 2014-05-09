@@ -21,6 +21,7 @@
                 <asp:HyperLinkField DataNavigateUrlFields="TrainingSetFileSource" Text="Download" HeaderText="Training Set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:HyperLinkField DataNavigateUrlFields="InputFileSource" Text="Download" HeaderText="Input File" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:HyperLinkField DataNavigateUrlFields="ResultSetFileSource" Text="Download" HeaderText="Result Set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
+                <asp:BoundField DataField="FileExtension" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="File Extension" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Progress" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Progress" HeaderStyle-BackColor="Wheat"/>
             </Columns>
         </asp:GridView>

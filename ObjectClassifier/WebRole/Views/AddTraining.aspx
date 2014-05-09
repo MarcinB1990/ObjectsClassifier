@@ -4,7 +4,9 @@
         <h3>This page is only for registered users.</h3>
     </div>
     <div runat="server" id="loggedIn" visible="false">
-        <h3>Complete the form to upload you own training set</h3>
+        <br />
+        <fieldset>
+        <legend>Complete the form to upload you own training set</legend>
         <asp:Table runat="server">
             <asp:TableRow>
                 <asp:TableCell>
@@ -62,8 +64,15 @@
                         <asp:RegularExpressionValidator ID="regExpValidatorFileUpload" runat="server" ControlToValidate="fileUploader" ErrorMessage="Invalid extension. Choose .txt file" ForeColor="Red" Display="Dynamic" ValidationExpression="^.*\.txt$" />           
                 </asp:TableCell>
             </asp:TableRow>
-        </asp:Table>
-        <br />
+        </asp:Table><br />
+        </fieldset>
+        <fieldset id="accessRights" runat="server">
+                    <legend>Select access rights to the file:</legend>
+                    <asp:RadioButtonList ID="accessRightsList" runat="server">
+                        <asp:ListItem Selected="True">Public</asp:ListItem>
+                        <asp:ListItem>Private</asp:ListItem>
+                    </asp:RadioButtonList>
+                </fieldset>
         Fields with * are required
         <asp:Button Text="Upload" runat="server" Style="margin-left: 50px" OnClick="UploadTrainingSet" />
         <asp:Label ID="error" runat="server" Visible="false" Font-Bold="true" ForeColor="Red">Error during uploading. Make sure, that everything is OK and try again.</asp:Label>

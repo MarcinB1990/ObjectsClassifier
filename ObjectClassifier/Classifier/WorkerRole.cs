@@ -15,6 +15,7 @@ using WebRole.Controllers;
 using Classifier.Classifiers.Common;
 using Classifier.Classifiers;
 using Classifier.Classifiers.Tests;
+using WebRole.Shared;
 namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
@@ -107,21 +108,23 @@ namespace Classifier
                         IClassifyStrategy classifyStrategy = null;
                         switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))
                         {
-                            case 0:
+                            case (int)EnumClassificationMethod._5NNClassifier:
                                 classifyStrategy = new _5NNClassifier();
                                 break;
-                            case 1:
+                            case (int)EnumClassificationMethod._5NNChaudhuriClassifier:
                                 classifyStrategy = new _5NNChaudhuriClassifier();
                                 break;
-                            case 2:
+                            case (int)EnumClassificationMethod._5NNKellerClassifier:
                                 classifyStrategy = new _5NNKellera();
                                 break;
+                            case (int)EnumClassificationMethod.Tests:
+                                classifyStrategy = new TestClassifiers();
+                                break;
                         }
-                        string result=classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
+                        string result = classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
 
 
-
-                        resultBlockReference = receivedMessageParts["usedUserIdToResult"].ToString() + "/result_" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()) + extension;
+                        resultBlockReference = receivedMessageParts["usedUserIdToResult"].ToString() + "/" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()) + extension;
                         CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(resultBlockReference);
                         resultSetBlockBlob.UploadText(result);
                         resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
@@ -132,14 +135,18 @@ namespace Classifier
 
                         Trace.TraceInformation("Classification completed", "Information");
 
-                    }catch(Exception){
+                    }
+                    catch (Exception)
+                    {
                         if (receivedMessageParts != null)
                         {
-                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
-                        outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
-                        resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Problem");
-                            }
-                    }finally{
+                            CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
+                            outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
+                            resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Problem");
+                        }
+                    }
+                    finally
+                    {
                         if (receivedMessageParts != null)
                         {
                             if (("1").Equals(receivedMessageParts["removeTrainingAfterClassification"].ToString()))

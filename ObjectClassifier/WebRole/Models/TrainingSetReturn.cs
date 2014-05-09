@@ -11,6 +11,14 @@ namespace WebRole.Models
     public class TrainingSetReturn
     {
         /// <summary>
+        /// Id użytkownika wprowadzającego zbiór uczący
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// Nazwa użytkownika wprowadzającego zbiór uczący
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
         /// Id zbioru uczącego
         /// </summary>
         public string TrainingSetId { get; set; }
@@ -42,7 +50,11 @@ namespace WebRole.Models
         /// Adres pliku ze zbiorem uczącym
         /// </summary>
         public string TrainingSetFileSource { get; set; }
-
+        /// <summary>
+        /// Prawa dostępu
+        /// </summary>
+        public string AccessRights { get; set; }
+             
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -54,8 +66,13 @@ namespace WebRole.Models
         /// <param name="comment">Komentarz</param>
         /// <param name="numberOfUses">Liczba użyć</param>
         /// <param name="trainingSetFileSource">Adres pliku ze zbiorem uczącym</param>
-        public TrainingSetReturn(string trainingSetId,string name, int numberOfClasses, int numberOfAttributes,DateTime dateOfEntry, string comment, int numberOfUses,string trainingSetFileSource)
+        /// <param name="accessRights">Prawa dostępu</param>
+        /// <param name="userId">Id użytkownika wprowadzającego zbiór uczący</param>
+        /// <param name="userName">Nazwa użytkownika wprowadzającego zbiór uczący</param>
+        public TrainingSetReturn(string trainingSetId,string name, int numberOfClasses, int numberOfAttributes,DateTime dateOfEntry, string comment, int numberOfUses,string trainingSetFileSource,string accessRights,string userName,string userId)
         {
+            UserId = userId;
+            UserName = userName;
             TrainingSetId = trainingSetId;
             Name = name;
             NumberOfClasses = numberOfClasses;
@@ -64,6 +81,7 @@ namespace WebRole.Models
             DateOfEntry = dateOfEntry;
             NumberOfUses = numberOfUses;
             TrainingSetFileSource = trainingSetFileSource;
+            AccessRights = accessRights;
         }
     }
 }

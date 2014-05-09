@@ -43,8 +43,19 @@ namespace WebRole.Controllers
                 string trainingSetId = Guid.NewGuid().ToString();
                 string referenceToBlob = trainingSetId + "/" + trainingSet.NameOfFile;
                 CloudBlockBlob blob = trainingSetsContainer.GetBlockBlobReference(referenceToBlob);
-                blob.UploadFromStream(trainingSet.FileStream);
-                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, trainingSet.NumberOfUses);
+                if(trainingSet.FileStream!=null)
+                    blob.UploadFromStream(trainingSet.FileStream);
+                string accessRights = string.Empty;
+                switch (trainingSet.AccessRights)
+                {
+                    case 0:
+                        accessRights = "public";
+                        break;
+                    case 1:
+                        accessRights = "private";
+                        break;
+                }
+                TrainingSetEntity tse = new TrainingSetEntity(trainingSet.UserId, trainingSetId, trainingSet.UserName, trainingSet.Name, trainingSet.NumberOfClasses, trainingSet.NumberOfAttributes,DateTime.Now, trainingSet.Comment,referenceToBlob, blob.Uri.AbsoluteUri, trainingSet.NumberOfUses,accessRights);
                 TableOperation insertOperation = TableOperation.Insert(tse);
                 trainingSets.Execute(insertOperation);
                 return trainingSetId;
@@ -56,6 +67,17 @@ namespace WebRole.Controllers
         }
 
         /// <summary>
+        /// Metoda zwracająca wszystkie zbiory uczące przypisane do użytkownika oraz zbiory publiczne innych użytkowników
+        /// </summary>
+        /// <param name="userId">Id uzytkownika</param>
+        /// <returns>Lista zbiorów uczących przypisanych do użytkownika</returns>
+        public IEnumerable<TrainingSetReturn> GetTrainingSetsForClassify(string userId,string userName)
+        {
+            TableQuery<TrainingSetEntity> queryGetTrainingSetsByUserId = new TableQuery<TrainingSetEntity>().Where(TableQuery.CombineFilters(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId), TableOperators.Or, TableQuery.GenerateFilterCondition("AccessRights",QueryComparisons.Equal,"public")));
+            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource,o.AccessRights,o.UserName,o.PartitionKey)).OrderByDescending(o=>o.UserName==userName).ThenByDescending(o=>o.NumberOfUses).ThenByDescending(o=>o.DateOfEntry);
+        }
+
+        /// <summary>
         /// Metoda zwracająca wszystkie zbiory uczące przypisane do użytkownika
         /// </summary>
         /// <param name="userId">Id uzytkownika</param>
@@ -63,7 +85,7 @@ namespace WebRole.Controllers
         public IEnumerable<TrainingSetReturn> GetMyTrainingSets(string userId)
         {
             TableQuery<TrainingSetEntity> queryGetTrainingSetsByUserId = new TableQuery<TrainingSetEntity>().Where(TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, userId));
-            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey,o.Name, o.NumberOfClasses, o.NumberOfAttributes,o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource)).OrderByDescending(o=>o.NumberOfUses).ThenByDescending(o=>o.DateOfEntry);
+            return trainingSets.ExecuteQuery(queryGetTrainingSetsByUserId).Select(o => new TrainingSetReturn(o.RowKey, o.Name, o.NumberOfClasses, o.NumberOfAttributes, o.DateOfEntry, o.Comment, o.NumberOfUses, o.TrainingSetFileSource, o.AccessRights,o.UserName,o.PartitionKey)).OrderByDescending(o => o.NumberOfUses).ThenByDescending(o => o.DateOfEntry);
         }
 
         /// <summary>

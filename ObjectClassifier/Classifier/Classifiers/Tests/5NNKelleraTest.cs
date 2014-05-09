@@ -82,7 +82,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "5nn kellera, poprawnosc:" + (good * 1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
+            return "5nn Keller - poprawnosc:" + (good * 1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
         }
     }
 }

@@ -47,7 +47,10 @@ namespace WebRole.Models
         /// Liczba użyć
         /// </summary>
         public int NumberOfUses { get; set; }
-
+        /// <summary>
+        /// Prawa dostępu
+        /// </summary>
+        public int AccessRights { get; set; }
         /// <summary>
         /// Konstruktor
         /// </summary>
@@ -60,7 +63,8 @@ namespace WebRole.Models
         /// <param name="fileStream">Zawartość pliku ze zbiorem uczącym</param>
         /// <param name="nameOfFile">Nazwa pliku ze zbiorem uczącym</param>
         /// <param name="numberOfUses">Liczba użyć</param>
-        public TrainingSet(string userId,string userName,string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile,int numberOfUses)
+        /// <param name="accessRights">Prawa dostępu</param>
+        public TrainingSet(string userId,string userName,string name, int numberOfClasses, int numberOfAttributes, string comment, Stream fileStream, string nameOfFile,int numberOfUses,int accessRights)
         {
             UserId = userId;
             UserName = userName;
@@ -71,6 +75,7 @@ namespace WebRole.Models
             FileStream = fileStream;
             NameOfFile = nameOfFile;
             NumberOfUses = numberOfUses;
+            AccessRights = accessRights;
         }
     }
 }

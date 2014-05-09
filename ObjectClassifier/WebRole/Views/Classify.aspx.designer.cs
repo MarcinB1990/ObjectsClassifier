@@ -184,6 +184,24 @@ namespace WebRole.Views {
         protected global::System.Web.UI.WebControls.CheckBox checkboxToSaveTrainingSet;
         
         /// <summary>
+        /// accessRights control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl accessRights;
+        
+        /// <summary>
+        /// accessRightsList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList accessRightsList;
+        
+        /// <summary>
         /// useExistingTrainingSet control.
         /// </summary>
         /// <remarks>
@@ -209,6 +227,15 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label noTrainingSets;
+        
+        /// <summary>
+        /// sectionWithInputFile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionWithInputFile;
         
         /// <summary>
         /// commentRowResult control.
@@ -263,6 +290,15 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButtonList methodOfClassification;
+        
+        /// <summary>
+        /// sectionExtensionSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl sectionExtensionSelect;
         
         /// <summary>
         /// extensionOfOutputFile control.

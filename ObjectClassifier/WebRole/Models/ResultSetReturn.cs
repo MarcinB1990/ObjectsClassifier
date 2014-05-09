@@ -46,6 +46,10 @@ namespace WebRole.Models
         /// Postęp klasyfikacji
         /// </summary>
         public string Progress { get; set; }
+        /// <summary>
+        /// Format pliku
+        /// </summary>
+        public string FileExtension { get; set; }
 
         /// <summary>
         /// Konstruktor
@@ -59,17 +63,19 @@ namespace WebRole.Models
         /// <param name="resultSetFileSource">Adres pliku ze zbiorem wynikowym</param>
         /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN,1-5NN Chaudhuriego, 2-5NN Kellera)</param>
         /// <param name="progress">Postęp klasyfikacji</param>
-        public ResultSetReturn(int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string trainingSetFileSource, string inputFileSource, string resultSetFileSource, string methodOfClassification, string progress)
+        /// <param name="fileExtension">Format pliku</param>
+        public ResultSetReturn(int numberOfClasses, int numberOfAttributes, DateTime dateOfEntry, string comment, string trainingSetFileSource, string inputFileSource, string resultSetFileSource, string methodOfClassification, string progress,string fileExtension)
         {
-            this.NumberOfClasses = numberOfClasses;
-            this.NumberOfAttributes = numberOfAttributes;
-            this.DateOfEntry = dateOfEntry;
-            this.Comment = comment;
-            this.TrainingSetFileSource = trainingSetFileSource;
-            this.InputFileSource = inputFileSource;
-            this.ResultSetFileSource = resultSetFileSource;
-            this.MethodOfClassification = methodOfClassification;
-            this.Progress = progress;
+            NumberOfClasses = numberOfClasses;
+            NumberOfAttributes = numberOfAttributes;
+            DateOfEntry = dateOfEntry;
+            Comment = comment;
+            TrainingSetFileSource = trainingSetFileSource;
+            InputFileSource = inputFileSource;
+            ResultSetFileSource = resultSetFileSource;
+            MethodOfClassification = methodOfClassification;
+            Progress = progress;
+            FileExtension = fileExtension;
         }
     }
 }
