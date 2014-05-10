@@ -33,9 +33,9 @@ namespace WebRole.Views
 
         protected void myTrainingSetsView_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            if (trainingSetController.DeleteTrainingSet(User.Identity.GetUserId(), myTrainingSets.ElementAt(e.RowIndex).TrainingSetId))
+            if (trainingSetController.DeleteTrainingSet(User.Identity.GetUserId(), myTrainingSets.ElementAt(e.RowIndex + (myTrainingSetsView.PageSize * myTrainingSetsView.PageIndex)).TrainingSetId))
             {
-                myTrainingSets.RemoveAt(e.RowIndex);
+                myTrainingSets.RemoveAt(e.RowIndex + (myTrainingSetsView.PageSize * myTrainingSetsView.PageIndex));
                 myTrainingSetsView.DataSource = myTrainingSets;
                 myTrainingSetsView.DataBind();
                 if (myTrainingSets.Count == 0)
@@ -45,5 +45,13 @@ namespace WebRole.Views
                 }
             }
         }
+
+        protected void myTrainingSetsView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            myTrainingSetsView.PageIndex = e.NewPageIndex;
+            myTrainingSetsView.DataBind();
+        }
+
+        
     }
 }

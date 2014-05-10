@@ -33,7 +33,7 @@ namespace Classifier.Classifiers.Tests
             List<TrainingSample> dosprawdzenia = new List<TrainingSample>();
             for (int i = 0; i < trainingSampleSet.Length; i++)
             {
-                if (!(i % 5 == 2))
+                if (!(i % 5 == 0))
                 {
                     uczacy.Add(new TrainingSample(trainingSampleSet[i]));
                 }
@@ -82,7 +82,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "5nn Keller - poprawnosc:" + (good * 1.0 / testujacy.Count).ToString() + "   czas:" + watch.Elapsed;
+            return "5nn Keller;" + (good * 1.0 / testujacy.Count).ToString() + ";" + watch.Elapsed;
         }
     }
 }

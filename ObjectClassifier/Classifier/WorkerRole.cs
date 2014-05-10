@@ -45,18 +45,19 @@ namespace Classifier
                 {
                     try
                     {
-                        TrainingSample[] trainingSamplesSet;
+                        TrainingSample[] trainingSamplesSet = null;
                         ResultSample[] resultSampleSet = null;
-                        IResultSetBuilder resultSetBuilder;
-                        string extension;
-
+                        IResultSetBuilder resultSetBuilder=null;
+                        string extension=string.Empty;
                         receivedMessageParts = null;
                         resultBlockReference = string.Empty;
                         receivedMessageParts = messageBuilder.DecodeInputMessage(receivedMessage);
+                        resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Preparing");
                         inputQueue.DeleteMessage(receivedMessage);
                         CloudBlockBlob trainingSetBlockBlob = trainingSetsContainer.GetBlockBlobReference(trainingSetsController.GetTrainingSetReferenceToBlobById(receivedMessageParts["usedUserIdToTraining"].ToString(), receivedMessageParts["trainingSetId"].ToString()));
                         string trainingSetContent = trainingSetBlockBlob.DownloadText();
-                        if (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()) != (int)EnumClassificationMethod.Tests)
+                        int methodOfClassification=Int32.Parse(receivedMessageParts["methodOfClassification"].ToString());
+                        if (methodOfClassification != (int)EnumClassificationMethod.Tests)
                         {
                             CloudBlockBlob inputFileBlockBlob = inputFilesContainer.GetBlockBlobReference(resultSetsController.GetResultSetReferenceToBlobById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()));
                             string inputFileContent = inputFileBlockBlob.DownloadText();
@@ -76,7 +77,7 @@ namespace Classifier
                                 resultSampleSet[i] = new ResultSample(inputElements[i].Split('\t'));
                             }
                         }
-                        
+
                         switch (int.Parse(receivedMessageParts["extensionOfOutputFile"].ToString()))
                         {
                             case 0:
@@ -92,7 +93,7 @@ namespace Classifier
                                 extension = ".txt";
                                 break;
                         }
-                        resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Preparing");
+
                         string[] trainingElements = trainingSetContent.Split('\n');
                         int trainingElementsLength;
                         if ("".Equals(trainingElements[trainingElements.Length - 1]))
@@ -107,11 +108,10 @@ namespace Classifier
                         for (int i = 0; i < trainingElementsLength; i++)
                         {
                             trainingSamplesSet[i] = new TrainingSample(trainingElements[i].Split('\t'));
-                        }
-                        
+                        }                       
                         
                         IClassifyStrategy classifyStrategy = null;
-                        switch (Int32.Parse(receivedMessageParts["methodOfClassification"].ToString()))
+                        switch (methodOfClassification)
                         {
                             case (int)EnumClassificationMethod._5NNClassifier:
                                 classifyStrategy = new _5NNClassifier();
@@ -128,7 +128,6 @@ namespace Classifier
                         }
                         string result = classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
 
-
                         resultBlockReference = receivedMessageParts["usedUserIdToResult"].ToString() + "/" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()) + extension;
                         CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(resultBlockReference);
                         resultSetBlockBlob.UploadText(result);
@@ -139,7 +138,6 @@ namespace Classifier
                         outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
 
                         Trace.TraceInformation("Classification completed", "Information");
-
                     }
                     catch (Exception)
                     {

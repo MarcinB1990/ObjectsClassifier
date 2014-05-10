@@ -107,11 +107,11 @@ namespace WebRole.Views
                 removeTrainingAfterClassification = false;
                 if (myTrainingSetsView.SelectedIndex != -1)
                 {
-                    usedUserIdToTraining = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).UserId;
-                    trainingSetId = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).TrainingSetId;
+                    usedUserIdToTraining = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex+(myTrainingSetsView.PageSize*myTrainingSetsView.PageIndex)).UserId;
+                    trainingSetId = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex + (myTrainingSetsView.PageSize * myTrainingSetsView.PageIndex)).TrainingSetId;
                     trainingSetController.IncrementUses(usedUserIdToTraining, trainingSetId);
-                    numberOfClassesTemp=myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfClasses;
-                    numberOfAttributesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex).NumberOfAttributes;
+                    numberOfClassesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex + (myTrainingSetsView.PageSize * myTrainingSetsView.PageIndex)).NumberOfClasses;
+                    numberOfAttributesTemp = myTrainingSets.ElementAt(myTrainingSetsView.SelectedIndex + (myTrainingSetsView.PageSize * myTrainingSetsView.PageIndex)).NumberOfAttributes;
                 }
             }
 
@@ -191,7 +191,12 @@ namespace WebRole.Views
                 requiredFieldValidatorInputFile.Enabled = !(methodOfClassification.SelectedIndex == (int)EnumClassificationMethod.Tests);
                 regExpValidatorInputFile.Enabled = !(methodOfClassification.SelectedIndex == (int)EnumClassificationMethod.Tests);
                 sectionWithInputFile.Visible = !(methodOfClassification.SelectedIndex == (int)EnumClassificationMethod.Tests);
-              //  sectionExtensionSelect.Visible = !(methodOfClassification.SelectedIndex == (int)EnumClassificationMethod.Tests);
+        }
+
+        protected void myTrainingSetsView_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            myTrainingSetsView.PageIndex = e.NewPageIndex;
+            myTrainingSetsView.DataBind();
         }
     }
 }

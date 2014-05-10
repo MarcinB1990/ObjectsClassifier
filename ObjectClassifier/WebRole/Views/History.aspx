@@ -6,7 +6,7 @@
     <div runat="server" id="loggedIn" visible="false">
         <div runat="server" id="listNotEmpty" visible="false">
             <h3>It's a history of your classifications.</h3>
-        <asp:GridView ID="myResultSetsView" runat="server" AutoGenerateColumns="false" AllowPaging="true" OnPageIndexChanging="myResultSetsView_PageIndexChanging">
+        <asp:GridView ID="myResultSetsView" runat="server" AutoGenerateColumns="false" PageSize="25" AllowPaging="true" OnPageIndexChanging="myResultSetsView_PageIndexChanging">
             <Columns>
                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No." HeaderStyle-BackColor="Wheat"> 
                     <ItemTemplate> 

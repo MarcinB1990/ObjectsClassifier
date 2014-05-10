@@ -6,7 +6,7 @@
     <div runat="server" id="loggedIn" visible="false">
         <div runat="server" id="listNotEmpty" visible="false">
             <h3>It's a list of all your training sets.</h3>
-        <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnRowDeleting="myTrainingSetsView_RowDeleting">
+        <asp:GridView PageSize="25" AllowPaging="true" OnPageIndexChanging="myTrainingSetsView_PageIndexChanging"  ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnRowDeleting="myTrainingSetsView_RowDeleting">
             <Columns>
                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No." HeaderStyle-BackColor="Wheat"> 
                     <ItemTemplate> 

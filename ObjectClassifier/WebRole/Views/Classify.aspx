@@ -81,7 +81,7 @@
                 <br />
             </div>
             <div id="useExistingTrainingSet" runat="server" visible="false">
-            <asp:GridView ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnSelectedIndexChanging="myTrainingSetsView_SelectedIndexChanging">
+            <asp:GridView PageSize="25" AllowPaging="true" OnPageIndexChanging="myTrainingSetsView_PageIndexChanging" ID="myTrainingSetsView" runat="server" AutoGenerateColumns="false" OnSelectedIndexChanging="myTrainingSetsView_SelectedIndexChanging">
             <Columns>  
                 <asp:ButtonField CommandName="Select" Text="Select" HeaderText="Choose set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>

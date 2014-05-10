@@ -77,7 +77,6 @@ namespace WebRole.Controllers
                         break;
                     case (int)EnumClassificationMethod.Tests:
                         methodOfClassification = "Tests";
-                        Uri = string.Empty;
                         break;
                 }
                 string fileExtension = string.Empty;
