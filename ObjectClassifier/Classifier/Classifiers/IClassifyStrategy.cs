@@ -25,13 +25,5 @@ namespace Classifier
         /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
         /// <returns>Zbiór wynikowy</returns>
         string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder,ResultSetsController resultSetsController, string userId, string resultSetId);
-
-        /// <summary>
-        /// Definicja metody wyznaczającej metrykę euklidesową
-        /// </summary>
-        /// <param name="attributes1">Cechy pierwszego elementu</param>
-        /// <param name="attributes2">Cechy drugiego elementu</param>
-        /// <returns>Zwraca metrykę euklidesową</returns>
-        double EuclideanMetric(double[] attributes1, double[] attributes2);
     }
 }

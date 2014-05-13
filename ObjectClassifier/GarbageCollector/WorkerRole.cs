@@ -24,7 +24,6 @@ namespace GarbageCollector
 
             while (true)
             {
-                Thread.Sleep(garbageFrequency);
                 Trace.TraceInformation("GarbageCollector starts working", "Information");
                 CloudQueueMessage receivedMessage = garbageQueue.GetMessage();
                 while (receivedMessage != null)
@@ -45,6 +44,8 @@ namespace GarbageCollector
                     }
                 }
                 Trace.TraceInformation("GarbageCollector stops working", "Information");
+
+                Thread.Sleep(garbageFrequency);
             }
         }
 

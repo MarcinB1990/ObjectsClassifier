@@ -27,7 +27,7 @@ namespace Classifier.Classifiers
         public abstract string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId);
         
         /// <summary>
-        /// Implementacja metody wyznaczającej metrykę euklidesową
+        /// Metoda pomocnicza wyznaczająca metrykę euklidesową
         /// </summary>
         /// <param name="attributes1">Cechy pierwszego elementu</param>
         /// <param name="attributes2">Cechy drugiego elementu</param>
