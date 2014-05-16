@@ -56,7 +56,7 @@ namespace Classifier.Classifiers
                 }
                 belongingVector[trainingSampleSet[i].ClassOfSample] = belongingVector[trainingSampleSet[i].ClassOfSample] + 0.51;
                 belongingVectors.Add(trainingSampleSet[i], belongingVector);
-                resultSetsController.UpdateProgress(userId, resultSetId, (i*50 / resultSampleSet.Length).ToString() + "%");
+                resultSetsController.UpdateProgress(userId, resultSetId, (i*50 / trainingSampleSet.Length).ToString() + "%");
             }
 
             for (int i = 0; i < resultSampleSet.Length; i++)

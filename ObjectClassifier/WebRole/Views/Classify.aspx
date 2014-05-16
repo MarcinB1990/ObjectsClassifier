@@ -86,11 +86,11 @@
                 <asp:ButtonField CommandName="Select" Text="Select" HeaderText="Choose set" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="UserName" HeaderText="Owner" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat" />
-                <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of classes" HeaderStyle-BackColor="Wheat" />
-                <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of attributes" HeaderStyle-BackColor="Wheat" />
+                <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No. of classes" HeaderStyle-BackColor="Wheat" />
+                <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No. of attributes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="DateOfEntry" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Date of entry" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Comment" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Comment" HeaderStyle-BackColor="Wheat"/>
-                <asp:BoundField DataField="NumberOfUses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of Uses" HeaderStyle-BackColor="Wheat"/>
+                <asp:BoundField DataField="NumberOfUses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No. of Uses" HeaderStyle-BackColor="Wheat"/>
                 <asp:HyperLinkField DataNavigateUrlFields="TrainingSetFileSource" Text="Download" HeaderText="Source" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderStyle-BackColor="Wheat"/>
             </Columns>
                 <selectedrowstyle backcolor="LightCyan"
@@ -98,9 +98,20 @@
          font-bold="true"/> 
         </asp:GridView>
         <asp:Label ID="noTrainingSets" runat="server" Font-Bold="true" ForeColor="Red">You haven't got any training sets yet.</asp:Label>
+                <br />
         </div>
         </fieldset>
                 
+        <fieldset>
+            <legend>Choose the method of classificaation:</legend>
+              <asp:RadioButtonList AutoPostBack="true" OnSelectedIndexChanged="methodOfClassification_SelectedIndexChanged" ID="methodOfClassification" runat="server">
+                <asp:ListItem Selected="True" Text="5NN Classifier"></asp:ListItem>
+                <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
+                <asp:ListItem Text="5NN Keller's Classifier"></asp:ListItem>
+                <asp:ListItem Text="Test Classifiers"></asp:ListItem>
+            </asp:RadioButtonList>
+            <br />
+        </fieldset>
     <fieldset id="sectionWithInputFile" runat="server">
         <legend>Insert a file with set to classification</legend>
     <asp:Table runat="server">
@@ -128,16 +139,6 @@
                 <br />
                 Fields with * are required
             <br /><br />
-        </fieldset>
-        <fieldset>
-            <legend>Choose the method of classificaation:</legend>
-              <asp:RadioButtonList AutoPostBack="true" OnSelectedIndexChanged="methodOfClassification_SelectedIndexChanged" ID="methodOfClassification" runat="server">
-                <asp:ListItem Selected="True" Text="5NN Classifier"></asp:ListItem>
-                <asp:ListItem Text="5NN Chaudhuri's Classifier"></asp:ListItem>
-                <asp:ListItem Text="5NN Keller's Classifier"></asp:ListItem>
-                <asp:ListItem Text="Test Classifiers"></asp:ListItem>
-            </asp:RadioButtonList>
-            <br />
         </fieldset>
         <fieldset id="sectionExtensionSelect" runat="server">
             <legend>Choose extension of the output file:</legend>

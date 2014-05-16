@@ -5,7 +5,7 @@
     </div>
     <div runat="server" id="loggedIn" visible="false">
         <div runat="server" id="listNotEmpty" visible="false">
-            <h3>It's a history of your classifications.</h3>
+            <h3>It's a history of all your classifications.</h3>
         <asp:GridView ID="myResultSetsView" runat="server" AutoGenerateColumns="false" PageSize="25" AllowPaging="true" OnPageIndexChanging="myResultSetsView_PageIndexChanging">
             <Columns>
                 <asp:TemplateField ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No." HeaderStyle-BackColor="Wheat"> 
@@ -13,8 +13,8 @@
                         <%# Container.DataItemIndex + 1 %>. 
                     </ItemTemplate> 
                 </asp:TemplateField> 
-                <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of classes" HeaderStyle-BackColor="Wheat" />
-                <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Number of attributes" HeaderStyle-BackColor="Wheat" />
+                <asp:BoundField DataField="NumberOfClasses" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No. of classes" HeaderStyle-BackColor="Wheat" />
+                <asp:BoundField DataField="NumberOfAttributes" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="No. of attributes" HeaderStyle-BackColor="Wheat" />
                 <asp:BoundField DataField="DateOfEntry" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Date of entry" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="Comment" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Comment" HeaderStyle-BackColor="Wheat"/>
                 <asp:BoundField DataField="MethodOfClassification" ItemStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center" HeaderText="Method" HeaderStyle-BackColor="Wheat"/>
