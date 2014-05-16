@@ -172,9 +172,6 @@ namespace Classifier
 
         public override bool OnStart()
         {
-
-            // For information on handling configuration changes
-            // see the MSDN topic at http://go.microsoft.com/fwlink/?LinkId=166357.
             CloudStorageAccount csa = CloudStorageAccount.DevelopmentStorageAccount;
             CloudQueueClient cqc = csa.CreateCloudQueueClient();
             garbageQueue = cqc.GetQueueReference("garbagequeue");
@@ -188,7 +185,8 @@ namespace Classifier
             CloudBlobClient cbc = csa.CreateCloudBlobClient();
             BlobContainerPermissions bcp = new BlobContainerPermissions();
             bcp.PublicAccess = BlobContainerPublicAccessType.Blob;
-            trainingSetsContainer = cbc.GetContainerReference("trainingsetscontainer");
+            trainingSetsContainer =
+            cbc.GetContainerReference("trainingsetscontainer");
             trainingSetsContainer.CreateIfNotExists();
             trainingSetsContainer.SetPermissions(bcp);
             resultSetsContainer = cbc.GetContainerReference("resultsetscontainer");
@@ -198,11 +196,8 @@ namespace Classifier
             inputFilesContainer.CreateIfNotExists();
             resultSetsContainer.SetPermissions(bcp);
             resultSetsController = new ResultSetsController();
-
-            // Set the maximum number of concurrent connections 
-            ServicePointManager.DefaultConnectionLimit = 12;
-
             return base.OnStart();
-        }
+        } 
+
     }
 }
