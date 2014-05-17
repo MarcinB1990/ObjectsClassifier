@@ -140,36 +140,20 @@ namespace WebRole.Views
                 }
                 resultSetId = resultSetController.SaveNew(new ResultSet(usedUserIdToResult, User.Identity.GetUserName(), inputFileUpload.FileName, numberOfClassesTemp, numberOfAttributesTemp, commentToClassification.Text, inputFileUpload.FileContent, trainingSetId, methodOfClassification.SelectedIndex, usedUserIdToTraining, extensionOfOutputFile.SelectedIndex), trainingSetController);
                 Guid operationGuid = Guid.NewGuid();
-                messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex,extensionOfOutputFile.SelectedIndex);
-                //bool finished = false;
-                //int progressOfClassification = 0;
-                //while (!finished)
-                //{
-                    string mess = messageController.ReceiveMessage(operationGuid);
-                    string[] receivedessageParts = mess.Split('|');
-                    firstStep.Visible = false;
-                    if (("1").Equals(receivedessageParts[1]))
-                    {
-                        //    int newProgress;
-                        //    bool result=Int32.TryParse(receivedessageParts[3], out newProgress);
-                        //    if (result)
-                        //    {
-                        //        if (newProgress > progressOfClassification)
-                        //        {
-                        //            progress.Text = progressOfClassification.ToString();
-                        //        }
-                        //    }
-                        //}
-                        //else
-                        //{
-                        classificationResult.Visible=true;
-                        result.NavigateUrl = receivedessageParts[2];
-                    //    finished = true;
-                    }
-                    else {
-                        classificationFault.Visible=true;
-                    }
-                //}
+                messageController.SendInputMessage(new MessageBuilder(), operationGuid, resultSetId, usedUserIdToResult, removeResultAfterClassification, trainingSetId, usedUserIdToTraining, removeTrainingAfterClassification, methodOfClassification.SelectedIndex, extensionOfOutputFile.SelectedIndex);
+                string mess = messageController.ReceiveMessage(operationGuid);
+                string[] receivedessageParts = mess.Split('|');
+                firstStep.Visible = false;
+                if (("1").Equals(receivedessageParts[1]))
+                {
+                    classificationResult.Visible = true;
+                    result.NavigateUrl = receivedessageParts[2];
+                }
+                else
+                {
+                    classificationFault.Visible = true;
+                }
+
             }
         }
 

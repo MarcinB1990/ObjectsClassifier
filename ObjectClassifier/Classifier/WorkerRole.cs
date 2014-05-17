@@ -134,7 +134,7 @@ namespace Classifier
                         resultSetsController.UpadateUri(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), resultSetBlockBlob.Uri.AbsoluteUri);
 
                         resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Completed");
-                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "1" + "|" + resultSetBlockBlob.Uri.AbsoluteUri + "|" + "100");
+                        CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "1" + "|" + resultSetBlockBlob.Uri.AbsoluteUri);
                         outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
 
                         Trace.TraceInformation("Classification completed", "Information");
@@ -143,9 +143,9 @@ namespace Classifier
                     {
                         if (receivedMessageParts != null)
                         {
-                            CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "2" + "|" + "" + "|" + "-1");
+                            CloudQueueMessage completeMessage = new CloudQueueMessage(receivedMessageParts["operationGuid"] + "|" + "0" + "|" + "");
                             outputQueue.AddMessage(completeMessage, new TimeSpan(1, 0, 0));
-                            resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "Problem");
+                            resultSetsController.UpdateProgress(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(), "0");
                         }
                     }
                     finally
