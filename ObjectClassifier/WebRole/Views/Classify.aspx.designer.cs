@@ -22,6 +22,15 @@ namespace WebRole.Views {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl firstStep;
         
         /// <summary>
+        /// methodOfClassification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButtonList methodOfClassification;
+        
+        /// <summary>
         /// radioNewOrOldTrainingSet control.
         /// </summary>
         /// <remarks>
@@ -227,15 +236,6 @@ namespace WebRole.Views {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label noTrainingSets;
-        
-        /// <summary>
-        /// methodOfClassification control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList methodOfClassification;
         
         /// <summary>
         /// sectionWithInputFile control.
