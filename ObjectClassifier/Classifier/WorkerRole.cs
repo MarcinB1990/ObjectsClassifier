@@ -125,6 +125,9 @@ namespace Classifier
                             case (int)EnumClassificationMethod.Tests:
                                 classifyStrategy = new TestClassifiers();
                                 break;
+                            default:
+                                classifyStrategy = new _5NNClassifier();
+                                break;
                         }
                         string result = classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
 
