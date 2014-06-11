@@ -15,9 +15,9 @@ namespace Classifier.Classifiers.Tests
     /// <summary>
     /// Klasa testująca czas działania i dokładność klasyfikacji metodą kNN dla wartości k z zakresu 1-10
     /// </summary>
-    public class _5NNClassifierTestOfKNumber : ClassifyStrategyAbstract
+    public class KNNClassifierTestOfKNumber : ClassifyStrategyAbstract
     {
-        public override string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet2, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId)
+        public override string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet2, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId, int k)
         {
 
             List<TrainingSample> uczacy = new List<TrainingSample>();

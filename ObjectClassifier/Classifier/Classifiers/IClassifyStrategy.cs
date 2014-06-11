@@ -24,6 +24,6 @@ namespace Classifier
         /// <param name="userId">Identyfikator użytkownika dokonującego klasyfikacji</param>
         /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
         /// <returns>Zbiór wynikowy</returns>
-        string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder,ResultSetsController resultSetsController, string userId, string resultSetId);
+        string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder,ResultSetsController resultSetsController, string userId, string resultSetId, int k);
     }
 }

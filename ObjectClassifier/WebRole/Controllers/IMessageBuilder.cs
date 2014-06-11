@@ -58,7 +58,7 @@ namespace WebRole.Controllers
         /// <summary>
         /// Definicja metody dodającej wybrany sposobu klasyfikacji
         /// </summary>
-        /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN, 1-5NN Chaudhuriego, 2-5NNKellera)</param>
+        /// <param name="methodOfClassification">Sposób klasyfikacji (0-k-NN, 1-k-NN Chaudhuriego, 2-k-NN Kellera)</param>
         void BuildMethodOfClassification(int methodOfClassification);
 
         /// <summary>

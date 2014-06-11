@@ -63,9 +63,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classifiers\5NNChaudhuriClassifier.cs" />
-    <Compile Include="Classifiers\5NNClassifier.cs" />
-    <Compile Include="Classifiers\5NNKellera.cs" />
+    <Compile Include="Classifiers\Common\ExtensionMethods.cs" />
+    <Compile Include="Classifiers\KNNChaudhuriClassifier.cs" />
+    <Compile Include="Classifiers\KNNClassifier.cs" />
+    <Compile Include="Classifiers\KNNKellerClassifier.cs" />
     <Compile Include="Classifiers\AreasOfClassesClassifier.cs" />
     <Compile Include="Classifiers\ClassifyStrategyAbstract.cs" />
     <Compile Include="Classifiers\Common\IResultSetBuilder.cs" />
@@ -75,10 +76,10 @@
     <Compile Include="Classifiers\TestClassifiers.cs" />
     <Compile Include="Classifiers\Common\TrainingSample.cs" />
     <Compile Include="Classifiers\IClassifyStrategy.cs" />
-    <Compile Include="Classifiers\Tests\5NNChaudhuriTest.cs" />
-    <Compile Include="Classifiers\Tests\5NNClassifierTest.cs" />
-    <Compile Include="Classifiers\Tests\5NNClassifierTestOfKNumber.cs" />
-    <Compile Include="Classifiers\Tests\5NNKelleraTest.cs" />
+    <Compile Include="Classifiers\Tests\KNNChaudhuriTest.cs" />
+    <Compile Include="Classifiers\Tests\KNNClassifierTest.cs" />
+    <Compile Include="Classifiers\Tests\KNNClassifierTestOfKNumber.cs" />
+    <Compile Include="Classifiers\Tests\KNNKellerTest.cs" />
     <Compile Include="Classifiers\Tests\AreasOfClassesClassifierTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkerRole.cs" />

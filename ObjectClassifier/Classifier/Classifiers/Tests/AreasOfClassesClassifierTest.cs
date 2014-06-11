@@ -17,7 +17,7 @@ namespace Classifier.Classifiers.Tests
     public class AreasOfClassesClassifierTest : ClassifyStrategyAbstract
     {
 
-        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet2, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
+        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet2, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId, int k)
         {
 
             List<TrainingSample> uczacy = new List<TrainingSample>();
@@ -67,7 +67,7 @@ namespace Classifier.Classifiers.Tests
                 }
                 else
                 {
-                    resultSampleSet[i].ClassOfSample = trainingSampleSet.OrderBy(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes)).Take(5).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
+                    resultSampleSet[i].ClassOfSample = trainingSampleSet.TakeKMin(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes),k).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
                 }
             }
 

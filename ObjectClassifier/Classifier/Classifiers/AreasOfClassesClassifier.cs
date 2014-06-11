@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Classifier.Classifiers.Common;
 
 namespace Classifier
 {
@@ -24,7 +25,7 @@ namespace Classifier
         /// <param name="userId">Identyfikator użytkownika dokonującego klasyfikacji</param>
         /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
         /// <returns>Zbiór wynikowy</returns>
-        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
+        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId, int k)
         {
             resultSetsController.UpdateProgress(userId, resultSetId, "0%");
             IDictionary<int,double> areasOfClasses = new Dictionary<int,double>();
@@ -54,7 +55,7 @@ namespace Classifier
                 }
                 else
                 {
-                    resultSampleSet[i].ClassOfSample = trainingSampleSet.OrderBy(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes)).Take(5).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
+                    resultSampleSet[i].ClassOfSample = trainingSampleSet.TakeKMin(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes),k).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
                 }
                 resultSetBuilder.BuildResultSample(resultSampleSet[i]);
                 resultSetsController.UpdateProgress(userId, resultSetId, (i*100 / resultSampleSet.Length).ToString() + "%");

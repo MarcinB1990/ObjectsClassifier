@@ -13,6 +13,8 @@ namespace WebRole.Controllers
     public class MessageBuilder:IMessageBuilder
     {
         private string _message=string.Empty;
+        private string[] _decodedMessageDictionaryKeys = new string[] {"operationGuid","resultSetId","usedUserIdToResult","removeResultAfterClassification","trainingSetId","usedUserIdToTraining","removeTrainingAfterClassification","methodOfClassification","extensionOfOutputFile" };
+
         private void AddSeparator()
         {
             _message += "|";
@@ -108,7 +110,7 @@ namespace WebRole.Controllers
         /// <summary>
         /// Metody dodająca do wiadomości wybrany sposobu klasyfikacji
         /// </summary>
-        /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN, 1-5NN Chaudhuriego, 2-5NNKellera)</param>
+        /// <param name="methodOfClassification">Sposób klasyfikacji (0-k-NN, 1-k-NN Chaudhuriego, 2-k-NN Kellera)</param>
         public void BuildMethodOfClassification(int methodOfClassification)
         {
             AddSeparator();
@@ -143,15 +145,11 @@ namespace WebRole.Controllers
         {
             string[] decodedMessage = receivedMessage.AsString.Split('|');
             IDictionary decodedMessageDictionary = new Dictionary<string, string>();
-            decodedMessageDictionary.Add("operationGuid", decodedMessage[0]);
-            decodedMessageDictionary.Add("resultSetId", decodedMessage[1]);
-            decodedMessageDictionary.Add("usedUserIdToResult", decodedMessage[2]);
-            decodedMessageDictionary.Add("removeResultAfterClassification", decodedMessage[3]);
-            decodedMessageDictionary.Add("trainingSetId", decodedMessage[4]);
-            decodedMessageDictionary.Add("usedUserIdToTraining", decodedMessage[5]);
-            decodedMessageDictionary.Add("removeTrainingAfterClassification", decodedMessage[6]);
-            decodedMessageDictionary.Add("methodOfClassification", decodedMessage[7]);
-            decodedMessageDictionary.Add("extensionOfOutputFile", decodedMessage[8]);
+            for (int i = 0; i < _decodedMessageDictionaryKeys.Length; i++)
+            {
+                decodedMessageDictionary.Add(_decodedMessageDictionaryKeys[i], decodedMessage[i]);
+
+            }
             return decodedMessageDictionary;
         }
     }

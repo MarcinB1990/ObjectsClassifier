@@ -24,7 +24,7 @@ namespace Classifier.Classifiers
         /// <param name="userId">Identyfikator użytkownika dokonującego klasyfikacji</param>
         /// <param name="resultSetId">Identyfikator zbioru wynikowego</param>
         /// <returns>Zbiór wynikowy</returns>
-        public abstract string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId);
+        public abstract string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId, int k);
         
         /// <summary>
         /// Metoda pomocnicza wyznaczająca metrykę euklidesową

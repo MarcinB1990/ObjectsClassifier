@@ -20,6 +20,7 @@ namespace Classifier
 {
     public class WorkerRole : RoleEntryPoint
     {
+        const int k = 5;
         const int classifierFrequency = 100;
         CloudQueue garbageQueue;
         CloudQueue inputQueue;
@@ -113,23 +114,23 @@ namespace Classifier
                         IClassifyStrategy classifyStrategy = null;
                         switch (methodOfClassification)
                         {
-                            case (int)EnumClassificationMethod._5NNClassifier:
-                                classifyStrategy = new _5NNClassifier();
+                            case (int)EnumClassificationMethod.KNNClassifier:
+                                classifyStrategy = new KNNClassifier();
                                 break;
-                            case (int)EnumClassificationMethod._5NNChaudhuriClassifier:
-                                classifyStrategy = new _5NNChaudhuriClassifier();
+                            case (int)EnumClassificationMethod.KNNChaudhuriClassifier:
+                                classifyStrategy = new KNNChaudhuriClassifier();
                                 break;
-                            case (int)EnumClassificationMethod._5NNKellerClassifier:
-                                classifyStrategy = new _5NNKellera();
+                            case (int)EnumClassificationMethod.KNNKellerClassifier:
+                                classifyStrategy = new KNNKellerClassifier();
                                 break;
                             case (int)EnumClassificationMethod.Tests:
                                 classifyStrategy = new TestClassifiers();
                                 break;
                             default:
-                                classifyStrategy = new _5NNClassifier();
+                                classifyStrategy = new KNNClassifier();
                                 break;
                         }
-                        string result = classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString());
+                        string result = classifyStrategy.Classify(trainingSamplesSet, resultSampleSet, resultSetBuilder, resultSetsController, receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString(),k);
 
                         resultBlockReference = receivedMessageParts["usedUserIdToResult"].ToString() + "/" + resultSetsController.GetResultSetFileNameById(receivedMessageParts["usedUserIdToResult"].ToString(), receivedMessageParts["resultSetId"].ToString()) + extension;
                         CloudBlockBlob resultSetBlockBlob = resultSetsContainer.GetBlockBlobReference(resultBlockReference);

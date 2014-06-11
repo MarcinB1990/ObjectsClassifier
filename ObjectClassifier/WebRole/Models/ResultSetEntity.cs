@@ -41,7 +41,7 @@ namespace WebRole.Models
         /// </summary>
         public string ResultSetFileSource { get; set; }
         /// <summary>
-        /// Sposób klasyfikacji (0-5NN,1-5NN Chaudhuriego, 2-5NN Kellera)
+        /// Sposób klasyfikacji (0-k-NN,1-k-NN Chaudhuriego, 2-k-NN Kellera)
         /// </summary>
         public string MethodOfClassification { get; set; }
         /// <summary>
@@ -75,7 +75,7 @@ namespace WebRole.Models
         /// <param name="inputFileSource">Adres pliku ze zbiorem wejściowym do klasyfikacji</param>
         /// <param name="resultSetFileSource">Adres pliku ze zbiorem wynikowym</param>
         /// <param name="referenceToBlob">Referencja do Bloba zawierającego zawartość zbioru wynikowego</param>
-        /// <param name="methodOfClassification">Sposób klasyfikacji (0-5NN,1-5NN Chaudhuriego, 2-5NN Kellera)</param>
+        /// <param name="methodOfClassification">Sposób klasyfikacji (0-k-NN,1-k-NN Chaudhuriego, 2-k-NN Kellera)</param>
         /// <param name="progress">Postęp klasyfikacji</param>
         /// <param name="fileExtension">Format pliku</param>
         public ResultSetEntity(string userId,string resultSetId,int numberOfClasses,int numberOfAttributes,DateTime timeOfEntry,string comment,string trainingSetFileSource,string inputFileSource,string resultSetFileSource,string referenceToBlob,string methodOfClassification,string progress,string fileExtension)

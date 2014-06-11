@@ -13,11 +13,11 @@ using WebRole.Controllers;
 namespace Classifier.Classifiers.Tests
 {
     /// <summary>
-    /// Klasa testująca czas działania i dokładność klasyfikacji metodą 5NN
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą k-NN
     /// </summary>
-    public class _5NNClassifierTest : ClassifyStrategyAbstract
+    public class KNNClassifierTest : ClassifyStrategyAbstract
     {
-        public override string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet2, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId)
+        public override string Classify(TrainingSample[] trainingSampleSet, ResultSample[] resultSampleSet2, IResultSetBuilder resultSetBuilder, ResultSetsController resultSetsController, string userId, string resultSetId, int k)
         {
 
             List<TrainingSample> uczacy = new List<TrainingSample>();
@@ -41,7 +41,7 @@ namespace Classifier.Classifiers.Tests
             watch.Start();
             for (int i = 0; i < resultSampleSet.Length; i++)
             {
-                resultSampleSet[i].ClassOfSample = trainingSampleSet.OrderBy(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes)).Take(5).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
+                resultSampleSet[i].ClassOfSample = trainingSampleSet.TakeKMin(o => EuclideanMetric(resultSampleSet[i].Attributes, o.Attributes), k).Select(o => o.ClassOfSample).GroupBy(o => o).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
             }
             
             watch.Stop();
@@ -53,7 +53,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "5nn;" + (good * 1.0 / testujacy.Count).ToString() + ";" + watch.Elapsed;
+            return k.ToString()+"nn;" + (good * 1.0 / testujacy.Count).ToString() + ";" + watch.Elapsed;
         }
     }
 }

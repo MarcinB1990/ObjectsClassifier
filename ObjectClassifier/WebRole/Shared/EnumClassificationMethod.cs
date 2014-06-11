@@ -7,9 +7,9 @@ namespace WebRole.Shared
 {
     public enum EnumClassificationMethod
     {
-            _5NNClassifier,
-            _5NNChaudhuriClassifier,
-            _5NNKellerClassifier,
+            KNNClassifier,
+            KNNChaudhuriClassifier,
+            KNNKellerClassifier,
             Tests
      }
 }

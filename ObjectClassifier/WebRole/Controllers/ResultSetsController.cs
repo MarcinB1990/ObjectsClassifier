@@ -66,14 +66,14 @@ namespace WebRole.Controllers
                 string methodOfClassification = string.Empty;
                 switch (resultSet.MethodOfClassification)
                 {
-                    case (int)EnumClassificationMethod._5NNClassifier:
-                        methodOfClassification = "5NN";
+                    case (int)EnumClassificationMethod.KNNClassifier:
+                        methodOfClassification = "k-NN";
                         break;
-                    case (int)EnumClassificationMethod._5NNChaudhuriClassifier:
-                        methodOfClassification = "5NN Chaudhuri's";
+                    case (int)EnumClassificationMethod.KNNChaudhuriClassifier:
+                        methodOfClassification = "k-NN Chaudhuri's";
                         break;
-                    case (int)EnumClassificationMethod._5NNKellerClassifier:
-                        methodOfClassification="5NN Keller's";
+                    case (int)EnumClassificationMethod.KNNKellerClassifier:
+                        methodOfClassification="k-NN Keller's";
                         break;
                     case (int)EnumClassificationMethod.Tests:
                         methodOfClassification = "Tests";

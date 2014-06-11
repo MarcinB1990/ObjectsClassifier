@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 namespace Classifier.Classifiers.Tests
 {
     /// <summary>
-    /// Klasa testująca czas działania i dokładność klasyfikacji metodą 5NN Chaudhuriego
+    /// Klasa testująca czas działania i dokładność klasyfikacji metodą k-NN Chaudhuriego
     /// </summary>
-    public class _5NNChaudhuriClassifierTest : ClassifyStrategyAbstract
+    public class KNNChaudhuriClassifierTest : ClassifyStrategyAbstract
     {
         private double[] GetCenterOfGravity(IList<TrainingSample> points, double[] testedPoint)
         {
@@ -34,7 +34,7 @@ namespace Classifier.Classifiers.Tests
 
 
 
-        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet2, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId)
+        public override string Classify(Classifiers.Common.TrainingSample[] trainingSampleSet, Classifiers.Common.ResultSample[] resultSampleSet2, Classifiers.Common.IResultSetBuilder resultSetBuilder, WebRole.Controllers.ResultSetsController resultSetsController, string userId, string resultSetId, int k)
         {
 
             List<TrainingSample> uczacy = new List<TrainingSample>();
@@ -60,9 +60,9 @@ namespace Classifier.Classifiers.Tests
             IList<TrainingSample> nearestPointsUsingCenterOfGravity = new List<TrainingSample>();
             for (int i = 0; i < resultSampleSet.Length; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < k; j++)
                 {
-                    nearestPointsUsingCenterOfGravity.Add(trainingSampleSet.OrderBy(o => EuclideanMetric(resultSampleSet[i].Attributes, GetCenterOfGravity(nearestPointsUsingCenterOfGravity, o.Attributes))).First());
+                    nearestPointsUsingCenterOfGravity.Add(trainingSampleSet.TakeKMin(o => EuclideanMetric(resultSampleSet[i].Attributes, GetCenterOfGravity(nearestPointsUsingCenterOfGravity, o.Attributes)),1).First());
                 }
                 resultSampleSet[i].ClassOfSample = nearestPointsUsingCenterOfGravity.GroupBy(o => o.ClassOfSample).OrderByDescending(o => o.Count()).ThenByDescending(o => o.Key).First().Key;
                 nearestPointsUsingCenterOfGravity.Clear();
@@ -77,7 +77,7 @@ namespace Classifier.Classifiers.Tests
                     good = good + 1;
                 }
             }
-            return "5nn Chaudhuri;" +(good*1.0 / testujacy.Count).ToString() + ";" + watch.Elapsed;
+            return k.ToString()+"nn Chaudhuri;" +(good*1.0 / testujacy.Count).ToString() + ";" + watch.Elapsed;
 
         }
 
