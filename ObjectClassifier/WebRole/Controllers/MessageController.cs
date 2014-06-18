@@ -62,12 +62,13 @@ namespace WebRole.Controllers
         public string ReceiveMessage(Guid operationGuid)
         {
             string message = null;
+            string guidExpected = operationGuid.ToString();
             bool finished=false;
             while(!finished){
                 CloudQueueMessage cqm = outputQueue.GetMessage(new TimeSpan(0, 0, 0, 0, 500));
                 if (cqm != null)
                 {
-                    if (cqm.AsString.StartsWith(operationGuid.ToString()))
+                    if (cqm.AsString.StartsWith(guidExpected))
                     {
                         message = cqm.AsString;
                         outputQueue.DeleteMessage(cqm);
